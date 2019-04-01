@@ -76,3 +76,7 @@ truffle console
 ```
 
 From here you can interact with the smart contracts through the Web3.js [API](https://web3js.readthedocs.io/en/1.0/). Check out the API documentation for more information on that.
+
+#### Authors
+
+**George Kamtziridis, gkamtzir@auth.gr**
