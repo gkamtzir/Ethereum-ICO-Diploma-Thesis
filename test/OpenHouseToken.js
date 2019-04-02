@@ -1,6 +1,6 @@
 const OpenHouseToken = artifacts.require("./OpenHouseToken.sol");
 
-const totalSupply = 1000000;
+const configuration = require("../config.js");
 
 contract("OpenHouseToken", accounts => {
 
@@ -15,22 +15,22 @@ contract("OpenHouseToken", accounts => {
 
         }).then(name => {
 
-            assert.equal(name, "OpenHouse Token", "Should have the correct name");
+            assert.equal(name, configuration.basicConfiguration.name, "Should have the correct name");
             return tokenInstance.getSymbol();
 
         }).then(symbol => {
 
-            assert.equal(symbol, "OHT", "Should have the correct symbol");
+            assert.equal(symbol, configuration.basicConfiguration.symbol, "Should have the correct symbol");
             return tokenInstance.getDecimals();
 
         }).then(decimals => {
 
-            assert.equal(decimals.toNumber(), 18, "Should have the correct number of decimal points");
+            assert.equal(decimals.toNumber(), configuration.basicConfiguration.decimals, "Should have the correct number of decimal points");
             return tokenInstance.totalSupply();
 
         }).then(totalSupply => {
 
-            assert.equal(totalSupply.toNumber(), totalSupply, "Should have the correct initial total supply");
+            assert.equal(totalSupply.toNumber(), configuration.basicConfiguration.totalSupply, "Should have the correct initial total supply");
 
         });
 

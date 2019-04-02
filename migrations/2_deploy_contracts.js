@@ -1,7 +1,7 @@
 const OpenHouseToken = artifacts.require("OpenHouseToken.sol");
 
-const totalSupply = 1000000;
+const configuration = require("../config.js");
 
 module.exports = function(deployer) {
-  deployer.deploy(OpenHouseToken, totalSupply);
+  deployer.deploy(OpenHouseToken, configuration.basicConfiguration.totalSupply);
 };
