@@ -6,12 +6,7 @@ contract("OpenHouseToken", accounts => {
 
     var tokenInstance;
 
-    /*
-        Admin is the account that deploys the smart
-        contract. This account is the first one on
-        the list of accounts.
-    */
-    const admin = accounts[0];
+    const admin = accounts[configuration.basicConfiguration.adminAccount];
 
     it("should initialize the contract with the correct values", () => {
 
@@ -42,7 +37,7 @@ contract("OpenHouseToken", accounts => {
 
         }).then(owner => {
 
-            assert.equal(owner, admin, "Owner should be the first account on the accounts list");
+            assert.equal(owner, admin, "Owner should be the admin");
             return tokenInstance.balanceOf(admin);
 
         }).then(balance => {

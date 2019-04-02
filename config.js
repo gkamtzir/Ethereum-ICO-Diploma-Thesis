@@ -3,6 +3,7 @@ module.exports = {
         name: "OpenHouse Token",
         symbol: "OHT",
         decimals: 18,
-        totalSupply: 1000000
+        totalSupply: 1000000,
+        adminAccount: 0
     }
 }
