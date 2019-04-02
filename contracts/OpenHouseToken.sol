@@ -21,6 +21,7 @@ contract OpenHouseToken {
         symbol = "OHT";
         decimals = 18;
         _totalSupply = totalSupply;
+        _balanceOf[msg.sender] = _totalSupply;
     }
 
     /**
@@ -53,6 +54,14 @@ contract OpenHouseToken {
       */
     function totalSupply() external view returns(uint256) {
         return _totalSupply;
+    }
+
+    /**
+      * @notice A getter function for the balance of an address.
+      * @return The current balance of the given address.
+      */
+    function balanceOf(address owner) public view returns(uint256) {
+        return _balanceOf[owner];
     }
 
 }
