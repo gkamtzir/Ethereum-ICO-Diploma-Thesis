@@ -19,6 +19,11 @@ contract("OpenHouseToken", accounts => {
         }).then(symbol => {
 
             assert.equal(symbol, "OHT", "Should have the correct symbol");
+            return tokenInstance.getDecimals();
+
+        }).then(decimals => {
+
+            assert.equal(decimals.toNumber(), 18, "Should have the correct number of decimal points");
 
         });
 
