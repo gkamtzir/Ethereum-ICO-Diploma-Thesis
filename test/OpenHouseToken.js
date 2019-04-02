@@ -38,6 +38,11 @@ contract("OpenHouseToken", accounts => {
         }).then(totalSupply => {
 
             assert.equal(totalSupply.toNumber(), configuration.basicConfiguration.totalSupply, "Should have the correct initial total supply");
+            return tokenInstance.getOwner();
+
+        }).then(owner => {
+
+            assert.equal(owner, admin, "Owner should be the first account on the accounts list");
             return tokenInstance.balanceOf(admin);
 
         }).then(balance => {

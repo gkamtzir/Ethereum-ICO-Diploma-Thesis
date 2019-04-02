@@ -12,6 +12,8 @@ contract OpenHouseToken {
     string private symbol;
     uint256 private decimals;
     uint256 private _totalSupply;
+
+    address private _owner;
     
     mapping(address => uint256) private _balanceOf;
     mapping(address => mapping(address => uint256)) private _allowance;
@@ -22,6 +24,7 @@ contract OpenHouseToken {
         decimals = 18;
         _totalSupply = totalSupply;
         _balanceOf[msg.sender] = _totalSupply;
+        _owner = msg.sender;
     }
 
     /**
@@ -46,6 +49,14 @@ contract OpenHouseToken {
       */
     function getDecimals() public view returns(uint256) {
         return decimals;
+    }
+
+    /**
+      * @notice A getter function for the onwer of the smart contract.
+      * @return The address of the owner of the smart contract.
+      */
+    function getOwner() public view returns(address) {
+        return _owner;
     }
 
     /**
