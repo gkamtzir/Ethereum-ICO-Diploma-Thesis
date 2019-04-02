@@ -1,5 +1,7 @@
 const OpenHouseToken = artifacts.require("./OpenHouseToken.sol");
 
+const totalSupply = 1000000;
+
 contract("OpenHouseToken", accounts => {
 
     var tokenInstance;
@@ -24,6 +26,11 @@ contract("OpenHouseToken", accounts => {
         }).then(decimals => {
 
             assert.equal(decimals.toNumber(), 18, "Should have the correct number of decimal points");
+            return tokenInstance.totalSupply();
+
+        }).then(totalSupply => {
+
+            assert.equal(totalSupply.toNumber(), totalSupply, "Should have the correct initial total supply");
 
         });
 

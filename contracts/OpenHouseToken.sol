@@ -14,12 +14,13 @@ contract OpenHouseToken {
     uint256 private _totalSupply;
     
     mapping(address => uint256) private _balanceOf;
-    mapping(address => mapping(address => uint256)) _allowance;
+    mapping(address => mapping(address => uint256)) private _allowance;
 
-    constructor() public {
+    constructor(uint256 totalSupply) public {
         name = "OpenHouse Token";
         symbol = "OHT";
         decimals = 18;
+        _totalSupply = totalSupply;
     }
 
     /**
@@ -39,11 +40,19 @@ contract OpenHouseToken {
     }
 
     /**
-      * @notice A getter function for the decimal variable
+      * @notice A getter function for the decimal variable.
       * @return The number of decimals the contract supports.
       */
     function getDecimals() public view returns(uint256) {
         return decimals;
+    }
+
+    /**
+      * @notice A getter function for the total supply.
+      * @return The initial total supply of tokens in contract.
+      */
+    function totalSupply() external view returns(uint256) {
+        return _totalSupply;
     }
 
 }
