@@ -16,6 +16,9 @@ The actual smart contracts (solidity code) of the project.
 - *./migrations/*<br />
 The migration scripts that compile and deploy the project through the [Truffle Suit](https://github.com/trufflesuite/truffle).
 
+- *./test/*<br />
+The unit tests of each individual smart contract.
+
 ## Installation Guide
 
 #### Clone the repo
@@ -76,6 +79,16 @@ truffle console
 ```
 
 From here you can interact with the smart contracts through the Web3.js [API](https://web3js.readthedocs.io/en/1.0/). Check out the API documentation for more information on that.
+
+#### Unit Tests
+
+To run the unit test scripts located in the *./test/ folder just run the following:
+
+```
+truffle test
+```
+
+*Important note: sudo privileges may be required.*
 
 #### Authors
 
