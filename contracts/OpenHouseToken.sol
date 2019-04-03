@@ -99,4 +99,15 @@ contract OpenHouseToken {
         return true;
     }
 
+    /**
+      * @notice A getter function for the allowance of token spending from
+      * one address to another.
+      * @param owner The account the tokens are approved from.
+      * @param spender The account the tokens are approved for.
+      * @return The number of tokens approved.
+      */
+    function allowance(address owner, address spender) external view returns(uint256) {
+        return _allowance[owner][spender];
+    }
+
 }

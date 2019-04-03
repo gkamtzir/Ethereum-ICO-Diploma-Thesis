@@ -61,8 +61,13 @@ contract("OpenHouseToken", accounts => {
             assert.equal(receipt.logs.length, 1, "Should trigger one event");
             assert.equal(receipt.logs[0].event, "Approval", "Should trigger the 'Approval' event");
             assert.equal(receipt.logs[0].args.from, admin, "Admin should be the account the tokens are approved from");
-            assert.equal(receipt.logs[0].args.to, spender, "Spender should be the account the tokens are approved to");
+            assert.equal(receipt.logs[0].args.to, spender, "Spender should be the account the tokens are approved for");
             assert.equal(receipt.logs[0].args.value, configuration.basicConfiguration.approvedTokens, "Should be equal to the approved number of tokens");
+            return tokenInstance.allowance(admin, spender);
+
+        }).then(allowance => {
+
+            assert.equal(allowance.toNumber(), configuration.basicConfiguration.approvedTokens, "Should return the correct allowance");
 
         });
 
