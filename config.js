@@ -5,7 +5,10 @@ module.exports = {
         decimals: 18,
         totalSupply: 1000000,
         approvedTokens: 100000,
+        transferedTokens: 100000,
         adminAccount: 0,
-        spenderAccount: 1
+        spenderAccount: 1,
+        transferToAccount: 2,
+        noTokensAccount: 3
     }
 }

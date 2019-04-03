@@ -8,6 +8,8 @@ contract("OpenHouseToken", accounts => {
 
     const admin = accounts[configuration.basicConfiguration.adminAccount];
     const spender = accounts[configuration.basicConfiguration.spenderAccount];
+    const transferToAccount = accounts[configuration.basicConfiguration.transferToAccount];
+    const noTokensAccount = accounts[configuration.basicConfiguration.noTokensAccount];
 
     it("Should initialize the contract with the correct values", () => {
 
@@ -68,6 +70,61 @@ contract("OpenHouseToken", accounts => {
         }).then(allowance => {
 
             assert.equal(allowance.toNumber(), configuration.basicConfiguration.approvedTokens, "Should return the correct allowance");
+
+        });
+
+    });
+
+    it("Should be able to transfer tokens from one account to another", () => {
+
+        return OpenHouseToken.deployed().then(instance => {
+
+            tokenInstance = instance;
+            return tokenInstance.balanceOf(transferToAccount);
+
+        }).then(balance => {
+
+            assert.equal(balance.toNumber(), 0, "Should have zero tokens initially");
+            return tokenInstance.balanceOf(admin);
+
+        }).then(balance => {
+
+            assert.equal(balance.toNumber(), configuration.basicConfiguration.totalSupply, "Admin should initially have all the supply");
+            return tokenInstance.transfer(transferToAccount, configuration.basicConfiguration.transferedTokens, { from: admin });
+
+        }).then(receipt => {
+
+            assert.equal(receipt.logs.length, 1, "Should trigger one event");
+            assert.equal(receipt.logs[0].event, "Transfer", "Should trigger the 'Transfer' event");
+            assert.equal(receipt.logs[0].args.from, admin, "Admin should be the account the tokens are transfered from");
+            assert.equal(receipt.logs[0].args.to, transferToAccount, "TransferToAccount should be the account the tokens are transfered to");
+            assert.equal(receipt.logs[0].args.value, configuration.basicConfiguration.transferedTokens, "Should be equal to the transfered number of tokens");
+            return tokenInstance.balanceOf(admin);
+
+        }).then(balance => {
+
+            assert.equal(balance.toNumber(), configuration.basicConfiguration.totalSupply - configuration.basicConfiguration.transferedTokens,
+                "Admin's balance should decrease accordingly");
+            return tokenInstance.balanceOf(transferToAccount);
+
+        }).then(balance => {
+
+            assert.equal(balance.toNumber(), configuration.basicConfiguration.transferedTokens, "TransferToAccount's balance should increase accordingly");
+            return tokenInstance.transfer(transferToAccount, configuration.basicConfiguration.transferedTokens, { from: noTokensAccount });
+
+        }).then(assert.fail).catch(error => {
+
+            assert(error.message.indexOf("revert") >= 0, "Should throw an exception when the sender's balance is less than the value");
+            return tokenInstance.balanceOf(noTokensAccount);
+
+        }).then(balance => {
+
+            assert.equal(balance.toNumber(), 0, "NoTokensAccount's balance should be equal to zero");
+            return tokenInstance.balanceOf(transferToAccount);
+
+        }).then(balance => {
+
+            assert.equal(balance.toNumber(), configuration.basicConfiguration.transferedTokens, "TransferToAccount's balance should remain the same");
 
         });
 

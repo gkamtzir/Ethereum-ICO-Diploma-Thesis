@@ -1,6 +1,10 @@
 pragma solidity ^0.5.7;
 
+/// Interfaces.
 import "./IERC20.sol";
+
+/// Libraries.
+import "../libraries/SafeMath.sol";
 
 /**
   * @title OpenHouseToken
@@ -8,6 +12,8 @@ import "./IERC20.sol";
   * @notice This is the core contract that implements the token.
   */
 contract OpenHouseToken {
+	using SafeMath for uint256;
+
     string private name;
     string private symbol;
     uint256 private decimals;
@@ -19,12 +25,17 @@ contract OpenHouseToken {
     mapping(address => mapping(address => uint256)) private _allowance;
 
     /// Events.
-
     event Approval(
         address indexed from,
         address indexed to,
         uint256 value
     );
+
+	event Transfer(
+		address indexed from,
+		address indexed to,
+		uint256 value
+	);
 
     constructor(uint256 totalSupply) public {
         name = "OpenHouse Token";
@@ -108,6 +119,24 @@ contract OpenHouseToken {
       */
     function allowance(address owner, address spender) external view returns(uint256) {
         return _allowance[owner][spender];
+    }
+
+	/**
+	  * @notice Transfers the given amount of tokens to the given
+	  * address from msg.sender.
+	  * @param to The address of the receiver.
+	  * @param value The amount of tokens to be sent.
+	  * @return A boolean indicating if the transfer has completed successfully.
+	  */
+    function transfer(address to, uint256 value) external returns(bool) {
+		require(_balanceOf[msg.sender] >= value);
+
+		_balanceOf[msg.sender] -= value;
+		_balanceOf[to] += value;
+
+		emit Transfer(msg.sender, to, value);
+
+		return true;
     }
 
 }
