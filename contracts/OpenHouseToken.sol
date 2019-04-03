@@ -1,7 +1,7 @@
 pragma solidity ^0.5.7;
 
 /// Interfaces.
-import "./IERC20.sol";
+import "../interfaces/IERC20.sol";
 
 /// Libraries.
 import "../libraries/SafeMath.sol";
