@@ -69,6 +69,7 @@ contract OpenHouseToken {
 
     /**
       * @notice A getter function for the balance of an address.
+      * @param owner The address of a wallet.
       * @return The current balance of the given address.
       */
     function balanceOf(address owner) public view returns(uint256) {
