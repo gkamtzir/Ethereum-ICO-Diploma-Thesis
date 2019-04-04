@@ -11,7 +11,7 @@ import "../libraries/SafeMath.sol";
   * @author George Kamtziridis, gkamtzir@auth.gr
   * @notice This is the core contract that implements the token.
   */
-contract OpenHouseToken {
+contract OpenHouseToken is IERC20 {
 	using SafeMath for uint256;
 
     string private name;
