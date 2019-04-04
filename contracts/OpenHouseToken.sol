@@ -82,7 +82,7 @@ contract OpenHouseToken is IERC20 {
       * @notice A getter function for the total supply.
       * @return The initial total supply of tokens in contract.
       */
-    function totalSupply() external view returns(uint256) {
+    function totalSupply() public view returns(uint256) {
         return _totalSupply;
     }
 
@@ -102,7 +102,7 @@ contract OpenHouseToken is IERC20 {
       * @param value The number of tokens that are approved to be spent.
       * @return A boolean indicating if the approval has completed successfully. 
       */
-    function approve(address spender, uint256 value) external returns(bool) {
+    function approve(address spender, uint256 value) public returns(bool) {
         _allowance[msg.sender][spender] = value;
 
         emit Approval(msg.sender, spender, value);
@@ -117,7 +117,7 @@ contract OpenHouseToken is IERC20 {
       * @param spender The account the tokens are approved for.
       * @return The number of tokens approved.
       */
-    function allowance(address owner, address spender) external view returns(uint256) {
+    function allowance(address owner, address spender) public view returns(uint256) {
         return _allowance[owner][spender];
     }
 
@@ -128,7 +128,7 @@ contract OpenHouseToken is IERC20 {
 	  * @param value The amount of tokens to be sent.
 	  * @return A boolean indicating if the transfer has completed successfully.
 	  */
-    function transfer(address to, uint256 value) external returns(bool) {
+    function transfer(address to, uint256 value) public returns(bool) {
         require(_balanceOf[msg.sender] >= value);
 
         _balanceOf[msg.sender] -= value;
@@ -146,7 +146,7 @@ contract OpenHouseToken is IERC20 {
       * @param value The number of tokens to be transfered.
       * @return A boolean indicating if the transfer has completed successfully.
       */
-    function transferFrom(address from, address to, uint256 value) external returns(bool) {
+    function transferFrom(address from, address to, uint256 value) public returns(bool) {
         require(_allowance[from][msg.sender] >= value);
         require(_balanceOf[from] >= value);
 
