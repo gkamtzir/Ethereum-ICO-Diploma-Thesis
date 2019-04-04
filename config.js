@@ -13,6 +13,7 @@ module.exports = {
         adminAccount: 0,
         spenderAccount: 1,
         transferToAccount: 2,
-        noTokensAccount: 3
+        noTokensAccount: 3,
+        newOwnerAccount: 4
     }
 }

@@ -49,6 +49,11 @@ contract OpenHouseToken is IERC20, IStatus {
         uint256 indexed blockNumber
     );
 
+    event OwnershipTransfered(
+        address indexed from,
+        address indexed to
+    );
+
     /// Modifiers.
 
     /// Verifies that sender is the owner of the contract.
@@ -143,6 +148,14 @@ contract OpenHouseToken is IERC20, IStatus {
         status = Status.Deactivated;
 
         emit Deactivated(block.number);
+
+        return true;
+    }
+
+    function transferOwnership(address newOwner) public onlyOwner() returns(bool) {
+        _owner = newOwner;
+
+        emit OwnershipTransfered(msg.sender, newOwner);
 
         return true;
     }

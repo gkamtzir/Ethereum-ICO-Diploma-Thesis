@@ -10,6 +10,7 @@ contract("OpenHouseToken", accounts => {
     const spender = accounts[configuration.basicConfiguration.spenderAccount];
     const transferToAccount = accounts[configuration.basicConfiguration.transferToAccount];
     const noTokensAccount = accounts[configuration.basicConfiguration.noTokensAccount];
+    const newOwnerAccount = accounts[configuration.basicConfiguration.newOwnerAccount];
 
     it("Should initialize the contract with the correct values", () => {
 
@@ -107,6 +108,52 @@ contract("OpenHouseToken", accounts => {
         });
 
     });
+
+    it("Should be able to change ownership", () => {
+
+        return OpenHouseToken.deployed().then(instance => {
+
+            tokenInstance = instance;
+            return tokenInstance.getOwner();
+
+        }).then(owner => {
+
+            assert.equal(owner, admin, "Admin should be the owner of the contract initially");
+            return tokenInstance.transferOwnership(newOwnerAccount, { from: spender });
+
+        }).then(assert.fail).catch(error => {
+
+            assert(error.message.indexOf("revert") >= 0, "Only the owner should be able to transfer the ownership of the contract");
+            return tokenInstance.transferOwnership(newOwnerAccount, { from: admin });
+
+        }).then(receipt => {
+
+            assert.equal(receipt.logs.length, 1, "Should trigger one event");
+            assert.equal(receipt.logs[0].event, "OwnershipTransfered", "Should trigger the 'OwnershipTransfered' event");
+            assert.equal(receipt.logs[0].args.from, admin, "Admin should transfer the ownership of the contract to newOwnerAccount");
+            assert.equal(receipt.logs[0].args.to, newOwnerAccount, "NewOwnerAccount should receive the onwership of the contract");
+            return tokenInstance.getOwner();
+
+        }).then(owner => {
+
+            assert.equal(owner, newOwnerAccount, "NewOwnerAccount should be the new owner of the contract");
+            return tokenInstance.transferOwnership(admin, { from: newOwnerAccount });
+
+        }).then(receipt => {
+
+            assert.equal(receipt.logs.length, 1, "Should trigger one event");
+            assert.equal(receipt.logs[0].event, "OwnershipTransfered", "Should trigger the 'OwnershipTransfered' event");
+            assert.equal(receipt.logs[0].args.from, newOwnerAccount, "NewOwnerAccount should transfer the ownership of the contract to admin");
+            assert.equal(receipt.logs[0].args.to, admin, "Admin should receive the onwership of the contract");
+            return tokenInstance.getOwner();
+
+        }).then(owner => {
+            
+            assert.equal(owner, admin, "Admin should be the final owner of the contract");
+
+        });
+
+    })
 
     it("Should be able to approve the spending of a specified number of tokens from one account to another", () => {
 
