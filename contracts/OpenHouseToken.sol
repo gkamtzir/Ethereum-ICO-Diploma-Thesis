@@ -129,14 +129,35 @@ contract OpenHouseToken {
 	  * @return A boolean indicating if the transfer has completed successfully.
 	  */
     function transfer(address to, uint256 value) external returns(bool) {
-		require(_balanceOf[msg.sender] >= value);
+        require(_balanceOf[msg.sender] >= value);
 
-		_balanceOf[msg.sender] -= value;
-		_balanceOf[to] += value;
+        _balanceOf[msg.sender] -= value;
+        _balanceOf[to] += value;
 
-		emit Transfer(msg.sender, to, value);
+        emit Transfer(msg.sender, to, value);
 
-		return true;
+        return true;
+    }
+
+    /**
+      * @notice Transfers tokens on behalf of another account.
+      * @param from The account from which the tokens will be transfered.
+      * @param to The account to which the the tokens will be transfered.
+      * @param value The number of tokens to be transfered.
+      * @return A boolean indicating if the transfer has completed successfully.
+      */
+    function transferFrom(address from, address to, uint256 value) external returns(bool) {
+        require(_allowance[from][msg.sender] >= value);
+        require(_balanceOf[from] >= value);
+
+        _balanceOf[from] -= value;
+        _balanceOf[to] += value;
+
+        _allowance[from][msg.sender] -= value;
+
+        emit Transfer(from, to, value);
+
+        return true;
     }
 
 }

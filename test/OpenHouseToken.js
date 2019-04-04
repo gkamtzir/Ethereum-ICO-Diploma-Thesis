@@ -130,4 +130,95 @@ contract("OpenHouseToken", accounts => {
 
     });
 
+    it("Should be able to transfer tokens on behalf of another account when those tokens are approved", () => {
+
+        return OpenHouseToken.deployed().then(instance => {
+
+            tokenInstance = instance;
+            return tokenInstance.transferFrom(admin, transferToAccount, configuration.basicConfiguration.transferedTokens, { from: spender });
+
+        }).then(receipt => {
+
+            assert.equal(receipt.logs.length, 1, "Should trigger one event");
+            assert.equal(receipt.logs[0].event, "Transfer", "Should trigger the 'Transfer' event");
+            assert.equal(receipt.logs[0].args.from, admin, "Admin should be the account the tokens are transfered from");
+            assert.equal(receipt.logs[0].args.to, transferToAccount, "TransferToAccount should be the account the tokens are transfered to");
+            assert.equal(receipt.logs[0].args.value, configuration.basicConfiguration.transferedTokens, "Should be equal to the transfered number of tokens");
+            return tokenInstance.balanceOf(admin);
+
+        }).then(balance => {
+
+            assert.equal(balance.toNumber(), configuration.basicConfiguration.totalSupply 
+                - 2 *configuration.basicConfiguration.transferedTokens, "Admin's balance should decreased accordingly");
+            return tokenInstance.balanceOf(transferToAccount);
+
+        }).then(balance => {
+
+            assert.equal(balance.toNumber(), 2 * configuration.basicConfiguration.transferedTokens, "TransferToAccount's balance should increase accordingly");
+            return tokenInstance.allowance(admin, spender);
+
+        }).then(allowance => {
+
+            assert.equal(allowance.toNumber(), 0, "Spender's allowance should decrease accordingly");
+            return tokenInstance.transferFrom(admin, transferToAccount, configuration.basicConfiguration.transferedTokens, { from: spender });
+
+        }).then(assert.fail).catch(error => {
+
+            assert(error.message.indexOf("revert") >= 0, "Should throw an exception when spender's allowance is insufficient");
+            return tokenInstance.balanceOf(admin);
+
+        }).then(balance => {
+
+            assert.equal(balance.toNumber(), configuration.basicConfiguration.totalSupply 
+                - 2 *configuration.basicConfiguration.transferedTokens, "Admin's balance should remain the same");
+            return tokenInstance.balanceOf(transferToAccount);
+
+        }).then(balance => {
+
+            assert.equal(balance.toNumber(), 2 * configuration.basicConfiguration.transferedTokens, "TransferToAccount's balance should remain the same");
+            return tokenInstance.allowance(admin, spender);
+
+        }).then(allowance => {
+
+            assert.equal(allowance.toNumber(), 0, "Spender's allowance should remain the same");
+            return tokenInstance.approve(spender, configuration.basicConfiguration.totalSupply, { from: admin });
+
+        }).then(receipt => {
+
+            assert.equal(receipt.logs.length, 1, "Should trigger one event");
+            assert.equal(receipt.logs[0].event, "Approval", "Should trigger the 'Approval' event");
+            assert.equal(receipt.logs[0].args.from, admin, "Admin should be the account the tokens are approved from");
+            assert.equal(receipt.logs[0].args.to, spender, "Spender should be the account the tokens are approved for");
+            assert.equal(receipt.logs[0].args.value, configuration.basicConfiguration.totalSupply, "Should be equal to the total supply");
+            return tokenInstance.allowance(admin, spender);
+
+        }).then(allowance => {
+
+            assert.equal(allowance.toNumber(), configuration.basicConfiguration.totalSupply, "Spender's allowance should be equal to the total supply");
+            return tokenInstance.transferFrom(admin, transferToAccount, configuration.basicConfiguration.totalSupply, { from: spender });
+
+        }).then(assert.fail).catch(error => {
+
+            assert(error.message.indexOf("revert") >= 0, "Should throw an exception when admin's balance is insufficient");
+            return tokenInstance.balanceOf(admin);
+
+        }).then(balance => {
+
+            assert.equal(balance.toNumber(), configuration.basicConfiguration.totalSupply 
+                - 2 *configuration.basicConfiguration.transferedTokens, "Admin's balance should remain the same");
+            return tokenInstance.balanceOf(transferToAccount);
+
+        }).then(balance => {
+
+            assert.equal(balance.toNumber(), 2 *configuration.basicConfiguration.transferedTokens, "TransferToAccount's balance should remain the same");
+            return tokenInstance.allowance(admin, spender);
+
+        }).then(allowance => {
+
+            assert.equal(allowance.toNumber(), configuration.basicConfiguration.totalSupply, "Spender's allowance should remain the same");
+
+        });
+
+    });
+
 });
