@@ -50,7 +50,59 @@ contract("OpenHouseToken", accounts => {
 
         }).then(status => {
 
-            assert.equal(status.toNumber(), configuration.basicConfiguration.status.activated, "Contract should be activated");
+            assert.equal(status.toNumber(), configuration.basicConfiguration.status.activated, "Contract should be activated initially");
+
+        });
+
+    });
+
+    it("Should allow or disallow the usage of certain function when contract is activated or deactivated respectively", () => {
+
+        return OpenHouseToken.deployed().then(instance => {
+
+            tokenInstance = instance;
+            return tokenInstance.getStatus();
+
+        }).then(status => {
+
+            assert.equal(status.toNumber(), configuration.basicConfiguration.status.activated, "Contract should be activated initially");
+            return tokenInstance.deactivate({ from: spender });
+
+        }).then(assert.fail).catch(error => {
+
+            assert(error.message.indexOf("revert") >= 0, "Spender should not be able to deactivate contract");
+            return tokenInstance.deactivate({ from: admin });
+
+        }).then(receipt => {
+
+            assert.equal(receipt.logs.length, 1, "Should trigger one event");
+            assert.equal(receipt.logs[0].event, "Deactivated", "Should trigger the 'Deactivated' event");
+            return tokenInstance.approve(spender, configuration.basicConfiguration.approvedTokens, { from: admin });
+
+        }).then(assert.fail).catch(error => {
+
+            assert(error.message.indexOf("revert") >= 0, "Approve function should not be usable");
+            return tokenInstance.transfer(transferToAccount, configuration.basicConfiguration.transferedTokens, { from: admin });
+
+        }).then(assert.fail).catch(error => {
+
+            assert(error.message.indexOf("revert") >= 0, "Transfer function should not be usable");
+            return tokenInstance.transferFrom(admin, transferToAccount, configuration.basicConfiguration.transferedTokens, { from: spender });
+        
+        }).then(assert.fail).catch(error => {
+
+            assert(error.message.indexOf("revert") >= 0, "TransferFrom function should not be usable");
+            return tokenInstance.activate({from: spender });
+
+        }).then(assert.fail).catch(error => {
+
+            assert(error.message.indexOf("revert") >= 0, "Spender should not be able to activate the contract");
+            return tokenInstance.activate({ from: admin });
+
+        }).then(receipt => {
+
+            assert.equal(receipt.logs.length, 1, "Should trigger one event");
+            assert.equal(receipt.logs[0].event, "Activated", "Should trigger the 'Activated' event");
 
         });
 

@@ -28,6 +28,7 @@ contract OpenHouseToken is IERC20, IStatus {
     mapping(address => mapping(address => uint256)) private _allowance;
 
     /// Events.
+
     event Approval(
         address indexed from,
         address indexed to,
@@ -40,9 +41,25 @@ contract OpenHouseToken is IERC20, IStatus {
 		uint256 value
 	);
 
+    event Activated(
+        uint256 indexed blockNumber
+    );
+
+    event Deactivated(
+        uint256 indexed blockNumber
+    );
+
     /// Modifiers.
+
+    /// Verifies that sender is the owner of the contract.
     modifier onlyOwner() {
         require(msg.sender == _owner);
+        _;
+    }
+
+    /// Verifies that contract is active.
+    modifier isActivated() {
+        require(status == Status.Activated);
         _;
     }
 
@@ -111,6 +128,9 @@ contract OpenHouseToken is IERC20, IStatus {
       */
     function activate() public onlyOwner() returns(bool) {
         status = Status.Activated;
+
+        emit Activated(block.number);
+
         return true;
     }
 
@@ -121,6 +141,9 @@ contract OpenHouseToken is IERC20, IStatus {
       */
     function deactivate() public onlyOwner() returns(bool){
         status = Status.Deactivated;
+
+        emit Deactivated(block.number);
+
         return true;
     }
 
@@ -140,7 +163,7 @@ contract OpenHouseToken is IERC20, IStatus {
       * @param value The number of tokens that are approved to be spent.
       * @return A boolean indicating if the approval has completed successfully. 
       */
-    function approve(address spender, uint256 value) public returns(bool) {
+    function approve(address spender, uint256 value) public isActivated() returns(bool) {
         _allowance[msg.sender][spender] = value;
 
         emit Approval(msg.sender, spender, value);
@@ -166,7 +189,7 @@ contract OpenHouseToken is IERC20, IStatus {
 	  * @param value The amount of tokens to be sent.
 	  * @return A boolean indicating if the transfer has completed successfully.
 	  */
-    function transfer(address to, uint256 value) public returns(bool) {
+    function transfer(address to, uint256 value) public isActivated() returns(bool) {
         require(_balanceOf[msg.sender] >= value);
 
         _balanceOf[msg.sender] -= value;
@@ -184,7 +207,7 @@ contract OpenHouseToken is IERC20, IStatus {
       * @param value The number of tokens to be transfered.
       * @return A boolean indicating if the transfer has completed successfully.
       */
-    function transferFrom(address from, address to, uint256 value) public returns(bool) {
+    function transferFrom(address from, address to, uint256 value) public isActivated() returns(bool) {
         require(_allowance[from][msg.sender] >= value);
         require(_balanceOf[from] >= value);
 

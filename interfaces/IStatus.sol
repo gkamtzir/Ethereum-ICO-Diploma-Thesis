@@ -13,4 +13,6 @@ interface IStatus {
     function getStatus() external view returns(Status);
     function activate() external returns(bool);
     function deactivate() external returns(bool);
+    event Activated(uint256 indexed blockNumber);
+    event Deactivated(uint256 indexed blockNumber);
 }
