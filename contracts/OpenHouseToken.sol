@@ -2,6 +2,7 @@ pragma solidity ^0.5.7;
 
 /// Interfaces.
 import "../interfaces/IERC20.sol";
+import "../interfaces/IStatus.sol";
 
 /// Libraries.
 import "../libraries/SafeMath.sol";
@@ -11,7 +12,7 @@ import "../libraries/SafeMath.sol";
   * @author George Kamtziridis, gkamtzir@auth.gr
   * @notice This is the core contract that implements the token.
   */
-contract OpenHouseToken is IERC20 {
+contract OpenHouseToken is IERC20, IStatus {
 	using SafeMath for uint256;
 
     string private name;
@@ -20,6 +21,8 @@ contract OpenHouseToken is IERC20 {
     uint256 private _totalSupply;
 
     address private _owner;
+
+    Status private status;
     
     mapping(address => uint256) private _balanceOf;
     mapping(address => mapping(address => uint256)) private _allowance;
@@ -37,6 +40,12 @@ contract OpenHouseToken is IERC20 {
 		uint256 value
 	);
 
+    /// Modifiers.
+    modifier onlyOwner() {
+        require(msg.sender == _owner);
+        _;
+    }
+
     constructor(uint256 totalSupply) public {
         name = "OpenHouse Token";
         symbol = "OHT";
@@ -44,6 +53,7 @@ contract OpenHouseToken is IERC20 {
         _totalSupply = totalSupply;
         _balanceOf[msg.sender] = _totalSupply;
         _owner = msg.sender;
+        status = Status.Activated;
     }
 
     /**
@@ -84,6 +94,34 @@ contract OpenHouseToken is IERC20 {
       */
     function totalSupply() public view returns(uint256) {
         return _totalSupply;
+    }
+
+    /**
+      * @notice A getter function for contract's status.
+      * @return The current status of the contract.
+      */
+    function getStatus() public view returns(Status) {
+        return status;
+    }
+
+    /**
+      * @notice Activates the contract.
+      * @return A boolean indicating if the activation has completed
+      * successfully
+      */
+    function activate() public onlyOwner() returns(bool) {
+        status = Status.Activated;
+        return true;
+    }
+
+    /**
+      * @notice Deactivates the contract.
+      * @return A boolean indicating if the deactivation has completed
+      * successfully
+      */
+    function deactivate() public onlyOwner() returns(bool){
+        status = Status.Deactivated;
+        return true;
     }
 
     /**

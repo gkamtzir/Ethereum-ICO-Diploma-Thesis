@@ -46,6 +46,11 @@ contract("OpenHouseToken", accounts => {
         }).then(balance => {
 
             assert.equal(balance.toNumber(), configuration.basicConfiguration.totalSupply, "Should have allocated the initial supply to the owner");
+            return tokenInstance.getStatus();
+
+        }).then(status => {
+
+            assert.equal(status.toNumber(), configuration.basicConfiguration.status.activated, "Contract should be activated");
 
         });
 

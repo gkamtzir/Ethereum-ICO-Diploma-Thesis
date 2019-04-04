@@ -3,6 +3,10 @@ module.exports = {
         name: "OpenHouse Token",
         symbol: "OHT",
         decimals: 18,
+        status: {
+            activated: 0,
+            deactivated: 1
+        },
         totalSupply: 1000000,
         approvedTokens: 100000,
         transferedTokens: 100000,
