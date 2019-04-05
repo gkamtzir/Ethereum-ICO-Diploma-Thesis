@@ -350,8 +350,64 @@ contract("OpenHouseToken", accounts => {
         }).then(commitedFromBalance => {
 
             assert.equal(commitedFromBalance.toNumber(), 0, "CommitAccount should have zero tokens commited from balance initially");
+            return tokenInstance.commitFromBalance(configuration.basicConfiguration.commitFromBalance, { from: commitAccount });
 
-        })
+        }).then(receipt => {
+
+            assert.equal(receipt.logs.length, 1, "Should trigger one event");
+            assert.equal(receipt.logs[0].event, "CommitedFromBalance", "Should trigger the 'CommitedFromBalance' event");
+            assert.equal(receipt.logs[0].args.from, commitAccount, "CommitAccount should have commited the tokens");
+            assert.equal(receipt.logs[0].args.numberOfTokens, configuration.basicConfiguration.commitFromBalance, 
+                "NumberOfTokens should be equal to the commited tokens");
+            return tokenInstance.balanceOf(commitAccount);
+
+        }).then(balance => {
+
+            assert.equal(balance.toNumber(), configuration.basicConfiguration.transferedTokens
+                - configuration.basicConfiguration.commitFromBalance, "CommitAccount's balance should decrease accordingly");
+            return tokenInstance.getCommitedFromBalance({ from: commitAccount });
+
+        }).then(commitedFromBalance => {
+
+            assert.equal(commitedFromBalance.toNumber(), configuration.basicConfiguration.commitFromBalance, 
+                "CommitAccount's commited tokens should increase accordingly");
+            return tokenInstance.commitFromBalance(configuration.basicConfiguration.totalSupply, { from: commitAccount });
+
+        }).then(assert.fail).catch(error => {
+
+            assert(error.message.indexOf("revert") >= 0, 
+                "Should throw an exception when commitAccount has insufficient number of tokens in balance");
+            return tokenInstance.commitToBalance(configuration.basicConfiguration.commitToBalance, { from: commitAccount });
+
+        }).then(receipt => {
+
+            assert.equal(receipt.logs.length, 1, "Should trigger one event");
+            assert.equal(receipt.logs[0].event, "CommitedToBalance", "Should trigger the 'CommitedToBalance' event");
+            assert.equal(receipt.logs[0].args.from, commitAccount, "CommitAccount should have withdrawn the tokens");
+            assert.equal(receipt.logs[0].args.numberOfTokens, configuration.basicConfiguration.commitToBalance, 
+                "NumberOfTokens should be equal to the withdrawn tokens");
+            return tokenInstance.getCommitedFromBalance({ from: commitAccount });
+
+        }).then(commitedFromBalance => {
+
+            assert.equal(commitedFromBalance.toNumber(), configuration.basicConfiguration.commitFromBalance
+                - configuration.basicConfiguration.commitToBalance, "CommitAccount's commited from balance tokens should have decreased accordingly");
+            return tokenInstance.balanceOf(commitAccount);
+
+        }).then(balance => {
+
+            assert.equal(balance.toNumber(), configuration.basicConfiguration.transferedTokens
+                - configuration.basicConfiguration.commitFromBalance
+                + configuration.basicConfiguration.commitToBalance, 
+                "CommitAccount's balance should have increased accordingly");
+            return tokenInstance.commitToBalance(configuration.basicConfiguration.commitFromBalance, { from: commitAccount });
+
+        }).then(assert.fail).catch(error => {
+
+            assert(error.message.indexOf("revert") >= 0, 
+                "Should throw an exception when commitAccount has insufficient number of tokens commited");
+
+        });
 
     });
 
@@ -366,8 +422,8 @@ contract("OpenHouseToken", accounts => {
 
             assert.equal(commitedFromRented.toNumber(), 0, "CommitAccount should have zero tokens commited from rented initially");
 
-        })
+        });
 
-    })
+    });
 
 });

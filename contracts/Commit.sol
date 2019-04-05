@@ -12,6 +12,17 @@ contract Commit is ICommit {
 
     mapping(address => CommitStatus) internal commited;
 
+    /// Events.
+    event CommitedFromBalance(
+        address indexed from,
+        uint256 numberOfTokens
+    );
+
+    event CommitedToBalance(
+        address indexed from,
+        uint256 numberOfTokens
+    );
+
     /**
       * @notice A getter function for the commited tokens of the
       * sender that come from the balance.

@@ -8,4 +8,6 @@ pragma solidity ^0.5.7;
 interface ICommit {
     function getCommitedFromBalance() external view returns(uint256);
     function getCommitedFromRented() external view returns(uint256);
+    function commitFromBalance(uint256 numberOfTokens) external returns(bool);
+    function commitToBalance(uint256 numberOfTokens) external returns(bool);
 }
