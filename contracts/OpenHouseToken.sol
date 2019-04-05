@@ -242,7 +242,7 @@ contract OpenHouseToken is IERC20, IStatus, Commit {
       * @param numberOfTokens The amount of tokens to be commited from balance.
       * @return A boolean indicating if the commit has completed successfully.
       */
-    function commitFromBalance(uint256 numberOfTokens) public returns(bool) {
+    function commitFromBalance(uint256 numberOfTokens) public isActivated() returns(bool) {
         require(_balanceOf[msg.sender] >= numberOfTokens);
 
         _balanceOf[msg.sender] -= numberOfTokens;
@@ -258,7 +258,7 @@ contract OpenHouseToken is IERC20, IStatus, Commit {
       * @param numberOfTokens The amount of tokens to be withdrawn back to balance.
       * @return A boolean indicating if the withdrawal has completed successfully.
       */
-    function commitToBalance(uint256 numberOfTokens) public returns(bool) {
+    function commitToBalance(uint256 numberOfTokens) public isActivated() returns(bool) {
         require(commited[msg.sender].fromBalance >= numberOfTokens);
 
         commited[msg.sender].fromBalance -= numberOfTokens;

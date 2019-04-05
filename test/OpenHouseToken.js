@@ -99,6 +99,16 @@ contract("OpenHouseToken", accounts => {
         }).then(assert.fail).catch(error => {
 
             assert(error.message.indexOf("revert") >= 0, "Spender should not be able to activate the contract");
+            return tokenInstance.commitFromBalance(configuration.basicConfiguration.commitFromBalance, { from: admin });
+
+        }).then(assert.fail).catch(error => {
+
+            assert(error.message.indexOf("revert") >= 0, "CommitFromBalance function should not be usable");
+            return tokenInstance.commitToBalance(0, { from: admin });
+
+        }).then(assert.fail).catch(error => {
+
+            assert(error.message.indexOf("revert") >= 0, "CommitToBalance function should not be usable");
             return tokenInstance.activate({ from: admin });
 
         }).then(receipt => {
