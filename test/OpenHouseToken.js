@@ -11,6 +11,7 @@ contract("OpenHouseToken", accounts => {
     const transferToAccount = accounts[configuration.basicConfiguration.transferToAccount];
     const noTokensAccount = accounts[configuration.basicConfiguration.noTokensAccount];
     const newOwnerAccount = accounts[configuration.basicConfiguration.newOwnerAccount];
+    const commitAccount = accounts[configuration.basicConfiguration.commitAccount];
 
     it("Should initialize the contract with the correct values", () => {
 
@@ -324,5 +325,49 @@ contract("OpenHouseToken", accounts => {
         });
 
     });
+
+    it("Should be able to commit tokens from balance", () => {
+
+        return OpenHouseToken.deployed().then(instance => {
+
+            tokenInstance = instance;
+            return tokenInstance.transfer(commitAccount, configuration.basicConfiguration.transferedTokens, { from: transferToAccount });
+
+        }).then(receipt => {
+
+            assert.equal(receipt.logs.length, 1, "Should trigger one event");
+            assert.equal(receipt.logs[0].event, "Transfer", "Should trigger the 'Transfer' event");
+            assert.equal(receipt.logs[0].args.from, transferToAccount, "TransferToAccount should be the account the tokens are transfered from");
+            assert.equal(receipt.logs[0].args.to, commitAccount, "CommitAccount should be the account the tokens are transfered to");
+            assert.equal(receipt.logs[0].args.value, configuration.basicConfiguration.transferedTokens, "Should be equal to the transfered number of tokens");
+            return tokenInstance.balanceOf(commitAccount);
+
+        }).then(balance => {
+
+            assert.equal(balance.toNumber(), configuration.basicConfiguration.transferedTokens, "CommitAccount should have available tokens");
+            return tokenInstance.getCommitedFromBalance({ from: commitAccount });
+            
+        }).then(commitedFromBalance => {
+
+            assert.equal(commitedFromBalance.toNumber(), 0, "CommitAccount should have zero tokens commited from balance initially");
+
+        })
+
+    });
+
+    it("Should be able to commit tokens from rented", () => {
+
+        return OpenHouseToken.deployed().then(instance => {
+
+            tokenInstance = instance;
+            return tokenInstance.getCommitedFromRented({ from: commitAccount });
+
+        }).then(commitedFromRented => {
+
+            assert.equal(commitedFromRented.toNumber(), 0, "CommitAccount should have zero tokens commited from rented initially");
+
+        })
+
+    })
 
 });

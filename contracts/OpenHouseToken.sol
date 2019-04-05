@@ -1,5 +1,8 @@
 pragma solidity ^0.5.7;
 
+/// Contracts.
+import "./Commit.sol";
+
 /// Interfaces.
 import "../interfaces/IERC20.sol";
 import "../interfaces/IStatus.sol";
@@ -12,7 +15,7 @@ import "../libraries/SafeMath.sol";
   * @author George Kamtziridis, gkamtzir@auth.gr
   * @notice This is the core contract that implements the token.
   */
-contract OpenHouseToken is IERC20, IStatus {
+contract OpenHouseToken is IERC20, IStatus, Commit {
 	using SafeMath for uint256;
 
     string private name;

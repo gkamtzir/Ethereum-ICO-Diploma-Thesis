@@ -14,6 +14,7 @@ module.exports = {
         spenderAccount: 1,
         transferToAccount: 2,
         noTokensAccount: 3,
-        newOwnerAccount: 4
+        newOwnerAccount: 4,
+        commitAccount: 5
     }
 }
