@@ -436,4 +436,77 @@ contract("OpenHouseToken", accounts => {
 
     });
 
+    var adminNewBalance = configuration.basicConfiguration.totalSupply 
+        - 2 *configuration.basicConfiguration.transferedTokens;
+    var transferToAccountNewBalance = 2 *configuration.basicConfiguration.transferedTokens;
+
+    it("Should be able to create offers and remove offers", () => {
+
+        return OpenHouseToken.deployed().then(instance => {
+
+            tokenInstance = instance;
+            return tokenInstance.createOffer(
+                configuration.basicConfiguration.totalSupply,
+                configuration.basicConfiguration.offerPrice,
+                configuration.basicConfiguration.offerDuration
+            );
+
+        }).then(assert.fail).catch(error => {
+
+            assert(error.message.indexOf("revert") >= 0, "Should throw an exception when user has insufficient tokens for leasing");
+            return tokenInstance.getOfferNumberOfTokens(admin);
+
+        }).then(offerNumberOfTokens => {
+
+            assert.equal(offerNumberOfTokens.toNumber(), 0, "No offer should have been created");
+            return tokenInstance.createOffer(
+                configuration.basicConfiguration.offerTokens,
+                configuration.basicConfiguration.offerPrice,
+                configuration.basicConfiguration.offerDuration
+            );
+
+        }).then(receipt => {
+
+            assert.equal(receipt.logs.length, 1, "Should trigger one event");
+            assert.equal(receipt.logs[0].event, "OfferCreated", "Should trigger the 'OfferCreated' event");
+            assert.equal(receipt.logs[0].args.from, admin, "Admin should be the account that created the offer");
+            assert.equal(receipt.logs[0].args.numberOfTokens.toNumber(), configuration.basicConfiguration.offerTokens, 
+                "Should be equal to the number of tokens admin chose to lease");
+            assert.equal(receipt.logs[0].args.price.toNumber(), configuration.basicConfiguration.offerPrice, 
+                "Should be equal to the price admin set");
+            assert.equal(receipt.logs[0].args.duration.toNumber(), configuration.basicConfiguration.offerDuration,
+                "Should be equal to the duration admin set");
+            return tokenInstance.balanceOf(admin);
+
+        }).then(balance => {
+
+            assert.equal(balance.toNumber(), adminNewBalance - configuration.basicConfiguration.offerTokens,
+                "Admin's balance should decrease accordingly");
+            return tokenInstance.getOfferNumberOfTokens(admin);
+
+        }).then(offerNumberOfTokens => {
+
+            assert.equal(offerNumberOfTokens.toNumber(), configuration.basicConfiguration.offerTokens, 
+                "Should be equal to the number of tokens admin chose to lease");
+            return tokenInstance.getOfferPrice(admin);
+
+        }).then(offerPrice => {
+
+            assert.equal(offerPrice.toNumber(), configuration.basicConfiguration.offerPrice, "Should be equal to the price admin set");
+            return tokenInstance.getOfferDuration(admin);
+
+        }).then(offerDuration => {
+
+            assert.equal(offerDuration.toNumber(), configuration.basicConfiguration.offerDuration,
+                "Should be equal to the duration admin set");
+            return tokenInstance.getOfferLeasedTo(admin);
+
+        }).then(leasedTo => {
+
+            assert.equal(leasedTo, "0x0000000000000000000000000000000000000000", "Should be leased to no-one initially");
+
+        })
+
+    })
+
 });

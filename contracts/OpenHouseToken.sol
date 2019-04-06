@@ -2,6 +2,7 @@ pragma solidity ^0.5.7;
 
 /// Contracts.
 import "./Commit.sol";
+import "./Leasing.sol";
 
 /// Interfaces.
 import "../interfaces/IERC20.sol";
@@ -15,7 +16,7 @@ import "../libraries/SafeMath.sol";
   * @author George Kamtziridis, gkamtzir@auth.gr
   * @notice This is the core contract that implements the token.
   */
-contract OpenHouseToken is IERC20, IStatus, Commit {
+contract OpenHouseToken is IERC20, IStatus, Commit, Leasing {
 	using SafeMath for uint256;
 
     string private name;
@@ -266,6 +267,27 @@ contract OpenHouseToken is IERC20, IStatus, Commit {
 
         emit CommitedToBalance(msg.sender, numberOfTokens);
 
+        return true;
+    }
+
+    /**
+      * @notice Creates and offer to lease tokens.
+      * @param numberOfTokens The number of tokens to be leased.
+      * @param price The price of the leasing.
+      * @param duration The duration of the leasing in number of blocks.
+      * @return A boolean indicating if the offer was created successfully.
+      */
+    function createOffer(uint256 numberOfTokens, uint256 price, uint256 duration) public isActivated() returns(bool) {
+        require(_balanceOf[msg.sender] >= numberOfTokens);
+        require(offer[msg.sender].leasedTo == address(0));
+
+        _balanceOf[msg.sender] -= numberOfTokens;
+        offer[msg.sender].numberOfTokens = numberOfTokens;
+        offer[msg.sender].price = price;
+        offer[msg.sender].duration = duration;
+
+        emit OfferCreated(msg.sender, numberOfTokens, price, duration);
+        
         return true;
     }
 
