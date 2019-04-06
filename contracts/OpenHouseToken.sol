@@ -282,12 +282,33 @@ contract OpenHouseToken is IERC20, IStatus, Commit, Leasing {
         require(offer[msg.sender].leasedTo == address(0));
 
         _balanceOf[msg.sender] -= numberOfTokens;
+
         offer[msg.sender].numberOfTokens = numberOfTokens;
         offer[msg.sender].price = price;
         offer[msg.sender].duration = duration;
 
         emit OfferCreated(msg.sender, numberOfTokens, price, duration);
         
+        return true;
+    }
+
+    /**
+      * @notice Removed sender's existing offer.
+      * @return A boolean indicating if the removal has completed successfully.
+      */
+    function removeOffer() public isActivated() returns(bool) {
+        require(offer[msg.sender].leasedTo == address(0));
+
+        uint256 numberOfTokens = offer[msg.sender].numberOfTokens;
+
+        offer[msg.sender].numberOfTokens = 0;
+        offer[msg.sender].price = 0;
+        offer[msg.sender].duration = 0;
+
+        _balanceOf[msg.sender] += numberOfTokens;
+
+        emit OfferRemoved(msg.sender);
+
         return true;
     }
 

@@ -504,9 +504,31 @@ contract("OpenHouseToken", accounts => {
         }).then(leasedTo => {
 
             assert.equal(leasedTo, "0x0000000000000000000000000000000000000000", "Should be leased to no-one initially");
+            return tokenInstance.removeOffer();
 
-        })
+        }).then(receipt => {
 
-    })
+            assert.equal(receipt.logs.length, 1, "Should trigger one event");
+            assert.equal(receipt.logs[0].event, "OfferRemoved", "Should trigger the 'OfferRemoved' event");
+            assert.equal(receipt.logs[0].args.from, admin, "Admin should be the account that removed the offer");
+            return tokenInstance.getOfferNumberOfTokens(admin);
+
+        }).then(offerNumberOfTokens => {
+
+            assert.equal(offerNumberOfTokens.toNumber(), 0, "Admin's offer tokens should have been removed");
+            return tokenInstance.getOfferPrice(admin);
+
+        }).then(offerPrice => {
+
+            assert.equal(offerPrice.toNumber(), 0, "Admin's offer price should have been removed");
+            return tokenInstance.getOfferDuration(admin);
+
+        }).then(offerDuration => {
+
+            assert.equal(offerDuration.toNumber(), 0, "Admin's offer duration should have been removed");
+
+        });
+
+    });
 
 });

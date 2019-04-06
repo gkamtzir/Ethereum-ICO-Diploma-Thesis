@@ -26,6 +26,10 @@ contract Leasing is ILeasingEvents {
         uint256 duration
     );
 
+    event OfferRemoved(
+        address indexed from
+    );
+
     mapping(address => LeasingLog) internal offer;
     mapping(address => Rented) internal lent;
 
