@@ -109,6 +109,20 @@ contract("OpenHouseToken", accounts => {
         }).then(assert.fail).catch(error => {
 
             assert(error.message.indexOf("revert") >= 0, "CommitToBalance function should not be usable");
+            return tokenInstance.createOffer(
+                configuration.basicConfiguration.offerTokens,
+                configuration.basicConfiguration.offerPrice,
+                configuration.basicConfiguration.offerDuration
+            );
+
+        }).then(assert.fail).catch(error => {
+
+            assert(error.message.indexOf("revert") >= 0, "CreateOffer function should not be usable");
+            return tokenInstance.removeOffer({ from: admin });
+
+        }).then(assert.fail).catch(error => {
+
+            assert(error.message.indexOf("revert") >= 0, "RemoveOffer function should not be usable");
             return tokenInstance.activate({ from: admin });
 
         }).then(receipt => {
@@ -504,7 +518,7 @@ contract("OpenHouseToken", accounts => {
         }).then(leasedTo => {
 
             assert.equal(leasedTo, "0x0000000000000000000000000000000000000000", "Should be leased to no-one initially");
-            return tokenInstance.removeOffer();
+            return tokenInstance.removeOffer({ from: admin });
 
         }).then(receipt => {
 
