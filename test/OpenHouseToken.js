@@ -468,16 +468,47 @@ contract("OpenHouseToken", accounts => {
 
         }).then(assert.fail).catch(error => {
 
-            assert(error.message.indexOf("revert") >= 0, "Should throw an exception when user has insufficient tokens for leasing");
+            assert(error.message.indexOf("revert") >= 0, "Should throw an exception when sender has insufficient tokens for leasing");
             return tokenInstance.getOfferNumberOfTokens(admin);
 
         }).then(offerNumberOfTokens => {
 
             assert.equal(offerNumberOfTokens.toNumber(), 0, "No offer should have been created");
             return tokenInstance.createOffer(
+                0,
+                configuration.basicConfiguration.offerPrice,
+                configuration.basicConfiguration.offerDuration,
+                { from: admin}
+            );
+
+        }).then(assert.fail).catch(error => {
+
+            assert(error.message.indexOf("revert") >= 0, "Should throw an exception when sender sets the number of tokens to zero");
+            return tokenInstance.createOffer(
+                configuration.basicConfiguration.offerTokens,
+                0,
+                configuration.basicConfiguration.offerDuration,
+                { from: admin}
+            );
+
+        }).then(assert.fail).catch(error => {
+
+            assert(error.message.indexOf("revert") >= 0, "Should throw an exception when sender sets the price to zero");
+            return tokenInstance.createOffer(
                 configuration.basicConfiguration.offerTokens,
                 configuration.basicConfiguration.offerPrice,
-                configuration.basicConfiguration.offerDuration
+                60,
+                { from: admin}
+            );
+
+        }).then(assert.fail).catch(error => {
+
+            assert(error.message.indexOf("revert") >= 0, "Should throw an exception when sender sets the duration less than an hour");
+            return tokenInstance.createOffer(
+                configuration.basicConfiguration.offerTokens,
+                configuration.basicConfiguration.offerPrice,
+                configuration.basicConfiguration.offerDuration,
+                { from: admin}
             );
 
         }).then(receipt => {
