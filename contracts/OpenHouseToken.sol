@@ -278,8 +278,8 @@ contract OpenHouseToken is IERC20, IStatus, Commit, Leasing {
       * @return A boolean indicating if the offer was created successfully.
       */
     function createOffer(uint256 numberOfTokens, uint256 price, uint256 duration) public isActivated() returns(bool) {
-        require(_balanceOf[msg.sender] >= numberOfTokens);
-        require(offer[msg.sender].leasedTo == address(0));
+        require(_balanceOf[msg.sender] >= numberOfTokens && numberOfTokens > 0);
+        require(offer[msg.sender].leasedTo == address(0) && offer[msg.sender].numberOfTokens == 0);
 
         _balanceOf[msg.sender] -= numberOfTokens;
 

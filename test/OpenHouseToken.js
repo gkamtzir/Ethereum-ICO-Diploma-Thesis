@@ -597,6 +597,54 @@ contract("OpenHouseToken", accounts => {
         }).then(address => {
 
             assert.equal(address, rentAccount, "Should be the address that rented the tokens");
+            return tokenInstance.createOffer(
+                configuration.basicConfiguration.offerTokens / 10,
+                configuration.basicConfiguration.offerPrice,
+                configuration.basicConfiguration.offerDuration,
+                { from: transferToAccount }
+            );
+
+        }).then(receipt => {
+
+            assert.equal(receipt.logs.length, 1, "Should trigger one event");
+            assert.equal(receipt.logs[0].event, "OfferCreated", "Should trigger the 'OfferCreated' event");
+            assert.equal(receipt.logs[0].args.from, transferToAccount, "TransferToAccount should be the account that created the offer");
+            assert.equal(receipt.logs[0].args.numberOfTokens.toNumber(), configuration.basicConfiguration.offerTokens / 10, 
+                "Should be equal to the number of tokens transferToAccount chose to lease");
+            assert.equal(receipt.logs[0].args.price.toNumber(), configuration.basicConfiguration.offerPrice, 
+                "Should be equal to the price transferToAccount set");
+            assert.equal(receipt.logs[0].args.duration.toNumber(), configuration.basicConfiguration.offerDuration,
+                "Should be equal to the duration transferToAccount set");
+            return tokenInstance.leaseFrom(transferToAccount, { from: rentAccount, value: configuration.basicConfiguration.offerPrice })
+
+        }).then(assert.fail).catch(error => {
+
+            assert(error.message.indexOf("revert") >= 0, "Should throw an exception when sender is already renting");
+            return tokenInstance.leaseFrom(admin, { from: transferToAccount, value: configuration.basicConfiguration.offerPrice });
+
+        }).then(assert.fail).catch(error => {
+
+            assert(error.message.indexOf("revert") >= 0, "Should throw an exception when targeted offer has already been taken");
+            return tokenInstance.leaseFrom(transferToAccount, { from: spender, value: configuration.basicConfiguration.offerPrice - 1 });
+
+        }).then(assert.fail).catch(error => {
+
+            assert(error.message.indexOf("revert") >= 0, "Should throw an exception when sender submits insufficient ether");
+            return tokenInstance.removeOffer({ from: admin });
+
+        }).then(assert.fail).catch(error => {
+
+            assert(error.message.indexOf("revert") >= 0, "Should throw an exception when sender tries to remove an in progress offer");
+            return tokenInstance.createOffer(
+                configuration.basicConfiguration.offerTokens,
+                configuration.basicConfiguration.offerPrice,
+                configuration.basicConfiguration.offerDuration,
+                { from: transferToAccount }
+            )
+
+        }).then(assert.fail).catch(error => {
+
+            assert(error.message.indexOf("revert") >= 0, "Should throw an exception when sender tries to overwrite an existing offer");
 
         });
 
