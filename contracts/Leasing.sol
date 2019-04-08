@@ -30,8 +30,13 @@ contract Leasing is ILeasingEvents {
         address indexed from
     );
 
+    event Leased(
+        address indexed from,
+        address indexed to
+    );
+
     mapping(address => LeasingLog) internal offer;
-    mapping(address => Rented) internal lent;
+    mapping(address => Rented) internal rent;
 
     /**
       * @notice A getter function for the number of tokens in
@@ -71,6 +76,39 @@ contract Leasing is ILeasingEvents {
       */
     function getOfferLeasedTo(address from) public view returns(address) {
         return offer[from].leasedTo;
+    }
+
+    /**
+      * @notice A getter function for the number of tokens the given
+      * address has rented.
+      * @param from The address that rented the tokens.
+      * @return The number of tokens that the given address
+      * has currently rented.
+      */
+    function getRentedNumberOfTokens(address from) public view returns(uint256) {
+        return rent[from].numberOfTokens;
+    }
+
+    /**
+      * @notice A getter function for the available tokens of the given
+      * address.
+      * @param from The address that rented the tokens.
+      * @return The number of available tokens the given address
+      * currently has.
+      */
+    function getRentedAvailableTokens(address from) public view returns(uint256) {
+        return rent[from].availableNumberOfTokens;
+    }
+
+    /**
+      * @notice A getter function for the address from which the given address
+      * has rented the tokens.
+      * @param from The address that rented the tokens.
+      * @return The address from which the given address has rented
+      * the tokens.
+      */
+    function getRentedFrom(address from) public view returns(address) {
+        return rent[from].rentedFrom;
     }
 
 }

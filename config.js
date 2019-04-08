@@ -13,13 +13,15 @@ module.exports = {
         commitFromBalance: 20000,
         commitToBalance: 10000,
         offerTokens: 100000,
-        offerPrice: 1000000000,
+        // 0.0001 ether.
+        offerPrice: 100000000000000,
         offerDuration: 10000,
         adminAccount: 0,
         spenderAccount: 1,
         transferToAccount: 2,
         noTokensAccount: 3,
         newOwnerAccount: 4,
-        commitAccount: 5
+        commitAccount: 5,
+        rentAccount: 6
     }
 }

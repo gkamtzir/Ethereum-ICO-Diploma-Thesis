@@ -293,7 +293,7 @@ contract OpenHouseToken is IERC20, IStatus, Commit, Leasing {
     }
 
     /**
-      * @notice Removed sender's existing offer.
+      * @notice Removes sender's existing offer.
       * @return A boolean indicating if the removal has completed successfully.
       */
     function removeOffer() public isActivated() returns(bool) {
@@ -308,6 +308,30 @@ contract OpenHouseToken is IERC20, IStatus, Commit, Leasing {
         _balanceOf[msg.sender] += numberOfTokens;
 
         emit OfferRemoved(msg.sender);
+
+        return true;
+    }
+
+    /**
+      * @notice Rents tokens from the specified address's offer.
+      * @param from The address from which the offer will be accepted.
+      * @return A boolean indicating if the rent has completed successfully.
+      */
+    function leaseFrom(address payable from) public isActivated() payable returns(bool) {
+        require(rent[msg.sender].rentedFrom == address(0));
+        require(offer[from].leasedTo == address(0));
+        require(msg.value == offer[from].price);
+
+        offer[from].leasedTo = msg.sender;
+
+        rent[msg.sender].rentedFrom = from;
+        rent[msg.sender].numberOfTokens = offer[from].numberOfTokens;
+        rent[msg.sender].availableNumberOfTokens = offer[from].numberOfTokens;
+
+        /// Transfer ether.
+        from.transfer(msg.value);
+
+        emit Leased(from, msg.sender);
 
         return true;
     }

@@ -12,6 +12,7 @@ contract("OpenHouseToken", accounts => {
     const noTokensAccount = accounts[configuration.basicConfiguration.noTokensAccount];
     const newOwnerAccount = accounts[configuration.basicConfiguration.newOwnerAccount];
     const commitAccount = accounts[configuration.basicConfiguration.commitAccount];
+    const rentAccount = accounts[configuration.basicConfiguration.rentAccount];
 
     it("Should initialize the contract with the correct values", () => {
 
@@ -540,6 +541,62 @@ contract("OpenHouseToken", accounts => {
         }).then(offerDuration => {
 
             assert.equal(offerDuration.toNumber(), 0, "Admin's offer duration should have been removed");
+
+        });
+
+    });
+
+    it("Should be able to rent tokens", () => {
+
+        return OpenHouseToken.deployed().then(instance => {
+
+            tokenInstance = instance;
+            return tokenInstance.createOffer(
+                configuration.basicConfiguration.offerTokens,
+                configuration.basicConfiguration.offerPrice,
+                configuration.basicConfiguration.offerDuration,
+                { from: admin }
+            );
+
+        }).then(receipt => {
+
+            assert.equal(receipt.logs.length, 1, "Should trigger one event");
+            assert.equal(receipt.logs[0].event, "OfferCreated", "Should trigger the 'OfferCreated' event");
+            assert.equal(receipt.logs[0].args.from, admin, "Admin should be the account that created the offer");
+            assert.equal(receipt.logs[0].args.numberOfTokens.toNumber(), configuration.basicConfiguration.offerTokens, 
+                "Should be equal to the number of tokens admin chose to lease");
+            assert.equal(receipt.logs[0].args.price.toNumber(), configuration.basicConfiguration.offerPrice, 
+                "Should be equal to the price admin set");
+            assert.equal(receipt.logs[0].args.duration.toNumber(), configuration.basicConfiguration.offerDuration,
+                "Should be equal to the duration admin set");
+            return tokenInstance.leaseFrom(admin, { from: rentAccount, value: configuration.basicConfiguration.offerPrice });
+
+        }).then(receipt => {
+
+            assert.equal(receipt.logs.length, 1, "Should trigger one event");
+            assert.equal(receipt.logs[0].event, "Leased", "Should trigger the 'Leased' event");
+            assert.equal(receipt.logs[0].args.from, admin, "Admin should be the account whose tokens were rented");
+            assert.equal(receipt.logs[0].args.to, rentAccount, "RentAccount should be the account who rented the tokens");
+            return tokenInstance.getRentedNumberOfTokens(rentAccount);
+
+        }).then(numberOfTokens => {
+
+            assert.equal(numberOfTokens.toNumber(), configuration.basicConfiguration.offerTokens, "Should be equal to the rented tokens");
+            return tokenInstance.getRentedAvailableTokens(rentAccount);
+
+        }).then(availableTokens => {
+
+            assert.equal(availableTokens.toNumber(), configuration.basicConfiguration.offerTokens, "Should be equal to the rented tokens initially");
+            return tokenInstance.getRentedFrom(rentAccount);
+
+        }).then(rentedFrom => {
+
+            assert.equal(rentedFrom, admin, "Should be the address that created the offer");
+            return tokenInstance.getOfferLeasedTo(admin);
+
+        }).then(address => {
+
+            assert.equal(address, rentAccount, "Should be the address that rented the tokens");
 
         });
 
