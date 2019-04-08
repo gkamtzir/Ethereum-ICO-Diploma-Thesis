@@ -9,5 +9,5 @@ interface ILeasing {
     function createOffer(uint256 numberOfTokens, uint256 price, uint256 duration) external returns(bool);
     function removeOffer() external returns(bool);
     function terminateLeasing() external returns(bool);
-    function leaseFrom(address from) external returns(bool);
+    function leaseFrom(address payable from) external payable returns(bool);
 }

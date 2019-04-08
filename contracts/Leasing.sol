@@ -2,8 +2,9 @@ pragma solidity ^0.5.7;
 
 /// Interfaces.
 import "../interfaces/ILeasingEvents.sol";
+import "../interfaces/ILeasing.sol";
 
-contract Leasing is ILeasingEvents {
+contract Leasing is ILeasingEvents, ILeasing {
     /// Structs.
     struct LeasingLog {
         uint256 numberOfTokens;
