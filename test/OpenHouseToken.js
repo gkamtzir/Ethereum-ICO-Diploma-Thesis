@@ -194,7 +194,7 @@ contract("OpenHouseToken", accounts => {
             assert.equal(receipt.logs[0].event, "Approval", "Should trigger the 'Approval' event");
             assert.equal(receipt.logs[0].args.from, admin, "Admin should be the account the tokens are approved from");
             assert.equal(receipt.logs[0].args.to, spender, "Spender should be the account the tokens are approved for");
-            assert.equal(receipt.logs[0].args.value, configuration.basicConfiguration.approvedTokens, "Should be equal to the approved number of tokens");
+            assert.equal(receipt.logs[0].args.value.toNumber(), configuration.basicConfiguration.approvedTokens, "Should be equal to the approved number of tokens");
             return tokenInstance.allowance(admin, spender);
 
         }).then(allowance => {
@@ -228,7 +228,7 @@ contract("OpenHouseToken", accounts => {
             assert.equal(receipt.logs[0].event, "Transfer", "Should trigger the 'Transfer' event");
             assert.equal(receipt.logs[0].args.from, admin, "Admin should be the account the tokens are transfered from");
             assert.equal(receipt.logs[0].args.to, transferToAccount, "TransferToAccount should be the account the tokens are transfered to");
-            assert.equal(receipt.logs[0].args.value, configuration.basicConfiguration.transferedTokens, "Should be equal to the transfered number of tokens");
+            assert.equal(receipt.logs[0].args.value.toNumber(), configuration.basicConfiguration.transferedTokens, "Should be equal to the transfered number of tokens");
             return tokenInstance.balanceOf(admin);
 
         }).then(balance => {
@@ -273,7 +273,7 @@ contract("OpenHouseToken", accounts => {
             assert.equal(receipt.logs[0].event, "Transfer", "Should trigger the 'Transfer' event");
             assert.equal(receipt.logs[0].args.from, admin, "Admin should be the account the tokens are transfered from");
             assert.equal(receipt.logs[0].args.to, transferToAccount, "TransferToAccount should be the account the tokens are transfered to");
-            assert.equal(receipt.logs[0].args.value, configuration.basicConfiguration.transferedTokens, "Should be equal to the transfered number of tokens");
+            assert.equal(receipt.logs[0].args.value.toNumber(), configuration.basicConfiguration.transferedTokens, "Should be equal to the transfered number of tokens");
             return tokenInstance.balanceOf(admin);
 
         }).then(balance => {
@@ -319,7 +319,7 @@ contract("OpenHouseToken", accounts => {
             assert.equal(receipt.logs[0].event, "Approval", "Should trigger the 'Approval' event");
             assert.equal(receipt.logs[0].args.from, admin, "Admin should be the account the tokens are approved from");
             assert.equal(receipt.logs[0].args.to, spender, "Spender should be the account the tokens are approved for");
-            assert.equal(receipt.logs[0].args.value, configuration.basicConfiguration.totalSupply, "Should be equal to the total supply");
+            assert.equal(receipt.logs[0].args.value.toNumber(), configuration.basicConfiguration.totalSupply, "Should be equal to the total supply");
             return tokenInstance.allowance(admin, spender);
 
         }).then(allowance => {
@@ -364,7 +364,7 @@ contract("OpenHouseToken", accounts => {
             assert.equal(receipt.logs[0].event, "Transfer", "Should trigger the 'Transfer' event");
             assert.equal(receipt.logs[0].args.from, transferToAccount, "TransferToAccount should be the account the tokens are transfered from");
             assert.equal(receipt.logs[0].args.to, commitAccount, "CommitAccount should be the account the tokens are transfered to");
-            assert.equal(receipt.logs[0].args.value, configuration.basicConfiguration.transferedTokens, "Should be equal to the transfered number of tokens");
+            assert.equal(receipt.logs[0].args.value.toNumber(), configuration.basicConfiguration.transferedTokens, "Should be equal to the transfered number of tokens");
             return tokenInstance.balanceOf(commitAccount);
 
         }).then(balance => {
@@ -382,7 +382,7 @@ contract("OpenHouseToken", accounts => {
             assert.equal(receipt.logs.length, 1, "Should trigger one event");
             assert.equal(receipt.logs[0].event, "CommitedFromBalance", "Should trigger the 'CommitedFromBalance' event");
             assert.equal(receipt.logs[0].args.from, commitAccount, "CommitAccount should have commited the tokens");
-            assert.equal(receipt.logs[0].args.numberOfTokens, configuration.basicConfiguration.commitFromBalance, 
+            assert.equal(receipt.logs[0].args.numberOfTokens.toNumber(), configuration.basicConfiguration.commitFromBalance, 
                 "NumberOfTokens should be equal to the commited tokens");
             return tokenInstance.balanceOf(commitAccount);
 
@@ -409,7 +409,7 @@ contract("OpenHouseToken", accounts => {
             assert.equal(receipt.logs.length, 1, "Should trigger one event");
             assert.equal(receipt.logs[0].event, "CommitedToBalance", "Should trigger the 'CommitedToBalance' event");
             assert.equal(receipt.logs[0].args.from, commitAccount, "CommitAccount should have withdrawn the tokens");
-            assert.equal(receipt.logs[0].args.numberOfTokens, configuration.basicConfiguration.commitToBalance, 
+            assert.equal(receipt.logs[0].args.numberOfTokens.toNumber(), configuration.basicConfiguration.commitToBalance, 
                 "NumberOfTokens should be equal to the withdrawn tokens");
             return tokenInstance.getCommitedFromBalance({ from: commitAccount });
 
@@ -463,7 +463,8 @@ contract("OpenHouseToken", accounts => {
             return tokenInstance.createOffer(
                 configuration.basicConfiguration.totalSupply,
                 configuration.basicConfiguration.offerPrice,
-                configuration.basicConfiguration.offerDuration
+                configuration.basicConfiguration.offerDuration,
+                { from: admin }
             );
 
         }).then(assert.fail).catch(error => {
