@@ -1,18 +1,18 @@
 const OpenHouseToken = artifacts.require("./OpenHouseToken.sol");
 
-const configuration = require("../config.js");
+const { basicConfiguration } = require("../config.js");
 
 contract("OpenHouseToken", accounts => {
 
     var tokenInstance;
 
-    const admin = accounts[configuration.basicConfiguration.adminAccount];
-    const spender = accounts[configuration.basicConfiguration.spenderAccount];
-    const transferToAccount = accounts[configuration.basicConfiguration.transferToAccount];
-    const noTokensAccount = accounts[configuration.basicConfiguration.noTokensAccount];
-    const newOwnerAccount = accounts[configuration.basicConfiguration.newOwnerAccount];
-    const commitAccount = accounts[configuration.basicConfiguration.commitAccount];
-    const rentAccount = accounts[configuration.basicConfiguration.rentAccount];
+    const admin = accounts[basicConfiguration.adminAccount];
+    const spender = accounts[basicConfiguration.spenderAccount];
+    const transferToAccount = accounts[basicConfiguration.transferToAccount];
+    const noTokensAccount = accounts[basicConfiguration.noTokensAccount];
+    const newOwnerAccount = accounts[basicConfiguration.newOwnerAccount];
+    const commitAccount = accounts[basicConfiguration.commitAccount];
+    const rentAccount = accounts[basicConfiguration.rentAccount];
 
     it("Should initialize the contract with the correct values", () => {
 
@@ -23,22 +23,22 @@ contract("OpenHouseToken", accounts => {
 
         }).then(name => {
 
-            assert.equal(name, configuration.basicConfiguration.name, "Should have the correct name");
+            assert.equal(name, basicConfiguration.name, "Should have the correct name");
             return tokenInstance.getSymbol();
 
         }).then(symbol => {
 
-            assert.equal(symbol, configuration.basicConfiguration.symbol, "Should have the correct symbol");
+            assert.equal(symbol, basicConfiguration.symbol, "Should have the correct symbol");
             return tokenInstance.getDecimals();
 
         }).then(decimals => {
 
-            assert.equal(decimals.toNumber(), configuration.basicConfiguration.decimals, "Should have the correct number of decimal points");
+            assert.equal(decimals.toNumber(), basicConfiguration.decimals, "Should have the correct number of decimal points");
             return tokenInstance.totalSupply();
 
         }).then(totalSupply => {
 
-            assert.equal(totalSupply.toNumber(), configuration.basicConfiguration.totalSupply, "Should have the correct initial total supply");
+            assert.equal(totalSupply.toNumber(), basicConfiguration.totalSupply, "Should have the correct initial total supply");
             return tokenInstance.getOwner();
 
         }).then(owner => {
@@ -48,12 +48,12 @@ contract("OpenHouseToken", accounts => {
 
         }).then(balance => {
 
-            assert.equal(balance.toNumber(), configuration.basicConfiguration.totalSupply, "Should have allocated the initial supply to the owner");
+            assert.equal(balance.toNumber(), basicConfiguration.totalSupply, "Should have allocated the initial supply to the owner");
             return tokenInstance.getStatus();
 
         }).then(status => {
 
-            assert.equal(status.toNumber(), configuration.basicConfiguration.status.activated, "Contract should be activated initially");
+            assert.equal(status.toNumber(), basicConfiguration.status.activated, "Contract should be activated initially");
 
         });
 
@@ -68,7 +68,7 @@ contract("OpenHouseToken", accounts => {
 
         }).then(status => {
 
-            assert.equal(status.toNumber(), configuration.basicConfiguration.status.activated, "Contract should be activated initially");
+            assert.equal(status.toNumber(), basicConfiguration.status.activated, "Contract should be activated initially");
             return tokenInstance.deactivate({ from: spender });
 
         }).then(assert.fail).catch(error => {
@@ -80,17 +80,17 @@ contract("OpenHouseToken", accounts => {
 
             assert.equal(receipt.logs.length, 1, "Should trigger one event");
             assert.equal(receipt.logs[0].event, "Deactivated", "Should trigger the 'Deactivated' event");
-            return tokenInstance.approve(spender, configuration.basicConfiguration.approvedTokens, { from: admin });
+            return tokenInstance.approve(spender, basicConfiguration.approvedTokens, { from: admin });
 
         }).then(assert.fail).catch(error => {
 
             assert(error.message.indexOf("revert") >= 0, "Approve function should not be usable");
-            return tokenInstance.transfer(transferToAccount, configuration.basicConfiguration.transferedTokens, { from: admin });
+            return tokenInstance.transfer(transferToAccount, basicConfiguration.transferedTokens, { from: admin });
 
         }).then(assert.fail).catch(error => {
 
             assert(error.message.indexOf("revert") >= 0, "Transfer function should not be usable");
-            return tokenInstance.transferFrom(admin, transferToAccount, configuration.basicConfiguration.transferedTokens, { from: spender });
+            return tokenInstance.transferFrom(admin, transferToAccount, basicConfiguration.transferedTokens, { from: spender });
         
         }).then(assert.fail).catch(error => {
 
@@ -100,7 +100,7 @@ contract("OpenHouseToken", accounts => {
         }).then(assert.fail).catch(error => {
 
             assert(error.message.indexOf("revert") >= 0, "Spender should not be able to activate the contract");
-            return tokenInstance.commitFromBalance(configuration.basicConfiguration.commitFromBalance, { from: admin });
+            return tokenInstance.commitFromBalance(basicConfiguration.commitFromBalance, { from: admin });
 
         }).then(assert.fail).catch(error => {
 
@@ -111,9 +111,9 @@ contract("OpenHouseToken", accounts => {
 
             assert(error.message.indexOf("revert") >= 0, "CommitToBalance function should not be usable");
             return tokenInstance.createOffer(
-                configuration.basicConfiguration.offerTokens,
-                configuration.basicConfiguration.offerPrice,
-                configuration.basicConfiguration.offerDuration
+                basicConfiguration.offerTokens,
+                basicConfiguration.offerPrice,
+                basicConfiguration.offerDuration
             );
 
         }).then(assert.fail).catch(error => {
@@ -186,7 +186,7 @@ contract("OpenHouseToken", accounts => {
         return OpenHouseToken.deployed().then(instance => {
 
             tokenInstance = instance;
-            return tokenInstance.approve(spender, configuration.basicConfiguration.approvedTokens, { from: admin });
+            return tokenInstance.approve(spender, basicConfiguration.approvedTokens, { from: admin });
 
         }).then(receipt => {
 
@@ -194,12 +194,12 @@ contract("OpenHouseToken", accounts => {
             assert.equal(receipt.logs[0].event, "Approval", "Should trigger the 'Approval' event");
             assert.equal(receipt.logs[0].args.from, admin, "Admin should be the account the tokens are approved from");
             assert.equal(receipt.logs[0].args.to, spender, "Spender should be the account the tokens are approved for");
-            assert.equal(receipt.logs[0].args.value.toNumber(), configuration.basicConfiguration.approvedTokens, "Should be equal to the approved number of tokens");
+            assert.equal(receipt.logs[0].args.value.toNumber(), basicConfiguration.approvedTokens, "Should be equal to the approved number of tokens");
             return tokenInstance.allowance(admin, spender);
 
         }).then(allowance => {
 
-            assert.equal(allowance.toNumber(), configuration.basicConfiguration.approvedTokens, "Should return the correct allowance");
+            assert.equal(allowance.toNumber(), basicConfiguration.approvedTokens, "Should return the correct allowance");
 
         });
 
@@ -219,8 +219,8 @@ contract("OpenHouseToken", accounts => {
 
         }).then(balance => {
 
-            assert.equal(balance.toNumber(), configuration.basicConfiguration.totalSupply, "Admin should initially have all the supply");
-            return tokenInstance.transfer(transferToAccount, configuration.basicConfiguration.transferedTokens, { from: admin });
+            assert.equal(balance.toNumber(), basicConfiguration.totalSupply, "Admin should initially have all the supply");
+            return tokenInstance.transfer(transferToAccount, basicConfiguration.transferedTokens, { from: admin });
 
         }).then(receipt => {
 
@@ -228,19 +228,19 @@ contract("OpenHouseToken", accounts => {
             assert.equal(receipt.logs[0].event, "Transfer", "Should trigger the 'Transfer' event");
             assert.equal(receipt.logs[0].args.from, admin, "Admin should be the account the tokens are transfered from");
             assert.equal(receipt.logs[0].args.to, transferToAccount, "TransferToAccount should be the account the tokens are transfered to");
-            assert.equal(receipt.logs[0].args.value.toNumber(), configuration.basicConfiguration.transferedTokens, "Should be equal to the transfered number of tokens");
+            assert.equal(receipt.logs[0].args.value.toNumber(), basicConfiguration.transferedTokens, "Should be equal to the transfered number of tokens");
             return tokenInstance.balanceOf(admin);
 
         }).then(balance => {
 
-            assert.equal(balance.toNumber(), configuration.basicConfiguration.totalSupply - configuration.basicConfiguration.transferedTokens,
+            assert.equal(balance.toNumber(), basicConfiguration.totalSupply - basicConfiguration.transferedTokens,
                 "Admin's balance should decrease accordingly");
             return tokenInstance.balanceOf(transferToAccount);
 
         }).then(balance => {
 
-            assert.equal(balance.toNumber(), configuration.basicConfiguration.transferedTokens, "TransferToAccount's balance should increase accordingly");
-            return tokenInstance.transfer(transferToAccount, configuration.basicConfiguration.transferedTokens, { from: noTokensAccount });
+            assert.equal(balance.toNumber(), basicConfiguration.transferedTokens, "TransferToAccount's balance should increase accordingly");
+            return tokenInstance.transfer(transferToAccount, basicConfiguration.transferedTokens, { from: noTokensAccount });
 
         }).then(assert.fail).catch(error => {
 
@@ -254,7 +254,7 @@ contract("OpenHouseToken", accounts => {
 
         }).then(balance => {
 
-            assert.equal(balance.toNumber(), configuration.basicConfiguration.transferedTokens, "TransferToAccount's balance should remain the same");
+            assert.equal(balance.toNumber(), basicConfiguration.transferedTokens, "TransferToAccount's balance should remain the same");
 
         });
 
@@ -265,7 +265,7 @@ contract("OpenHouseToken", accounts => {
         return OpenHouseToken.deployed().then(instance => {
 
             tokenInstance = instance;
-            return tokenInstance.transferFrom(admin, transferToAccount, configuration.basicConfiguration.transferedTokens, { from: spender });
+            return tokenInstance.transferFrom(admin, transferToAccount, basicConfiguration.transferedTokens, { from: spender });
 
         }).then(receipt => {
 
@@ -273,24 +273,24 @@ contract("OpenHouseToken", accounts => {
             assert.equal(receipt.logs[0].event, "Transfer", "Should trigger the 'Transfer' event");
             assert.equal(receipt.logs[0].args.from, admin, "Admin should be the account the tokens are transfered from");
             assert.equal(receipt.logs[0].args.to, transferToAccount, "TransferToAccount should be the account the tokens are transfered to");
-            assert.equal(receipt.logs[0].args.value.toNumber(), configuration.basicConfiguration.transferedTokens, "Should be equal to the transfered number of tokens");
+            assert.equal(receipt.logs[0].args.value.toNumber(), basicConfiguration.transferedTokens, "Should be equal to the transfered number of tokens");
             return tokenInstance.balanceOf(admin);
 
         }).then(balance => {
 
-            assert.equal(balance.toNumber(), configuration.basicConfiguration.totalSupply 
-                - 2 *configuration.basicConfiguration.transferedTokens, "Admin's balance should decreased accordingly");
+            assert.equal(balance.toNumber(), basicConfiguration.totalSupply 
+                - 2 *basicConfiguration.transferedTokens, "Admin's balance should decreased accordingly");
             return tokenInstance.balanceOf(transferToAccount);
 
         }).then(balance => {
 
-            assert.equal(balance.toNumber(), 2 * configuration.basicConfiguration.transferedTokens, "TransferToAccount's balance should increase accordingly");
+            assert.equal(balance.toNumber(), 2 * basicConfiguration.transferedTokens, "TransferToAccount's balance should increase accordingly");
             return tokenInstance.allowance(admin, spender);
 
         }).then(allowance => {
 
             assert.equal(allowance.toNumber(), 0, "Spender's allowance should decrease accordingly");
-            return tokenInstance.transferFrom(admin, transferToAccount, configuration.basicConfiguration.transferedTokens, { from: spender });
+            return tokenInstance.transferFrom(admin, transferToAccount, basicConfiguration.transferedTokens, { from: spender });
 
         }).then(assert.fail).catch(error => {
 
@@ -299,19 +299,19 @@ contract("OpenHouseToken", accounts => {
 
         }).then(balance => {
 
-            assert.equal(balance.toNumber(), configuration.basicConfiguration.totalSupply 
-                - 2 *configuration.basicConfiguration.transferedTokens, "Admin's balance should remain the same");
+            assert.equal(balance.toNumber(), basicConfiguration.totalSupply 
+                - 2 *basicConfiguration.transferedTokens, "Admin's balance should remain the same");
             return tokenInstance.balanceOf(transferToAccount);
 
         }).then(balance => {
 
-            assert.equal(balance.toNumber(), 2 * configuration.basicConfiguration.transferedTokens, "TransferToAccount's balance should remain the same");
+            assert.equal(balance.toNumber(), 2 * basicConfiguration.transferedTokens, "TransferToAccount's balance should remain the same");
             return tokenInstance.allowance(admin, spender);
 
         }).then(allowance => {
 
             assert.equal(allowance.toNumber(), 0, "Spender's allowance should remain the same");
-            return tokenInstance.approve(spender, configuration.basicConfiguration.totalSupply, { from: admin });
+            return tokenInstance.approve(spender, basicConfiguration.totalSupply, { from: admin });
 
         }).then(receipt => {
 
@@ -319,13 +319,13 @@ contract("OpenHouseToken", accounts => {
             assert.equal(receipt.logs[0].event, "Approval", "Should trigger the 'Approval' event");
             assert.equal(receipt.logs[0].args.from, admin, "Admin should be the account the tokens are approved from");
             assert.equal(receipt.logs[0].args.to, spender, "Spender should be the account the tokens are approved for");
-            assert.equal(receipt.logs[0].args.value.toNumber(), configuration.basicConfiguration.totalSupply, "Should be equal to the total supply");
+            assert.equal(receipt.logs[0].args.value.toNumber(), basicConfiguration.totalSupply, "Should be equal to the total supply");
             return tokenInstance.allowance(admin, spender);
 
         }).then(allowance => {
 
-            assert.equal(allowance.toNumber(), configuration.basicConfiguration.totalSupply, "Spender's allowance should be equal to the total supply");
-            return tokenInstance.transferFrom(admin, transferToAccount, configuration.basicConfiguration.totalSupply, { from: spender });
+            assert.equal(allowance.toNumber(), basicConfiguration.totalSupply, "Spender's allowance should be equal to the total supply");
+            return tokenInstance.transferFrom(admin, transferToAccount, basicConfiguration.totalSupply, { from: spender });
 
         }).then(assert.fail).catch(error => {
 
@@ -334,18 +334,18 @@ contract("OpenHouseToken", accounts => {
 
         }).then(balance => {
 
-            assert.equal(balance.toNumber(), configuration.basicConfiguration.totalSupply 
-                - 2 *configuration.basicConfiguration.transferedTokens, "Admin's balance should remain the same");
+            assert.equal(balance.toNumber(), basicConfiguration.totalSupply 
+                - 2 *basicConfiguration.transferedTokens, "Admin's balance should remain the same");
             return tokenInstance.balanceOf(transferToAccount);
 
         }).then(balance => {
 
-            assert.equal(balance.toNumber(), 2 *configuration.basicConfiguration.transferedTokens, "TransferToAccount's balance should remain the same");
+            assert.equal(balance.toNumber(), 2 *basicConfiguration.transferedTokens, "TransferToAccount's balance should remain the same");
             return tokenInstance.allowance(admin, spender);
 
         }).then(allowance => {
 
-            assert.equal(allowance.toNumber(), configuration.basicConfiguration.totalSupply, "Spender's allowance should remain the same");
+            assert.equal(allowance.toNumber(), basicConfiguration.totalSupply, "Spender's allowance should remain the same");
 
         });
 
@@ -356,7 +356,7 @@ contract("OpenHouseToken", accounts => {
         return OpenHouseToken.deployed().then(instance => {
 
             tokenInstance = instance;
-            return tokenInstance.transfer(commitAccount, configuration.basicConfiguration.transferedTokens, { from: transferToAccount });
+            return tokenInstance.transfer(commitAccount, basicConfiguration.transferedTokens, { from: transferToAccount });
 
         }).then(receipt => {
 
@@ -364,68 +364,68 @@ contract("OpenHouseToken", accounts => {
             assert.equal(receipt.logs[0].event, "Transfer", "Should trigger the 'Transfer' event");
             assert.equal(receipt.logs[0].args.from, transferToAccount, "TransferToAccount should be the account the tokens are transfered from");
             assert.equal(receipt.logs[0].args.to, commitAccount, "CommitAccount should be the account the tokens are transfered to");
-            assert.equal(receipt.logs[0].args.value.toNumber(), configuration.basicConfiguration.transferedTokens, "Should be equal to the transfered number of tokens");
+            assert.equal(receipt.logs[0].args.value.toNumber(), basicConfiguration.transferedTokens, "Should be equal to the transfered number of tokens");
             return tokenInstance.balanceOf(commitAccount);
 
         }).then(balance => {
 
-            assert.equal(balance.toNumber(), configuration.basicConfiguration.transferedTokens, "CommitAccount should have available tokens");
+            assert.equal(balance.toNumber(), basicConfiguration.transferedTokens, "CommitAccount should have available tokens");
             return tokenInstance.getCommitedFromBalance({ from: commitAccount });
             
         }).then(commitedFromBalance => {
 
             assert.equal(commitedFromBalance.toNumber(), 0, "CommitAccount should have zero tokens commited from balance initially");
-            return tokenInstance.commitFromBalance(configuration.basicConfiguration.commitFromBalance, { from: commitAccount });
+            return tokenInstance.commitFromBalance(basicConfiguration.commitFromBalance, { from: commitAccount });
 
         }).then(receipt => {
 
             assert.equal(receipt.logs.length, 1, "Should trigger one event");
             assert.equal(receipt.logs[0].event, "CommitedFromBalance", "Should trigger the 'CommitedFromBalance' event");
             assert.equal(receipt.logs[0].args.from, commitAccount, "CommitAccount should have commited the tokens");
-            assert.equal(receipt.logs[0].args.numberOfTokens.toNumber(), configuration.basicConfiguration.commitFromBalance, 
+            assert.equal(receipt.logs[0].args.numberOfTokens.toNumber(), basicConfiguration.commitFromBalance, 
                 "NumberOfTokens should be equal to the commited tokens");
             return tokenInstance.balanceOf(commitAccount);
 
         }).then(balance => {
 
-            assert.equal(balance.toNumber(), configuration.basicConfiguration.transferedTokens
-                - configuration.basicConfiguration.commitFromBalance, "CommitAccount's balance should decrease accordingly");
+            assert.equal(balance.toNumber(), basicConfiguration.transferedTokens
+                - basicConfiguration.commitFromBalance, "CommitAccount's balance should decrease accordingly");
             return tokenInstance.getCommitedFromBalance({ from: commitAccount });
 
         }).then(commitedFromBalance => {
 
-            assert.equal(commitedFromBalance.toNumber(), configuration.basicConfiguration.commitFromBalance, 
+            assert.equal(commitedFromBalance.toNumber(), basicConfiguration.commitFromBalance, 
                 "CommitAccount's commited tokens should increase accordingly");
-            return tokenInstance.commitFromBalance(configuration.basicConfiguration.totalSupply, { from: commitAccount });
+            return tokenInstance.commitFromBalance(basicConfiguration.totalSupply, { from: commitAccount });
 
         }).then(assert.fail).catch(error => {
 
             assert(error.message.indexOf("revert") >= 0, 
                 "Should throw an exception when commitAccount has insufficient number of tokens in balance");
-            return tokenInstance.commitToBalance(configuration.basicConfiguration.commitToBalance, { from: commitAccount });
+            return tokenInstance.commitToBalance(basicConfiguration.commitToBalance, { from: commitAccount });
 
         }).then(receipt => {
 
             assert.equal(receipt.logs.length, 1, "Should trigger one event");
             assert.equal(receipt.logs[0].event, "CommitedToBalance", "Should trigger the 'CommitedToBalance' event");
             assert.equal(receipt.logs[0].args.from, commitAccount, "CommitAccount should have withdrawn the tokens");
-            assert.equal(receipt.logs[0].args.numberOfTokens.toNumber(), configuration.basicConfiguration.commitToBalance, 
+            assert.equal(receipt.logs[0].args.numberOfTokens.toNumber(), basicConfiguration.commitToBalance, 
                 "NumberOfTokens should be equal to the withdrawn tokens");
             return tokenInstance.getCommitedFromBalance({ from: commitAccount });
 
         }).then(commitedFromBalance => {
 
-            assert.equal(commitedFromBalance.toNumber(), configuration.basicConfiguration.commitFromBalance
-                - configuration.basicConfiguration.commitToBalance, "CommitAccount's commited from balance tokens should have decreased accordingly");
+            assert.equal(commitedFromBalance.toNumber(), basicConfiguration.commitFromBalance
+                - basicConfiguration.commitToBalance, "CommitAccount's commited from balance tokens should have decreased accordingly");
             return tokenInstance.balanceOf(commitAccount);
 
         }).then(balance => {
 
-            assert.equal(balance.toNumber(), configuration.basicConfiguration.transferedTokens
-                - configuration.basicConfiguration.commitFromBalance
-                + configuration.basicConfiguration.commitToBalance, 
+            assert.equal(balance.toNumber(), basicConfiguration.transferedTokens
+                - basicConfiguration.commitFromBalance
+                + basicConfiguration.commitToBalance, 
                 "CommitAccount's balance should have increased accordingly");
-            return tokenInstance.commitToBalance(configuration.basicConfiguration.commitFromBalance, { from: commitAccount });
+            return tokenInstance.commitToBalance(basicConfiguration.commitFromBalance, { from: commitAccount });
 
         }).then(assert.fail).catch(error => {
 
@@ -451,9 +451,9 @@ contract("OpenHouseToken", accounts => {
 
     });
 
-    var adminNewBalance = configuration.basicConfiguration.totalSupply 
-        - 2 *configuration.basicConfiguration.transferedTokens;
-    var transferToAccountNewBalance = 2 *configuration.basicConfiguration.transferedTokens;
+    var adminNewBalance = basicConfiguration.totalSupply 
+        - 2 *basicConfiguration.transferedTokens;
+    var transferToAccountNewBalance = 2 *basicConfiguration.transferedTokens;
 
     it("Should be able to create offers and remove offers", () => {
 
@@ -461,9 +461,9 @@ contract("OpenHouseToken", accounts => {
 
             tokenInstance = instance;
             return tokenInstance.createOffer(
-                configuration.basicConfiguration.totalSupply,
-                configuration.basicConfiguration.offerPrice,
-                configuration.basicConfiguration.offerDuration,
+                basicConfiguration.totalSupply,
+                basicConfiguration.offerPrice,
+                basicConfiguration.offerDuration,
                 { from: admin }
             );
 
@@ -477,8 +477,8 @@ contract("OpenHouseToken", accounts => {
             assert.equal(offerNumberOfTokens.toNumber(), 0, "No offer should have been created");
             return tokenInstance.createOffer(
                 0,
-                configuration.basicConfiguration.offerPrice,
-                configuration.basicConfiguration.offerDuration,
+                basicConfiguration.offerPrice,
+                basicConfiguration.offerDuration,
                 { from: admin}
             );
 
@@ -486,9 +486,9 @@ contract("OpenHouseToken", accounts => {
 
             assert(error.message.indexOf("revert") >= 0, "Should throw an exception when sender sets the number of tokens to zero");
             return tokenInstance.createOffer(
-                configuration.basicConfiguration.offerTokens,
+                basicConfiguration.offerTokens,
                 0,
-                configuration.basicConfiguration.offerDuration,
+                basicConfiguration.offerDuration,
                 { from: admin}
             );
 
@@ -496,8 +496,8 @@ contract("OpenHouseToken", accounts => {
 
             assert(error.message.indexOf("revert") >= 0, "Should throw an exception when sender sets the price to zero");
             return tokenInstance.createOffer(
-                configuration.basicConfiguration.offerTokens,
-                configuration.basicConfiguration.offerPrice,
+                basicConfiguration.offerTokens,
+                basicConfiguration.offerPrice,
                 60,
                 { from: admin}
             );
@@ -506,9 +506,9 @@ contract("OpenHouseToken", accounts => {
 
             assert(error.message.indexOf("revert") >= 0, "Should throw an exception when sender sets the duration less than an hour");
             return tokenInstance.createOffer(
-                configuration.basicConfiguration.offerTokens,
-                configuration.basicConfiguration.offerPrice,
-                configuration.basicConfiguration.offerDuration,
+                basicConfiguration.offerTokens,
+                basicConfiguration.offerPrice,
+                basicConfiguration.offerDuration,
                 { from: admin}
             );
 
@@ -517,34 +517,34 @@ contract("OpenHouseToken", accounts => {
             assert.equal(receipt.logs.length, 1, "Should trigger one event");
             assert.equal(receipt.logs[0].event, "OfferCreated", "Should trigger the 'OfferCreated' event");
             assert.equal(receipt.logs[0].args.from, admin, "Admin should be the account that created the offer");
-            assert.equal(receipt.logs[0].args.numberOfTokens.toNumber(), configuration.basicConfiguration.offerTokens, 
+            assert.equal(receipt.logs[0].args.numberOfTokens.toNumber(), basicConfiguration.offerTokens, 
                 "Should be equal to the number of tokens admin chose to lease");
-            assert.equal(receipt.logs[0].args.price.toNumber(), configuration.basicConfiguration.offerPrice, 
+            assert.equal(receipt.logs[0].args.price.toNumber(), basicConfiguration.offerPrice, 
                 "Should be equal to the price admin set");
-            assert.equal(receipt.logs[0].args.duration.toNumber(), configuration.basicConfiguration.offerDuration,
+            assert.equal(receipt.logs[0].args.duration.toNumber(), basicConfiguration.offerDuration,
                 "Should be equal to the duration admin set");
             return tokenInstance.balanceOf(admin);
 
         }).then(balance => {
 
-            assert.equal(balance.toNumber(), adminNewBalance - configuration.basicConfiguration.offerTokens,
+            assert.equal(balance.toNumber(), adminNewBalance - basicConfiguration.offerTokens,
                 "Admin's balance should decrease accordingly");
             return tokenInstance.getOfferNumberOfTokens(admin);
 
         }).then(offerNumberOfTokens => {
 
-            assert.equal(offerNumberOfTokens.toNumber(), configuration.basicConfiguration.offerTokens, 
+            assert.equal(offerNumberOfTokens.toNumber(), basicConfiguration.offerTokens, 
                 "Should be equal to the number of tokens admin chose to lease");
             return tokenInstance.getOfferPrice(admin);
 
         }).then(offerPrice => {
 
-            assert.equal(offerPrice.toNumber(), configuration.basicConfiguration.offerPrice, "Should be equal to the price admin set");
+            assert.equal(offerPrice.toNumber(), basicConfiguration.offerPrice, "Should be equal to the price admin set");
             return tokenInstance.getOfferDuration(admin);
 
         }).then(offerDuration => {
 
-            assert.equal(offerDuration.toNumber(), configuration.basicConfiguration.offerDuration,
+            assert.equal(offerDuration.toNumber(), basicConfiguration.offerDuration,
                 "Should be equal to the duration admin set");
             return tokenInstance.getOfferLeasedTo(admin);
 
@@ -584,9 +584,9 @@ contract("OpenHouseToken", accounts => {
 
             tokenInstance = instance;
             return tokenInstance.createOffer(
-                configuration.basicConfiguration.offerTokens,
-                configuration.basicConfiguration.offerPrice,
-                configuration.basicConfiguration.offerDuration,
+                basicConfiguration.offerTokens,
+                basicConfiguration.offerPrice,
+                basicConfiguration.offerDuration,
                 { from: admin }
             );
 
@@ -595,13 +595,13 @@ contract("OpenHouseToken", accounts => {
             assert.equal(receipt.logs.length, 1, "Should trigger one event");
             assert.equal(receipt.logs[0].event, "OfferCreated", "Should trigger the 'OfferCreated' event");
             assert.equal(receipt.logs[0].args.from, admin, "Admin should be the account that created the offer");
-            assert.equal(receipt.logs[0].args.numberOfTokens.toNumber(), configuration.basicConfiguration.offerTokens, 
+            assert.equal(receipt.logs[0].args.numberOfTokens.toNumber(), basicConfiguration.offerTokens, 
                 "Should be equal to the number of tokens admin chose to lease");
-            assert.equal(receipt.logs[0].args.price.toNumber(), configuration.basicConfiguration.offerPrice, 
+            assert.equal(receipt.logs[0].args.price.toNumber(), basicConfiguration.offerPrice, 
                 "Should be equal to the price admin set");
-            assert.equal(receipt.logs[0].args.duration.toNumber(), configuration.basicConfiguration.offerDuration,
+            assert.equal(receipt.logs[0].args.duration.toNumber(), basicConfiguration.offerDuration,
                 "Should be equal to the duration admin set");
-            return tokenInstance.leaseFrom(admin, { from: rentAccount, value: configuration.basicConfiguration.offerPrice });
+            return tokenInstance.leaseFrom(admin, { from: rentAccount, value: basicConfiguration.offerPrice });
 
         }).then(receipt => {
 
@@ -613,12 +613,12 @@ contract("OpenHouseToken", accounts => {
 
         }).then(numberOfTokens => {
 
-            assert.equal(numberOfTokens.toNumber(), configuration.basicConfiguration.offerTokens, "Should be equal to the rented tokens");
+            assert.equal(numberOfTokens.toNumber(), basicConfiguration.offerTokens, "Should be equal to the rented tokens");
             return tokenInstance.getRentedAvailableTokens(rentAccount);
 
         }).then(availableTokens => {
 
-            assert.equal(availableTokens.toNumber(), configuration.basicConfiguration.offerTokens, "Should be equal to the rented tokens initially");
+            assert.equal(availableTokens.toNumber(), basicConfiguration.offerTokens, "Should be equal to the rented tokens initially");
             return tokenInstance.getRentedFrom(rentAccount);
 
         }).then(rentedFrom => {
@@ -630,9 +630,9 @@ contract("OpenHouseToken", accounts => {
 
             assert.equal(address, rentAccount, "Should be the address that rented the tokens");
             return tokenInstance.createOffer(
-                configuration.basicConfiguration.offerTokens / 10,
-                configuration.basicConfiguration.offerPrice,
-                configuration.basicConfiguration.offerDuration,
+                basicConfiguration.offerTokens / 10,
+                basicConfiguration.offerPrice,
+                basicConfiguration.offerDuration,
                 { from: transferToAccount }
             );
 
@@ -641,23 +641,23 @@ contract("OpenHouseToken", accounts => {
             assert.equal(receipt.logs.length, 1, "Should trigger one event");
             assert.equal(receipt.logs[0].event, "OfferCreated", "Should trigger the 'OfferCreated' event");
             assert.equal(receipt.logs[0].args.from, transferToAccount, "TransferToAccount should be the account that created the offer");
-            assert.equal(receipt.logs[0].args.numberOfTokens.toNumber(), configuration.basicConfiguration.offerTokens / 10, 
+            assert.equal(receipt.logs[0].args.numberOfTokens.toNumber(), basicConfiguration.offerTokens / 10, 
                 "Should be equal to the number of tokens transferToAccount chose to lease");
-            assert.equal(receipt.logs[0].args.price.toNumber(), configuration.basicConfiguration.offerPrice, 
+            assert.equal(receipt.logs[0].args.price.toNumber(), basicConfiguration.offerPrice, 
                 "Should be equal to the price transferToAccount set");
-            assert.equal(receipt.logs[0].args.duration.toNumber(), configuration.basicConfiguration.offerDuration,
+            assert.equal(receipt.logs[0].args.duration.toNumber(), basicConfiguration.offerDuration,
                 "Should be equal to the duration transferToAccount set");
-            return tokenInstance.leaseFrom(transferToAccount, { from: rentAccount, value: configuration.basicConfiguration.offerPrice })
+            return tokenInstance.leaseFrom(transferToAccount, { from: rentAccount, value: basicConfiguration.offerPrice })
 
         }).then(assert.fail).catch(error => {
 
             assert(error.message.indexOf("revert") >= 0, "Should throw an exception when sender is already renting");
-            return tokenInstance.leaseFrom(admin, { from: transferToAccount, value: configuration.basicConfiguration.offerPrice });
+            return tokenInstance.leaseFrom(admin, { from: transferToAccount, value: basicConfiguration.offerPrice });
 
         }).then(assert.fail).catch(error => {
 
             assert(error.message.indexOf("revert") >= 0, "Should throw an exception when targeted offer has already been taken");
-            return tokenInstance.leaseFrom(transferToAccount, { from: spender, value: configuration.basicConfiguration.offerPrice - 1 });
+            return tokenInstance.leaseFrom(transferToAccount, { from: spender, value: basicConfiguration.offerPrice - 1 });
 
         }).then(assert.fail).catch(error => {
 
@@ -668,9 +668,9 @@ contract("OpenHouseToken", accounts => {
 
             assert(error.message.indexOf("revert") >= 0, "Should throw an exception when sender tries to remove an in progress offer");
             return tokenInstance.createOffer(
-                configuration.basicConfiguration.offerTokens,
-                configuration.basicConfiguration.offerPrice,
-                configuration.basicConfiguration.offerDuration,
+                basicConfiguration.offerTokens,
+                basicConfiguration.offerPrice,
+                basicConfiguration.offerDuration,
                 { from: transferToAccount }
             )
 
