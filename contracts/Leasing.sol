@@ -37,6 +37,11 @@ contract Leasing is ILeasingEvents, ILeasing {
         address indexed to
     );
 
+    event LeaseTerminated(
+        address indexed from,
+        address indexed to
+    );
+
     mapping(address => LeasingLog) internal offer;
     mapping(address => Rented) internal rent;
 

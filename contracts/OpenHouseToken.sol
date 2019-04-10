@@ -340,4 +340,29 @@ contract OpenHouseToken is IERC20, IStatus, Commit, Leasing {
         return true;
     }
 
+    /**
+      * @notice Terminates the leasing of the sender.
+      * @return A boolean indicating if the termination has completed successfully.
+      */
+    function terminateLeasing() public isActivated() returns(bool) {
+        require(offer[msg.sender].leasedTo != address(0));
+        require(block.timestamp >= offer[msg.sender].leasedTimestamp + offer[msg.sender].duration);
+
+        address to = offer[msg.sender].leasedTo;
+
+        offer[msg.sender].leasedTo = address(0);
+        offer[msg.sender].leasedTimestamp = 0;
+        offer[msg.sender].numberOfTokens = rent[to].availableNumberOfTokens;
+
+        /// This is not done yet. Commit contract needs to be completed first.
+        /// This is the basic form of getting back the rented tokens.
+        rent[to].availableNumberOfTokens = 0;
+        rent[to].numberOfTokens = 0;
+        rent[to].rentedFrom = address(0);
+
+        emit LeasingTerminated(msg.sender, to);
+
+        return true;
+    }
+
 }

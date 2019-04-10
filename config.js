@@ -15,6 +15,7 @@ module.exports = {
         offerTokens: 100000,
         // 0.0001 ether.
         offerPrice: 100000000000000,
+        // 2.7 hours approximately.
         offerDuration: 10000,
         adminAccount: 0,
         spenderAccount: 1,

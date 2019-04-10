@@ -2,6 +2,8 @@ const OpenHouseToken = artifacts.require("./OpenHouseToken.sol");
 
 const { basicConfiguration } = require("../config.js");
 
+const { increaseTime, duration } = require("./helpers/increaseTime");
+
 contract("OpenHouseToken", accounts => {
 
     var tokenInstance;
@@ -644,7 +646,7 @@ contract("OpenHouseToken", accounts => {
             return tokenInstance.getOfferLeasedTimestamp(admin);
 
         }).then(leasedTimestamp => {
-            
+
             assert.equal(leasedTimestamp.toNumber(), timestamp, "Should be equal to the timestamp sender accepted the offer");
             return tokenInstance.createOffer(
                 basicConfiguration.offerTokens / 10,
@@ -694,8 +696,63 @@ contract("OpenHouseToken", accounts => {
         }).then(assert.fail).catch(error => {
 
             assert(error.message.indexOf("revert") >= 0, "Should throw an exception when sender tries to overwrite an existing offer");
+            return tokenInstance.terminateLeasing({ from: transferToAccount });
 
-        });
+        }).then(assert.fail).catch(error => {
+
+            assert(error.message.indexOf("revert") >= 0, "Should throw an exception when sender tries to terminate a non-active leasing");
+            return tokenInstance.leaseFrom(transferToAccount, { from: admin, value: basicConfiguration.offerPrice });
+
+        }).then(receipt => {
+
+            assert.equal(receipt.logs.length, 1, "Should trigger one event");
+            assert.equal(receipt.logs[0].event, "Leased", "Should trigger the 'Leased' event");
+            assert.equal(receipt.logs[0].args.from, transferToAccount, "TransferToAccount should be the account whose tokens were rented");
+            assert.equal(receipt.logs[0].args.to, admin, "Admin should be the account who rented the tokens");
+            return tokenInstance.terminateLeasing({ from: transferToAccount });
+
+        }).then(assert.fail).catch(error => {
+
+            assert(error.message.indexOf("revert") >= 0, "Should throw an exception when sender tries to terminate a in-progress contract");
+            return increaseTime(duration.hours(3));
+
+        }).then(block => {
+
+            return tokenInstance.terminateLeasing({ from : transferToAccount });
+
+        }).then(receipt => {
+
+            assert.equal(receipt.logs.length, 1, "Should trigger one event");
+            assert.equal(receipt.logs[0].event, "LeasingTerminated", "Should trigger the 'LeasingTerminated' event");
+            assert.equal(receipt.logs[0].args.from, transferToAccount, "TransferToAccount should be the account whose tokens were rented");
+            assert.equal(receipt.logs[0].args.to, admin, "Admin should be the account who rented the tokens");
+            return tokenInstance.getOfferLeasedTo(transferToAccount);
+
+        }).then(leasedTo => {
+
+            assert.equal(leasedTo, "0x0000000000000000000000000000000000000000", "Should be leased to no-one");
+            return tokenInstance.getOfferLeasedTimestamp(transferToAccount);
+
+        }).then(leasedTimestamp => {
+
+            assert.equal(leasedTimestamp.toNumber(), 0, "LeasedTimestamp hould be set to zero again");
+            return tokenInstance.getRentedAvailableTokens(admin);
+
+        }).then(availableTokens => {
+
+            assert.equal(availableTokens.toNumber(), 0, "Available tokens should be set to zero again");
+            return tokenInstance.getRentedNumberOfTokens(admin);
+
+        }).then(numberOfTokens => {
+
+            assert.equal(numberOfTokens.toNumber(), 0, "NumberOfTokens should be set to zero again");
+            return tokenInstance.getRentedFrom(admin);
+
+        }).then(rentedFrom => {
+
+            assert.equal(rentedFrom, "0x0000000000000000000000000000000000000000", "Should be rented from no-one");
+
+        })
 
     });
 
