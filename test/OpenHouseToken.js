@@ -126,6 +126,16 @@ contract("OpenHouseToken", accounts => {
         }).then(assert.fail).catch(error => {
 
             assert(error.message.indexOf("revert") >= 0, "RemoveOffer function should not be usable");
+            return tokenInstance.leaseFrom(admin, { from: spender, value: basicConfiguration.offerPrice });
+
+        }).then(assert.fail).catch(error => {
+
+            assert(error.message.indexOf("revert") >= 0, "LeaseFrom function should not be usable");
+            return tokenInstance.terminateLeasing({ from: admin });
+
+        }).then(assert.fail).catch(error => {
+
+            assert(error.message.indexOf("revert") >= 0, "TerminateLeasing function should not be usable");
             return tokenInstance.activate({ from: admin });
 
         }).then(receipt => {
