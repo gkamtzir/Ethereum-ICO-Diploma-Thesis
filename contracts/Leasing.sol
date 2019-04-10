@@ -11,6 +11,7 @@ contract Leasing is ILeasingEvents, ILeasing {
         uint256 price;
         uint256 duration;
         address leasedTo;
+        uint256 leasedTimestamp;
     }
 
     struct Rented {
@@ -77,6 +78,15 @@ contract Leasing is ILeasingEvents, ILeasing {
       */
     function getOfferLeasedTo(address from) public view returns(address) {
         return offer[from].leasedTo;
+    }
+
+    /**
+      * @notice A getter function for the timestamp at which the offer got accepted.
+      * @param from The address that created the offer.
+      * @return The timestamp at which the offer got accepted.
+      */
+    function getOfferLeasedTimestamp(address from) public view returns(uint256) {
+        return offer[from].leasedTimestamp;
     }
 
     /**

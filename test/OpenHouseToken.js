@@ -498,7 +498,7 @@ contract("OpenHouseToken", accounts => {
             return tokenInstance.createOffer(
                 basicConfiguration.offerTokens,
                 basicConfiguration.offerPrice,
-                60,
+                3500,
                 { from: admin}
             );
 
@@ -551,6 +551,11 @@ contract("OpenHouseToken", accounts => {
         }).then(leasedTo => {
 
             assert.equal(leasedTo, "0x0000000000000000000000000000000000000000", "Should be leased to no-one initially");
+            return tokenInstance.getOfferLeasedTimestamp(admin);
+
+        }).then(leasedTimestamp => {
+
+            assert.equal(leasedTimestamp.toNumber(), 0, "Should be set to zero initially");
             return tokenInstance.removeOffer({ from: admin });
 
         }).then(receipt => {
@@ -577,6 +582,8 @@ contract("OpenHouseToken", accounts => {
         });
 
     });
+
+    var timestamp;
 
     it("Should be able to rent tokens", () => {
 
@@ -609,6 +616,11 @@ contract("OpenHouseToken", accounts => {
             assert.equal(receipt.logs[0].event, "Leased", "Should trigger the 'Leased' event");
             assert.equal(receipt.logs[0].args.from, admin, "Admin should be the account whose tokens were rented");
             assert.equal(receipt.logs[0].args.to, rentAccount, "RentAccount should be the account who rented the tokens");
+            return web3.eth.getBlock(receipt.logs[0].blockNumber);
+
+        }).then(block => {
+
+            timestamp = block.timestamp;
             return tokenInstance.getRentedNumberOfTokens(rentAccount);
 
         }).then(numberOfTokens => {
@@ -629,6 +641,11 @@ contract("OpenHouseToken", accounts => {
         }).then(address => {
 
             assert.equal(address, rentAccount, "Should be the address that rented the tokens");
+            return tokenInstance.getOfferLeasedTimestamp(admin);
+
+        }).then(leasedTimestamp => {
+            
+            assert.equal(leasedTimestamp.toNumber(), timestamp, "Should be equal to the timestamp sender accepted the offer");
             return tokenInstance.createOffer(
                 basicConfiguration.offerTokens / 10,
                 basicConfiguration.offerPrice,
