@@ -6,14 +6,14 @@ require('chai')
   .use(require('chai-bignumber')(BigNumber))
   .should();
 
-contract("OpenHouseToken", accounts => {
+contract("OpenHouseToken -> initialize", accounts => {
 
     before(async () => {
         this.token = await OpenHouseToken.new(basicConfiguration.totalSupply);
         this.admin = accounts[basicConfiguration.adminAccount];
     });
 
-    describe("OpenHouseToken contract initialization", () => {
+    describe("Initialization", () => {
 
         it("Should initialize the contract with the correct name", async () => {
             const name = await this.token.getName();

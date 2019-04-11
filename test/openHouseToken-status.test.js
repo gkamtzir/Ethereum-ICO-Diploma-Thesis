@@ -7,7 +7,7 @@ require('chai')
     .use(require('chai-bignumber')(BigNumber))
     .should();
 
-contract("OpenHouseToken", accounts => {
+contract("OpenHouseToken -> status", accounts => {
 
     before(async () => {
         this.token = await OpenHouseToken.new(basicConfiguration.totalSupply);
@@ -16,7 +16,7 @@ contract("OpenHouseToken", accounts => {
         this.transferToAccount = accounts[basicConfiguration.transferToAccount];
     });
 
-    describe("OpenHouseToken contract status", () => {
+    describe("Status", () => {
 
         it("Should be activated initially", async () => {
             const status = await this.token.getStatus();
