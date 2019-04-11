@@ -1,5 +1,6 @@
 const OpenHouseToken = artifacts.require("./OpenHouseToken.sol");
 const { basicConfiguration } = require("../../config.js");
+const truffleAssert = require('truffle-assertions');
 const BigNumber = web3.BigNumber;
 
 require('chai')
@@ -28,7 +29,10 @@ contract("OpenHouseToken -> status", accounts => {
         });
 
         it("Should be deactivated by admin", async () => {
-            await this.token.deactivate({ from: this.admin }).should.be.fulfilled;
+            const tx = await this.token.deactivate({ from: this.admin }).should.be.fulfilled;
+            truffleAssert.eventEmitted(tx, "Deactivated", event => {
+                return true;
+            });
         });
 
         it("Should be impossible to use the approve function when contract is deactivated", async () => {
