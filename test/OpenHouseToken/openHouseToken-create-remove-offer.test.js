@@ -93,6 +93,10 @@ contract("OpenHouseToken -> create/remove offer", accounts => {
             offerLeasedTimestamp.toNumber().should.be.equal(0);
         });
 
+    });
+
+    describe("Remove offers", () => {
+
         it("Should be able to remove the offer", async () => {
             const tx = await this.token.removeOffer({ from: this.admin }).should.be.fulfilled;
             truffleAssert.eventEmitted(tx, "OfferRemoved", event => {
