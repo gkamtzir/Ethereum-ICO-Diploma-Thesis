@@ -1,4 +1,3 @@
-
 const OpenHouseToken = artifacts.require("./OpenHouseToken.sol");
 const { basicConfiguration } = require("../../config.js");
 const truffleAssert = require('truffle-assertions');
