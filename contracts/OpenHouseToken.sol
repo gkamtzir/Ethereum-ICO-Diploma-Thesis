@@ -271,6 +271,23 @@ contract OpenHouseToken is IERC20, IStatus, Commit, Leasing {
     }
 
     /**
+      * @notice Commits the specified amount of tokens from sender's rented tokens.
+      * @param numberOfTokens The amount of tokens to be commited from the rented tokens.
+      * @return A boolean indicating if the commit has completed successfully.
+      */
+    function commitFromRented(uint256 numberOfTokens) public isActivated() returns(bool) {
+        require(rent[msg.sender].rentedFrom != address(0));
+        require(rent[msg.sender].availableNumberOfTokens >= numberOfTokens);
+
+        rent[msg.sender].availableNumberOfTokens -= numberOfTokens;
+        commited[msg.sender].fromRented += numberOfTokens;
+
+        emit CommitedFromRented(msg.sender, numberOfTokens);
+
+        return true;
+    }
+
+    /**
       * @notice Creates and offer to lease tokens.
       * @param numberOfTokens The number of tokens to be leased.
       * @param price The price of the leasing.
@@ -325,12 +342,15 @@ contract OpenHouseToken is IERC20, IStatus, Commit, Leasing {
         require(offer[from].leasedTo == address(0));
         require(msg.value == offer[from].price);
 
+        uint256 numberOfTokens = offer[from].numberOfTokens;
+
         offer[from].leasedTo = msg.sender;
         offer[from].leasedTimestamp = block.timestamp;
+        offer[from].numberOfTokens = 0;
 
         rent[msg.sender].rentedFrom = from;
-        rent[msg.sender].numberOfTokens = offer[from].numberOfTokens;
-        rent[msg.sender].availableNumberOfTokens = offer[from].numberOfTokens;
+        rent[msg.sender].numberOfTokens = numberOfTokens;
+        rent[msg.sender].availableNumberOfTokens = numberOfTokens;
 
         /// Transfer ether.
         from.transfer(msg.value);

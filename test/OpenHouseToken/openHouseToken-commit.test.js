@@ -15,7 +15,15 @@ contract("OpenHouseToken -> commit", accounts => {
         this.admin = accounts[basicConfiguration.adminAccount];
         this.commitAccount = accounts[basicConfiguration.commitAccount];
         this.transferToAccount = accounts[basicConfiguration.transferToAccount];
+
         await this.token.transfer(this.commitAccount, basicConfiguration.transferedTokens, { from: this.admin });
+        
+        await this.token.createOffer(
+            basicConfiguration.offerTokens,
+            basicConfiguration.offerPrice,
+            basicConfiguration.offerDuration,
+            { from: this.admin }
+        );
     });
 
     describe("Commit from balance", () => {
@@ -82,6 +90,44 @@ contract("OpenHouseToken -> commit", accounts => {
             const commited = await this.token.getCommitedFromRented({ from: this.commitAccount });
             commited.toNumber().should.be.equal(0);
         });
+
+        it("Should throw an exception when sender tries to commit from rented without even renting", async() => {
+            await this.token.commitFromRented(10, { from: this.commitAccount })
+                .should.be.rejectedWith("revert");
+        });
+
+        it("Should be able to commit from the rented tokens", async () => {
+            await this.token.leaseFrom(this.admin, 
+                { from: this.commitAccount, value: basicConfiguration.offerPrice})
+                .should.be.fulfilled;
+
+            this.commitedTokens = basicConfiguration.offerTokens / 2;
+
+            const tx = await this.token.commitFromRented(this.commitedTokens,
+                { from: this.commitAccount }).should.be.fulfilled;
+
+            truffleAssert.eventEmitted(tx, "CommitedFromRented", event => {
+                return event.from === this.commitAccount
+                    && event.numberOfTokens.toNumber() === this.commitedTokens;
+            });
+        });
+
+        it("Should throw an exception when user tries to commit from rented tokens he does not own", async () => {
+            await this.token.commitFromRented(this.commitedTokens * 2, { from: this.commitAccount })
+                .should.be.rejectedWith("revert");
+        });
+
+        it("Should be able to modify the commited instances properly", async () => {
+            const commited = await this.token.getCommitedFromRented({ from: this.commitAccount });
+            commited.toNumber().should.be.equal(this.commitedTokens);
+        });
+
+        it("Should be able to modify the rented instances properly", async () => {
+            const availableTokens = await this.token.getRentedAvailableTokens(this.commitAccount);
+            availableTokens.toNumber().should.be.equal(basicConfiguration.offerTokens - this.commitedTokens);
+        });
+
+
 
     });
 
