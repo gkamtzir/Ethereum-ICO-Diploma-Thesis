@@ -28,6 +28,11 @@ contract Commit is ICommit {
         uint256 numberOfTokens
     );
 
+    event CommitedToRented(
+        address indexed from,
+        uint256 numberOfTokens
+    );
+
     /**
       * @notice A getter function for the commited tokens of the
       * sender that come from the balance.

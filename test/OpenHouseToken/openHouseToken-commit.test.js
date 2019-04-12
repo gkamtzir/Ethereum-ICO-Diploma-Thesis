@@ -96,6 +96,11 @@ contract("OpenHouseToken -> commit", accounts => {
                 .should.be.rejectedWith("revert");
         });
 
+        it("Should throw an exception when sender tries to withdraw tokens from rented withou even renting", async () => {
+            await this.token.commitToRented(10, { from: this.commitAccount })
+                .should.be.rejectedWith("revert");
+        });
+
         it("Should be able to commit from the rented tokens", async () => {
             await this.token.leaseFrom(this.admin, 
                 { from: this.commitAccount, value: basicConfiguration.offerPrice})
@@ -127,7 +132,20 @@ contract("OpenHouseToken -> commit", accounts => {
             availableTokens.toNumber().should.be.equal(basicConfiguration.offerTokens - this.commitedTokens);
         });
 
+        it("Shoule be able to move commited tokens back to rented", async () => {
+            const tx = await this.token.commitToRented(this.commitedTokens, { from: this.commitAccount })
+                .should.be.fulfilled;
 
+            truffleAssert.eventEmitted(tx, "CommitedToRented", event => {
+                return event.from === this.commitAccount
+                    && event.numberOfTokens.toNumber() === this.commitedTokens;
+            });
+        });
+
+        it("Should throw an exception when sender tries to withraw insufficient tokens from rented", async () => {
+            await this.token.commitToRented(1, { from: this.commitAccount })
+                .should.be.rejectedWith("revert");
+        });
 
     });
 

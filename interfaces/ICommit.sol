@@ -11,4 +11,5 @@ interface ICommit {
     function commitFromBalance(uint256 numberOfTokens) external returns(bool);
     function commitToBalance(uint256 numberOfTokens) external returns(bool);
     function commitFromRented(uint256 numberOfTokens) external returns(bool);
+    function commitToRented(uint256 numberOfTokens) external returns(bool);
 }

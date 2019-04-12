@@ -288,6 +288,23 @@ contract OpenHouseToken is IERC20, IStatus, Commit, Leasing {
     }
 
     /**
+      * @notice Withdraws the specified amount of tokens back to sender's rented tokens.
+      * @param numberOfTokens The amount of tokens to be withdrawn back to rented tokens.
+      * @return A boolean indicating if the withdrawal has completed successfully.
+      */
+    function commitToRented(uint256 numberOfTokens) public isActivated() returns(bool) {
+        require(rent[msg.sender].rentedFrom != address(0));
+        require(commited[msg.sender].fromRented >= numberOfTokens);
+
+        commited[msg.sender].fromRented -= numberOfTokens;
+        rent[msg.sender].availableNumberOfTokens += numberOfTokens;
+
+        emit CommitedToRented(msg.sender, numberOfTokens);
+
+        return true;
+    }
+
+    /**
       * @notice Creates and offer to lease tokens.
       * @param numberOfTokens The number of tokens to be leased.
       * @param price The price of the leasing.
