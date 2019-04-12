@@ -58,6 +58,18 @@ contract("OpenHouseToken -> status", accounts => {
             await this.token.commitToBalance(0, { from: this.admin }).should.be.rejectedWith("revert");
         });
 
+        it("Should be impossible to use the commitFromBalance function when contract is deactivated", async () => {
+            await this.token.commitFromBalance(0, { from: this.admin }).should.be.rejectedWith("revert");
+        });
+
+        it("Should be impossible to use the commitToRented function when contract is deactivated", async () => {
+            await this.token.commitToRented(0, { from: this.admin }).should.be.rejectedWith("revert");
+        });
+
+        it("Should be impossible to use the commitFromRented function when contract is deactivated", async () => {
+            await this.token.commitFromRented(0, { from: this.admin }).should.be.rejectedWith("revert");
+        });
+
         it("Should be impossible to use the createOffer function when contract is deactivated", async () => {
             await this.token.createOffer(
                 basicConfiguration.offerTokens,
