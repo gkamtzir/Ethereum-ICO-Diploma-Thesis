@@ -69,6 +69,11 @@ contract("OpenHouseToken -> lease", accounts => {
 
             const leasedTimestamp = await this.token.getOfferLeasedTimestamp(this.admin);
             leasedTimestamp.toNumber().should.be.equal(this.timestamp);
+
+            // Commits some of the rented tokens.
+            await this.token.commitFromRented(basicConfiguration.offerTokens / 100, { from: this.rentAccount });
+            const commited = await this.token.getCommitedFromRented({ from: this.rentAccount });
+            commited.toNumber().should.be.equal(basicConfiguration.offerTokens / 100);
         });
 
         it("Should throw an exception when a sender who already rents tries to rent", async () => {
@@ -125,22 +130,30 @@ contract("OpenHouseToken -> lease", accounts => {
         });
 
         it("Should be able to modify the offer instance properly", async () => {
-            const leasedTo = await this.token.getOfferLeasedTo(this.transferToAccount);
+            const leasedTo = await this.token.getOfferLeasedTo(this.admin);
             leasedTo.should.be.equal("0x0000000000000000000000000000000000000000");
 
-            const leasedTimestamp = await this.token.getOfferLeasedTimestamp(this.transferToAccount);
+            const leasedTimestamp = await this.token.getOfferLeasedTimestamp(this.admin);
             leasedTimestamp.toNumber().should.be.equal(0);
+
+            const numberOfTokens = await this.token.getOfferNumberOfTokens(this.admin);
+            numberOfTokens.toNumber().should.be.equal(basicConfiguration.offerTokens);
         });
 
         it("Should be able to modify the rent instance properly", async () => {
-            const numberOfTokens = await this.token.getRentedNumberOfTokens(this.admin);
+            const numberOfTokens = await this.token.getRentedNumberOfTokens(this.rentAccount);
             numberOfTokens.toNumber().should.be.equal(0);
             
-            const availableTokens = await this.token.getRentedAvailableTokens(this.admin);
+            const availableTokens = await this.token.getRentedAvailableTokens(this.rentAccount);
             availableTokens.toNumber().should.be.equal(0);
 
-            const rentedFrom = await this.token.getRentedFrom(this.admin);
+            const rentedFrom = await this.token.getRentedFrom(this.rentAccount);
             rentedFrom.should.be.equal("0x0000000000000000000000000000000000000000");
+        });
+
+        it("Should be able to clear the commited tokens that came from leasing", async () => {
+            const commited = await this.token.getCommitedFromRented({ from: this.rentAccount });
+            commited.toNumber().should.be.equal(0);
         });
 
     });
