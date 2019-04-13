@@ -24,5 +24,11 @@ module.exports = {
         newOwnerAccount: 4,
         commitAccount: 5,
         rentAccount: 6
+    },
+    privateSale: {
+        tokensMinCap: 10000,
+        tokensMaxCap: 100000,
+        // 0.000001 ether.
+        tokenPrice:  1000000000000
     }
 }
