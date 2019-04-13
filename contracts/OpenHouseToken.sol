@@ -25,8 +25,6 @@ contract OpenHouseToken is IERC20, Status, Commit, Leasing {
     uint256 private _totalSupply;
 
     address private _owner;
-
-    // Status private status;
     
     mapping(address => uint256) private _balanceOf;
     mapping(address => mapping(address => uint256)) private _allowance;
