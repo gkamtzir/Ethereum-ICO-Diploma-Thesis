@@ -2,11 +2,12 @@ pragma solidity ^0.5.7;
 
 /// Contracts.
 import "./OpenHouseToken.sol";
+import "./Status.sol";
 
 /// Libraries.
 import "../libraries/SafeMath.sol";
 
-contract Sale {
+contract Sale is Status {
     using SafeMath for uint256;
 
     address internal owner;
@@ -27,6 +28,15 @@ contract Sale {
         tokensMinCap = minCap;
         tokensMaxCap = maxCap;
         tokensSold = 0;
+        status = Status.Activated;
+    }
+
+    /// Modifiers.
+
+    /// Verifies that sender is the owner of the contract.
+    modifier onlyOwner() {
+        require(msg.sender == owner);
+        _;
     }
 
     /**
@@ -69,6 +79,32 @@ contract Sale {
       */
     function getTokensSold() public view returns(uint256){
         return tokensSold;
+    }
+
+    /**
+      * @notice Activates the contract.
+      * @return A boolean indicating if the activation has completed
+      * successfully
+      */
+    function activate() public onlyOwner() returns(bool) {
+        status = Status.Activated;
+
+        emit Activated(block.number);
+
+        return true;
+    }
+
+    /**
+      * @notice Deactivates the contract.
+      * @return A boolean indicating if the deactivation has completed
+      * successfully
+      */
+    function deactivate() public onlyOwner() returns(bool){
+        status = Status.Deactivated;
+
+        emit Deactivated(block.number);
+
+        return true;
     }
 
 }
