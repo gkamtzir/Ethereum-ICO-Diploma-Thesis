@@ -3,10 +3,10 @@ pragma solidity ^0.5.7;
 /// Contracts.
 import "./Commit.sol";
 import "./Leasing.sol";
+import "./Status.sol";
 
 /// Interfaces.
 import "../interfaces/IERC20.sol";
-import "../interfaces/IStatus.sol";
 
 /// Libraries.
 import "../libraries/SafeMath.sol";
@@ -16,7 +16,7 @@ import "../libraries/SafeMath.sol";
   * @author George Kamtziridis, gkamtzir@auth.gr
   * @notice This is the core contract that implements the token.
   */
-contract OpenHouseToken is IERC20, IStatus, Commit, Leasing {
+contract OpenHouseToken is IERC20, Status, Commit, Leasing {
 	using SafeMath for uint256;
 
     string private name;
@@ -26,7 +26,7 @@ contract OpenHouseToken is IERC20, IStatus, Commit, Leasing {
 
     address private _owner;
 
-    Status private status;
+    // Status private status;
     
     mapping(address => uint256) private _balanceOf;
     mapping(address => mapping(address => uint256)) private _allowance;
@@ -39,18 +39,10 @@ contract OpenHouseToken is IERC20, IStatus, Commit, Leasing {
         uint256 value
     );
 
-	event Transfer(
-		address indexed from,
-		address indexed to,
-		uint256 value
-	);
-
-    event Activated(
-        uint256 indexed blockNumber
-    );
-
-    event Deactivated(
-        uint256 indexed blockNumber
+    event Transfer(
+      address indexed from,
+      address indexed to,
+      uint256 value
     );
 
     event OwnershipTransfered(
@@ -63,12 +55,6 @@ contract OpenHouseToken is IERC20, IStatus, Commit, Leasing {
     /// Verifies that sender is the owner of the contract.
     modifier onlyOwner() {
         require(msg.sender == _owner);
-        _;
-    }
-
-    /// Verifies that contract is active.
-    modifier isActivated() {
-        require(status == Status.Activated);
         _;
     }
 
@@ -120,14 +106,6 @@ contract OpenHouseToken is IERC20, IStatus, Commit, Leasing {
       */
     function totalSupply() public view returns(uint256) {
         return _totalSupply;
-    }
-
-    /**
-      * @notice A getter function for contract's status.
-      * @return The current status of the contract.
-      */
-    function getStatus() public view returns(Status) {
-        return status;
     }
 
     /**
