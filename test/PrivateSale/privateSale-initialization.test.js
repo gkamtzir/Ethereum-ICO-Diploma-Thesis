@@ -33,6 +33,9 @@ contract("PrivateSale -> initialize", accounts => {
         );
 
         this.admin = accounts[basicConfiguration.adminAccount];
+
+        // Allocate the needed tokens to the Private Sale contract.
+        await this.token.transfer(this.privateSale.address, privateSale.totalSupply, { from: this.admin });
     });
 
     describe("Initialization", () => {
@@ -45,6 +48,11 @@ contract("PrivateSale -> initialize", accounts => {
         it("Should initialize private sale with the correct price", async () => {
             const price = await this.privateSale.getTokenPrice();
             price.toNumber().should.be.equal(privateSale.tokenPrice);
+        });
+
+        it("Should initialize the private sale with the correct total supply", async () => {
+            const totalSupply = await this.token.balanceOf(this.privateSale.address);
+            totalSupply.toNumber().should.be.equal(privateSale.totalSupply);
         });
 
         it("Should initialize private sale with the correct minimum cap", async () => {

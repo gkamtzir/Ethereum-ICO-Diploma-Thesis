@@ -35,6 +35,9 @@ contract("PrivateSale -> status", accounts => {
 
         this.admin = accounts[basicConfiguration.adminAccount];
         this.spender = accounts[basicConfiguration.spenderAccount];
+
+        // Allocate the needed tokens to the Private Sale contract.
+        await this.token.transfer(this.privateSale.address, privateSale.totalSupply, { from: this.admin });
     });
 
     describe("Status", () => {

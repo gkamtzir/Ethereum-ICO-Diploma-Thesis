@@ -21,6 +21,8 @@ contract Sale is Status {
     uint256 internal endTimestamp;
     uint256 internal redeemableAfterTimestamp;
 
+    mapping(address => uint256) internal balanceOf;
+
     /// Modifiers.
 
     /// Verifies that sender is the owner of the contract.
@@ -34,6 +36,12 @@ contract Sale is Status {
         require(block.timestamp >= startTimestamp && block.timestamp <= endTimestamp);
         _;
     }
+
+    /// Events.
+    event Sold(
+        address indexed from,
+        uint256 numberOfTokens
+    );
 
     constructor(
         address token, 
@@ -150,6 +158,18 @@ contract Sale is Status {
         status = Status.Deactivated;
 
         emit Deactivated(block.number);
+
+        return true;
+    }
+
+    function buyTokens(uint256 numberOfTokens) public payable isActivated() isLive() returns(bool) {
+        require(tokenInstance.balanceOf(address(this)) - tokensSold >= numberOfTokens);
+        require(msg.value == numberOfTokens * tokenPrice);
+
+        tokensSold -= numberOfTokens;
+        balanceOf[msg.sender] += numberOfTokens;
+
+        emit Sold(msg.sender, numberOfTokens);
 
         return true;
     }
