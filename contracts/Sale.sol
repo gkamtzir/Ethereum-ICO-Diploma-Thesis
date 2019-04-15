@@ -19,13 +19,19 @@ contract Sale is Status {
 
     uint256 internal startTimestamp;
     uint256 internal endTimestamp;
-    uint256 internal redeemableAfter;
+    uint256 internal redeemableAfterTimestamp;
 
     /// Modifiers.
 
     /// Verifies that sender is the owner of the contract.
     modifier onlyOwner() {
         require(msg.sender == owner);
+        _;
+    }
+
+    /// Verifies that sale is in progress.
+    modifier isLive() {
+        require(block.timestamp >= startTimestamp && block.timestamp <= endTimestamp);
         _;
     }
 
@@ -36,7 +42,7 @@ contract Sale is Status {
         uint256 maxCap,
         uint256 start,
         uint256 end,
-        uint256 redeemableAfterDuration) 
+        uint256 redeemableAfter) 
         public
     {
         require(token != address(0));
@@ -50,7 +56,7 @@ contract Sale is Status {
         tokensMaxCap = maxCap;
         startTimestamp = start;
         endTimestamp = end;
-        redeemableAfter = redeemableAfterDuration;
+        redeemableAfterTimestamp = redeemableAfter;
         tokensSold = 0;
         status = Status.Activated;
     }
@@ -95,6 +101,31 @@ contract Sale is Status {
       */
     function getTokensSold() public view returns(uint256){
         return tokensSold;
+    }
+
+    /**
+      * @notice A getter function for sale's starting timestamp.
+      * @return The timestamp when the sale will begin.
+      */
+    function getStartTimestamp() public view returns(uint256) {
+        return startTimestamp;
+    }
+
+    /**
+      * @notice A getter function for sale's ending timestamp.
+      * @return The timestamp when the sale will end.
+      */
+    function getEndTimestamp() public view returns(uint256) {
+        return endTimestamp;
+    }
+
+    /**
+      * @notice A getter function for timestamp after which the
+      * tokens will be redeemamble.
+      * @return The timestamp when the tokens will be redeemable.
+      */
+    function getRedeemableAfterTimestamp() public view returns(uint256) {
+        return redeemableAfterTimestamp;
     }
 
     /**

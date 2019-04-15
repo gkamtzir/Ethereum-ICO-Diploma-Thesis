@@ -33,8 +33,8 @@ module.exports = {
         totalSupply: 20000000,
         // 1 month.
         duration: 2592000,
-        // 3 months.
-        redeemableAfter: 7776000
+        // 4 months.
+        redeemableAfter: 10368000
     },
     preICOSale: {
         tokensMinCap: 10000,
@@ -44,8 +44,8 @@ module.exports = {
         totalSupply: 20000000,
         // 1 month.
         duration: 2592000,
-        // 3 months.
-        redeemableAfter: 7776000
+        // 4 months.
+        redeemableAfter: 10368000
     },
     ICOSale: {
         tokensMinCap: 10000,

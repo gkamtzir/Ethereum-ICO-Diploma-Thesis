@@ -62,6 +62,21 @@ contract("PrivateSale -> initialize", accounts => {
             soldTokens.toNumber().should.be.equal(0);
         });
 
+        it("Should initialize private sale with the correct start date", async () => {
+            const start = await this.privateSale.getStartTimestamp();
+            start.toNumber().should.be.equal(this.start);
+        });
+
+        it("Should initialize private sale with the correct end date", async () => {
+            const end = await this.privateSale.getEndTimestamp();
+            end.toNumber().should.be.equal(this.end);
+        });
+
+        it("Should initialize the private sale with the correct redeemableAfter timestamp", async () => {
+            const redeemableAfter = await this.privateSale.getRedeemableAfterTimestamp();
+            redeemableAfter.toNumber().should.be.equal(this.redeemableAfter);
+        });
+
     });
 
 });
