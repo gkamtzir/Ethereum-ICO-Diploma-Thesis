@@ -3,6 +3,9 @@ const PrivateSale = artifacts.require("./PrivateSale.sol");
 const { basicConfiguration, privateSale } = require("../../config.js");
 const BigNumber = web3.BigNumber;
 
+const { duration } = require("../helpers/increaseTime");
+const { latestTime } = require("../helpers/latestTime");
+
 require('chai')
     .use(require('chai-as-promised'))
     .use(require('chai-bignumber')(BigNumber))
@@ -12,12 +15,24 @@ contract("PrivateSale -> status", accounts => {
 
     before(async () => {
         this.token = await OpenHouseToken.new(basicConfiguration.totalSupply);
+        
+        this.start = await latestTime();
+        this.start += duration.hours(1);
+
+        this.end = this.start + privateSale.duration;
+
+        this.redeemableAfter = privateSale.redeemableAfter;
+        
         this.privateSale = await PrivateSale.new(
             this.token.address,
             privateSale.tokenPrice,
             privateSale.tokensMinCap,
-            privateSale.tokensMaxCap
+            privateSale.tokensMaxCap,
+            this.start,
+            this.end,
+            this.redeemableAfter
         );
+
         this.admin = accounts[basicConfiguration.adminAccount];
         this.spender = accounts[basicConfiguration.spenderAccount];
     });

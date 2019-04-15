@@ -17,7 +17,28 @@ contract Sale is Status {
     uint256 internal tokensMaxCap;
     uint256 internal tokensSold;
 
-    constructor(address token, uint256 price, uint256 minCap, uint256 maxCap) public {
+    uint256 internal startTimestamp;
+    uint256 internal endTimestamp;
+    uint256 internal redeemableAfter;
+
+    /// Modifiers.
+
+    /// Verifies that sender is the owner of the contract.
+    modifier onlyOwner() {
+        require(msg.sender == owner);
+        _;
+    }
+
+    constructor(
+        address token, 
+        uint256 price,
+        uint256 minCap,
+        uint256 maxCap,
+        uint256 start,
+        uint256 end,
+        uint256 redeemableAfterDuration) 
+        public
+    {
         require(token != address(0));
         require(price > 0 && minCap > 0 && maxCap > 0);
         require(maxCap > minCap);
@@ -27,16 +48,11 @@ contract Sale is Status {
         tokenPrice = price;
         tokensMinCap = minCap;
         tokensMaxCap = maxCap;
+        startTimestamp = start;
+        endTimestamp = end;
+        redeemableAfter = redeemableAfterDuration;
         tokensSold = 0;
         status = Status.Activated;
-    }
-
-    /// Modifiers.
-
-    /// Verifies that sender is the owner of the contract.
-    modifier onlyOwner() {
-        require(msg.sender == owner);
-        _;
     }
 
     /**
