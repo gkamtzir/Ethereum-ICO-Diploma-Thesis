@@ -7,7 +7,7 @@ module.exports = {
             activated: 0,
             deactivated: 1
         },
-        totalSupply: 1000000,
+        totalSupply: 200000000,
         approvedTokens: 100000,
         transferedTokens: 100000,
         commitFromBalance: 20000,
@@ -28,7 +28,34 @@ module.exports = {
     privateSale: {
         tokensMinCap: 10000,
         tokensMaxCap: 100000,
-        // 0.000001 ether.
-        tokenPrice:  1000000000000
+        // 0.00035 ether.
+        tokenPrice:  350000000000000,
+        totalSupply: 20000000,
+        // 1 month.
+        duration: 2592000,
+        // 3 months.
+        redeemableAfter: 7776000
+    },
+    preICOSale: {
+        tokensMinCap: 10000,
+        tokensMaxCap: 100000,
+        // 0.0007 ether.
+        tokenPrice: 700000000000000,
+        totalSupply: 20000000,
+        // 1 month.
+        duration: 2592000,
+        // 3 months.
+        redeemableAfter: 7776000
+    },
+    ICOSale: {
+        tokensMinCap: 10000,
+        tokensMaxCap: 100000,
+        // 0.0021 ether.
+        tokenPrice: 2100000000000000,
+        totalSupply: 100000000,
+        // 1 month.
+        duration: 2592000,
+        // Immediately.
+        redeemableAfter: 0
     }
 }
