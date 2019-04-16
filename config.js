@@ -17,6 +17,7 @@ module.exports = {
         offerPrice: 100000000000000,
         // 2.7 hours approximately.
         offerDuration: 10000,
+        buyTokens: 100000,
         adminAccount: 0,
         spenderAccount: 1,
         transferToAccount: 2,
@@ -28,9 +29,9 @@ module.exports = {
     privateSale: {
         tokensMinCap: 10000,
         tokensMaxCap: 100000,
-        // 0.00035 ether.
-        tokenPrice:  350000000000000,
-        totalSupply: 20000000,
+        // Ether price.
+        tokenPrice:  0.00035,
+        totalSupply: 20000,
         // 1 month.
         duration: 2592000,
         // 4 months.
@@ -39,9 +40,9 @@ module.exports = {
     preICOSale: {
         tokensMinCap: 10000,
         tokensMaxCap: 100000,
-        // 0.0007 ether.
-        tokenPrice: 700000000000000,
-        totalSupply: 20000000,
+        // Ether price.
+        tokenPrice: 0.0007,
+        totalSupply: 20000,
         // 1 month.
         duration: 2592000,
         // 4 months.
@@ -50,9 +51,9 @@ module.exports = {
     ICOSale: {
         tokensMinCap: 10000,
         tokensMaxCap: 100000,
-        // 0.0021 ether.
-        tokenPrice: 2100000000000000,
-        totalSupply: 100000000,
+        // Ether price.
+        tokenPrice: 0.0021,
+        totalSupply: 100000,
         // 1 month.
         duration: 2592000,
         // Immediately.

@@ -1,13 +1,13 @@
 const OpenHouseToken = artifacts.require("./OpenHouseToken.sol");
 const PrivateSale = artifacts.require("./PrivateSale.sol");
 const { basicConfiguration, privateSale } = require("../../config.js");
-const BigNumber = web3.BigNumber;
+const { BigNumber } = require("bignumber.js");
 
 const { duration } = require("../helpers/increaseTime");
 const { latestTime } = require("../helpers/latestTime");
+const { ether } = require("../helpers/ether");
 
 require('chai')
-  .use(require('chai-bignumber')(BigNumber))
   .should();
 
 contract("PrivateSale -> initialize", accounts => {
@@ -15,6 +15,8 @@ contract("PrivateSale -> initialize", accounts => {
     before(async () => {
         this.token = await OpenHouseToken.new(basicConfiguration.totalSupply);
         
+        this.tokenPrice = new BigNumber(privateSale.tokenPrice);
+
         this.start = await latestTime();
         this.start += duration.hours(1);
 
@@ -24,7 +26,7 @@ contract("PrivateSale -> initialize", accounts => {
         
         this.privateSale = await PrivateSale.new(
             this.token.address,
-            privateSale.tokenPrice,
+            ether(this.tokenPrice),
             privateSale.tokensMinCap,
             privateSale.tokensMaxCap,
             this.start,
@@ -47,7 +49,7 @@ contract("PrivateSale -> initialize", accounts => {
 
         it("Should initialize private sale with the correct price", async () => {
             const price = await this.privateSale.getTokenPrice();
-            price.toNumber().should.be.equal(privateSale.tokenPrice);
+            price.toNumber().should.be.equal(ether(this.tokenPrice).toNumber());
         });
 
         it("Should initialize the private sale with the correct total supply", async () => {
