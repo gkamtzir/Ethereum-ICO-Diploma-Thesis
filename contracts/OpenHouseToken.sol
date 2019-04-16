@@ -132,6 +132,10 @@ contract OpenHouseToken is IERC20, Status, Commit, Leasing {
         return true;
     }
 
+    /**
+      * @notice Transfers the ownership of the contract.
+      * @return A boolean value indicating if the transfer has completed successfully.
+      */
     function transferOwnership(address newOwner) public onlyOwner() returns(bool) {
         _owner = newOwner;
 
