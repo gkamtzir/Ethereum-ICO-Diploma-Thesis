@@ -17,7 +17,7 @@ module.exports = {
         offerPrice: 100000000000000,
         // 2.7 hours approximately.
         offerDuration: 10000,
-        buyTokens: 100000,
+        buyTokens: 100,
         adminAccount: 0,
         spenderAccount: 1,
         transferToAccount: 2,

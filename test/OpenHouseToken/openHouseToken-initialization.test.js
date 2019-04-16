@@ -25,12 +25,12 @@ contract("OpenHouseToken -> initialize", accounts => {
 
         it("Should initialize the contract with the correct decimals", async () => {
             const decimals = await this.token.getDecimals();
-            decimals.toNumber().should.be.bignumber.equal(basicConfiguration.decimals);
+            decimals.toNumber().should.be.equal(basicConfiguration.decimals);
         });
 
         it("Should initialize the contract with the correct total supply", async () => {
             const totalSupply = await this.token.totalSupply();
-            totalSupply.toNumber().should.be.bignumber.equal(basicConfiguration.totalSupply);
+            totalSupply.toNumber().should.be.equal(basicConfiguration.totalSupply);
         });
 
         it("Should initialize the contract with the correct owner", async () => {
@@ -40,12 +40,12 @@ contract("OpenHouseToken -> initialize", accounts => {
 
         it("Should allocate the entire balance to admin", async () => {
             const balance = await this.token.balanceOf(this.admin);
-            balance.toNumber().should.be.bignumber.equal(basicConfiguration.totalSupply);
+            balance.toNumber().should.be.equal(basicConfiguration.totalSupply);
         });
 
         it("Should set contract's status to active", async () => {
             const status = await this.token.getStatus();
-            status.toNumber().should.be.bignumber.equal(basicConfiguration.status.activated);
+            status.toNumber().should.be.equal(basicConfiguration.status.activated);
         });
 
     });
