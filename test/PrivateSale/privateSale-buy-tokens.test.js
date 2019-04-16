@@ -69,7 +69,7 @@ contract("PrivateSale -> buy tokens", accounts => {
                 .should.be.rejectedWith("revert");
         });
 
-        it("Should be able to buy tokens", async () => {
+        it("Should be able to buy tokens", async () => {       
             const cost = this.tokenPrice.times(basicConfiguration.buyTokens);
             const tx = await this.privateSale.buyTokens(basicConfiguration.buyTokens,
                 { from: this.spender, value: ether(cost)})
@@ -79,7 +79,13 @@ contract("PrivateSale -> buy tokens", accounts => {
                 return event.from === this.spender
                     && event.numberOfTokens.toNumber() === basicConfiguration.buyTokens;
             });
-        })
+
+            const tokensSold = await this.privateSale.getTokensSold();
+            tokensSold.toNumber().should.be.equal(basicConfiguration.buyTokens);
+
+            const balance = await this.privateSale.getBalanceOf(this.spender);
+            balance.toNumber().should.be.equal(basicConfiguration.buyTokens);
+        });
 
     });
 

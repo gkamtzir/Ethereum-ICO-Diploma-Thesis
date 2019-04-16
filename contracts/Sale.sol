@@ -137,9 +137,17 @@ contract Sale is Status {
     }
 
     /**
+      * @notice A getter function for the current balance of an address.
+      * @return The number of tokes bought by the given address.
+      */
+    function getBalanceOf(address buyer) public view returns(uint256) {
+        return balanceOf[buyer];
+    }
+
+    /**
       * @notice Activates the contract.
       * @return A boolean indicating if the activation has completed
-      * successfully
+      * successfully.
       */
     function activate() public onlyOwner() returns(bool) {
         status = Status.Activated;
@@ -152,7 +160,7 @@ contract Sale is Status {
     /**
       * @notice Deactivates the contract.
       * @return A boolean indicating if the deactivation has completed
-      * successfully
+      * successfully.
       */
     function deactivate() public onlyOwner() returns(bool){
         status = Status.Deactivated;
@@ -162,11 +170,16 @@ contract Sale is Status {
         return true;
     }
 
+    /**
+      * @notice Enables sender to buy tokens.
+      * @param numberOfTokens The number of tokens the sender wants to buy.
+      * @return A boolean value indicating if the purchase has completed successfully.
+      */
     function buyTokens(uint256 numberOfTokens) public payable isActivated() isLive() returns(bool) {
         require(tokenInstance.balanceOf(address(this)) - tokensSold >= numberOfTokens);
         require(msg.value == numberOfTokens * tokenPrice);
 
-        tokensSold -= numberOfTokens;
+        tokensSold += numberOfTokens;
         balanceOf[msg.sender] += numberOfTokens;
 
         emit Sold(msg.sender, numberOfTokens);
