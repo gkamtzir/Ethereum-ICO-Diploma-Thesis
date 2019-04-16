@@ -31,14 +31,25 @@ contract Sale is Status {
         _;
     }
 
-    /// Verifies that sale is in progress.
+    /// Verifies that the sale is in progress.
     modifier isLive() {
         require(block.timestamp >= startTimestamp && block.timestamp <= endTimestamp);
         _;
     }
 
+    /// Verifies that the sale has ended.
+    modifier hasEnded() {
+        require(block.timestamp > endTimestamp);
+        _;
+    }
+
     /// Events.
     event Sold(
+        address indexed from,
+        uint256 numberOfTokens
+    );
+
+    event Refunded(
         address indexed from,
         uint256 numberOfTokens
     );
@@ -183,6 +194,25 @@ contract Sale is Status {
         balanceOf[msg.sender] += numberOfTokens;
 
         emit Sold(msg.sender, numberOfTokens);
+
+        return true;
+    }
+
+    /**
+      * @notice Refunds sender's tokens when sale has failed.
+      * @return A boolean value indicating if the refund has completed successfully.
+      */
+    function refundTokens() public isActivated() hasEnded() returns(bool) {
+        require(tokensSold < tokensMinCap);
+        require(balanceOf[msg.sender] > 0);
+
+        uint256 balance = balanceOf[msg.sender];
+
+        balanceOf[msg.sender] = 0;
+
+        msg.sender.transfer(balance * tokenPrice);
+
+        emit Refunded(msg.sender, balance);
 
         return true;
     }

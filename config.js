@@ -18,6 +18,7 @@ module.exports = {
         // 2.7 hours approximately.
         offerDuration: 10000,
         buyTokens: 10000,
+        buyTokensInsufficient: 100,
         adminAccount: 0,
         spenderAccount: 1,
         transferToAccount: 2,
