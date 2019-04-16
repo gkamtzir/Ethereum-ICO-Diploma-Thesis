@@ -1,11 +1,9 @@
 const OpenHouseToken = artifacts.require("./OpenHouseToken.sol");
 const { basicConfiguration } = require("../../config.js");
 const truffleAssert = require('truffle-assertions');
-const BigNumber = web3.BigNumber;
 
 require('chai')
     .use(require('chai-as-promised'))
-    .use(require('chai-bignumber')(BigNumber))
     .should();
 
 contract("OpenHouseToken -> status", accounts => {
@@ -21,7 +19,7 @@ contract("OpenHouseToken -> status", accounts => {
 
         it("Should be activated initially", async () => {
             const status = await this.token.getStatus();
-            status.toNumber().should.be.bignumber.equal(basicConfiguration.status.activated);
+            status.toNumber().should.be.equal(basicConfiguration.status.activated);
         });
 
         it("Should not be possible to deactivate it a non-admin address", async () => {

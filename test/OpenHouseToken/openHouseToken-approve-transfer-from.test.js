@@ -1,11 +1,9 @@
 const OpenHouseToken = artifacts.require("./OpenHouseToken.sol");
 const { basicConfiguration } = require("../../config.js");
 const truffleAssert = require('truffle-assertions');
-const BigNumber = web3.BigNumber;
 
 require('chai')
     .use(require('chai-as-promised'))
-    .use(require('chai-bignumber')(BigNumber))
     .should();
 
 contract("OpenHouseToken -> approve/transfer from", accounts => {

@@ -1,9 +1,7 @@
 const OpenHouseToken = artifacts.require("./OpenHouseToken.sol");
 const { basicConfiguration } = require("../../config.js");
-const BigNumber = web3.BigNumber;
 
 require('chai')
-  .use(require('chai-bignumber')(BigNumber))
   .should();
 
 contract("OpenHouseToken -> initialize", accounts => {
