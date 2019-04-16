@@ -31,7 +31,6 @@ module.exports = {
         tokensMaxCap: 100000,
         // Ether price.
         tokenPrice:  0.00035,
-        totalSupply: 20000,
         // 1 month.
         duration: 2592000,
         // 4 months.
@@ -42,7 +41,6 @@ module.exports = {
         tokensMaxCap: 100000,
         // Ether price.
         tokenPrice: 0.0007,
-        totalSupply: 20000,
         // 1 month.
         duration: 2592000,
         // 4 months.
@@ -53,7 +51,6 @@ module.exports = {
         tokensMaxCap: 100000,
         // Ether price.
         tokenPrice: 0.0021,
-        totalSupply: 100000,
         // 1 month.
         duration: 2592000,
         // Immediately.

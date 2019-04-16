@@ -39,7 +39,7 @@ contract("PrivateSale -> live", accounts => {
         this.spender = accounts[basicConfiguration.spenderAccount];
 
         // Allocate the needed tokens to the Private Sale contract.
-        await this.token.transfer(this.privateSale.address, privateSale.totalSupply, { from: this.admin });
+        await this.token.transfer(this.privateSale.address, privateSale.tokensMaxCap, { from: this.admin });
     });
 
     describe("Live", () => {

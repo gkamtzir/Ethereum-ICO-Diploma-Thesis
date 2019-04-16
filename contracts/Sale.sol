@@ -176,7 +176,7 @@ contract Sale is Status {
       * @return A boolean value indicating if the purchase has completed successfully.
       */
     function buyTokens(uint256 numberOfTokens) public payable isActivated() isLive() returns(bool) {
-        require(tokenInstance.balanceOf(address(this)) - tokensSold >= numberOfTokens);
+        require(tokensMaxCap - tokensSold >= numberOfTokens);
         require(msg.value == numberOfTokens * tokenPrice);
 
         tokensSold += numberOfTokens;

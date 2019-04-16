@@ -40,7 +40,7 @@ contract("PrivateSale -> buy tokens", accounts => {
         this.spender = accounts[basicConfiguration.spenderAccount];
 
         // Allocate the needed tokens to the Private Sale contract.
-        await this.token.transfer(this.privateSale.address, privateSale.totalSupply, { from: this.admin });
+        await this.token.transfer(this.privateSale.address, privateSale.tokensMaxCap, { from: this.admin });
 
         // Start the sale.
         await increaseTime(duration.hours(1));
@@ -49,8 +49,8 @@ contract("PrivateSale -> buy tokens", accounts => {
     describe("Buy tokens", () => {
 
         it("Should be impossible to buy more tokens than available", async() => {
-            const cost = this.tokenPrice.times(privateSale.totalSupply + 1);
-            await this.privateSale.buyTokens(privateSale.totalSupply + 1,
+            const cost = this.tokenPrice.times(privateSale.tokensMaxCap + 1);
+            await this.privateSale.buyTokens(privateSale.tokensMaxCap + 1,
                 { from: this.spender, value: ether(cost)})
                 .should.be.rejectedWith("revert");
         });
