@@ -62,6 +62,16 @@ contract("PrivateSale -> status", accounts => {
                 .should.be.rejectedWith("revert");
         });
 
+        it("Should be impossible to use the refundTokens function when contract is deactivated", async () => {
+            await this.privateSale.refundTokens({ from: this.admin })
+                .should.be.rejectedWith("revert");
+        });
+
+        it("Should be impossible to use the redeemTokens function when contract is deactivated", async () => {
+            await this.privateSale.redeemTokens({ from: this.admin })
+                .should.be.rejectedWith("revert");
+        });
+
     });
 
 });
