@@ -54,6 +54,11 @@ contract Sale is Status {
         uint256 numberOfTokens
     );
 
+    event Redeemed(
+        address indexed from,
+        uint256 numberOfTokens
+    );
+
     constructor(
         address token, 
         uint256 price,
@@ -213,6 +218,26 @@ contract Sale is Status {
         msg.sender.transfer(balance * tokenPrice);
 
         emit Refunded(msg.sender, balance);
+
+        return true;
+    }
+
+    /**
+      * @notice Redeems sender's token when sale has completed.
+      * @return A boolean value indicating if the retrieval of
+      * the tokens has completed successfully.
+      */
+    function redeemTokens() public isActivated() hasEnded() returns(bool) {
+        require(tokensSold >= tokensMinCap);
+        require(balanceOf[msg.sender] > 0);
+
+        uint256 balance = balanceOf[msg.sender];
+
+        balanceOf[msg.sender] = 0;
+
+        require(tokenInstance.transfer(msg.sender, balance));
+
+        emit Redeemed(msg.sender, balance);
 
         return true;
     }
