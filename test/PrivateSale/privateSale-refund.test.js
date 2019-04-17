@@ -14,7 +14,7 @@ require('chai')
 
 contract("PrivateSale -> refund tokens", accounts => {
 
-    before(async () => {
+    this.initialization = async () => {
         this.token = await OpenHouseToken.new(basicConfiguration.totalSupply);
         
         this.tokenPrice = new BigNumber(privateSale.tokenPrice);
@@ -44,14 +44,18 @@ contract("PrivateSale -> refund tokens", accounts => {
 
         // Start the sale.
         await increaseTime(duration.hours(1));
-
-        // Buy insufficient tokens.
-        const cost = this.tokenPrice.times(basicConfiguration.buyTokensInsufficient);
-        await this.privateSale.buyTokens(basicConfiguration.buyTokensInsufficient,
-            { from: this.spender, value: ether(cost)})
-    });
+    }
 
     describe("Refund (unsuccessful sale)", () => {
+
+        before(async () => {
+            await this.initialization();
+
+            // Buy insufficient tokens.
+            const cost = this.tokenPrice.times(basicConfiguration.buyTokensInsufficient);
+            await this.privateSale.buyTokens(basicConfiguration.buyTokensInsufficient,
+                { from: this.spender, value: ether(cost)})
+        });
 
         it("Should be impossible to refund tokens when the sale is in progress", async () => {       
             await this.privateSale.refundTokens({ from: this.spender })
@@ -79,6 +83,27 @@ contract("PrivateSale -> refund tokens", accounts => {
 
             const newBalance = await this.privateSale.getBalanceOf(this.spender);
             newBalance.toNumber().should.be.equal(0);
+        });
+
+    });
+
+    describe("Refund (successful sale)", () => {
+
+        before(async () => {
+            await this.initialization();
+
+            // Buy tokens.
+            const cost = this.tokenPrice.times(basicConfiguration.buyTokens);
+            await this.privateSale.buyTokens(basicConfiguration.buyTokens,
+                { from: this.spender, value: ether(cost)})
+
+            // End the sale.
+            await increaseTime(privateSale.duration);
+        });
+
+        it("Should be impossible to refund tokens when the sale has completed successfully", async () => {
+            await this.privateSale.refundTokens({ from: this.spender })
+                .should.be.rejectedWith("revert");
         });
 
     });
