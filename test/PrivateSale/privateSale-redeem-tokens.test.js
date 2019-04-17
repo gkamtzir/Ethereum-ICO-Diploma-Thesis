@@ -115,6 +115,6 @@ contract("PrivateSale -> redeem tokens", accounts => {
                 .should.be.rejectedWith("revert");
         });
 
-    })
+    });
 
 });
