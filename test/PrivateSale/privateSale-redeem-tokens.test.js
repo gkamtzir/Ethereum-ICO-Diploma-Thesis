@@ -24,7 +24,8 @@ contract("PrivateSale -> redeem tokens", accounts => {
 
         this.end = this.start + privateSale.duration;
 
-        this.redeemableAfter = privateSale.redeemableAfter;
+        this.redeemableAfter = await latestTime();
+        this.redeemableAfter += privateSale.redeemableAfter;
         
         this.privateSale = await PrivateSale.new(
             this.token.address,
@@ -71,6 +72,14 @@ contract("PrivateSale -> redeem tokens", accounts => {
         it("Should be impossible to redeem tokens when sender hasn't bought any during the sale", async () => {
             await this.privateSale.redeemTokens({ from: this.admin })
                 .should.be.rejectedWith("revert");
+        });
+
+        it("Should be impossible to redeem tokens when tokens are not redeemable yet", async () => {
+            await this.privateSale.redeemTokens({ from: this.spender })
+                .should.be.rejectedWith("revert");
+
+            // Make tokens redeemable.
+            await increaseTime(this.redeemableAfter);
         });
 
         it("Should be able to redeem the tokens", async () => {

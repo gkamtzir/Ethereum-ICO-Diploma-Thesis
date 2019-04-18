@@ -43,6 +43,12 @@ contract Sale is Status {
         _;
     }
 
+    /// Verifies that tokens are redeemable.
+    modifier areRedeemable() {
+        require(block.timestamp > redeemableAfterTimestamp);
+        _;
+    }
+
     /// Events.
     event Sold(
         address indexed from,
@@ -232,7 +238,7 @@ contract Sale is Status {
       * @return A boolean value indicating if the retrieval of
       * the tokens has completed successfully.
       */
-    function redeemTokens() public isActivated() hasEnded() returns(bool) {
+    function redeemTokens() public isActivated() hasEnded() areRedeemable() returns(bool) {
         require(tokensSold >= tokensMinCap);
         require(balanceOf[msg.sender] > 0);
 

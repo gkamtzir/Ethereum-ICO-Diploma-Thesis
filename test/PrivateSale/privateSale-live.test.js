@@ -23,7 +23,8 @@ contract("PrivateSale -> live", accounts => {
 
         this.end = this.start + privateSale.duration;
 
-        this.redeemableAfter = privateSale.redeemableAfter;
+        this.redeemableAfter = await latestTime();
+        this.redeemableAfter += privateSale.redeemableAfter;
         
         this.privateSale = await PrivateSale.new(
             this.token.address,
