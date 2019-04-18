@@ -42,6 +42,9 @@ contract("PrivateSale -> reallocate tokens", accounts => {
         // Allocate the needed tokens to the Private Sale contract.
         await this.token.transfer(this.privateSale.address, privateSale.tokensMaxCap, { from: this.admin });
 
+        // Allow 'spender' to participate in the private sale.
+        await this.privateSale.allowAddress(this.spender);
+
         // Start the sale.
         await increaseTime(duration.hours(1));
     };
@@ -50,7 +53,7 @@ contract("PrivateSale -> reallocate tokens", accounts => {
 
         before(async () => {
             await this.initialization();
-            
+
             // Buy tokens.
             const cost = this.tokenPrice.times(basicConfiguration.buyTokens);
             await this.privateSale.buyTokens(basicConfiguration.buyTokens,

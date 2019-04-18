@@ -72,6 +72,11 @@ contract("PrivateSale -> status", accounts => {
                 .should.be.rejectedWith("revert");
         });
 
+        it("Should be impossible to use the allowAddress function when contract is deactivated", async () => {
+            await this.privateSale.allowAddress(this.spender, { from: this.admin })
+                .should.be.rejectedWith("revert");
+        });
+
     });
 
 });
