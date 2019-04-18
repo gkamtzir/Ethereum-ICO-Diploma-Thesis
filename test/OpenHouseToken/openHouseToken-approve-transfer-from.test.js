@@ -78,7 +78,7 @@ contract("OpenHouseToken -> approve/transfer from", accounts => {
             async () => {
                 await this.token.transferFrom(this.admin, this.spender, basicConfiguration.totalSupply,
                     { from: this.transferToAccount }).should.be.rejectedWith("revert");
-        })
+        });
 
     });
 

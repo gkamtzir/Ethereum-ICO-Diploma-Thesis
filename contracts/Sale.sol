@@ -10,7 +10,7 @@ import "../libraries/SafeMath.sol";
 contract Sale is Status {
     using SafeMath for uint256;
 
-    address internal owner;
+    address payable internal owner;
     OpenHouseToken internal tokenInstance;
     uint256 internal tokenPrice;
     uint256 internal tokensMinCap;
@@ -55,6 +55,11 @@ contract Sale is Status {
     );
 
     event Redeemed(
+        address indexed from,
+        uint256 numberOfTokens
+    );
+
+    event Reallocated(
         address indexed from,
         uint256 numberOfTokens
     );
@@ -238,6 +243,28 @@ contract Sale is Status {
         require(tokenInstance.transfer(msg.sender, balance));
 
         emit Redeemed(msg.sender, balance);
+
+        return true;
+    }
+
+    /**
+      * @notice Reallocates the remaining tokens and the raised
+      * ether (if the sale has completed successfully) back to admin.
+      * @return A boolean indicating if the reallocation has completed successfully.
+      */
+    function reallocateTokens() public isActivated() hasEnded() onlyOwner() returns(bool) {
+        uint256 numberOfTokens;
+
+        if (tokensSold >= tokensMinCap) {
+            numberOfTokens = tokensMaxCap - tokensSold;
+            owner.transfer(tokensSold * tokenPrice);
+        } else {
+            numberOfTokens = tokensMaxCap;
+        }
+
+        require(tokenInstance.transfer(owner, numberOfTokens));
+
+        emit Reallocated(owner, numberOfTokens);
 
         return true;
     }
