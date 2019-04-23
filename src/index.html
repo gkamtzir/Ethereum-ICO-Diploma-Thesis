@@ -23,11 +23,26 @@
         <meta name="apple-mobile-web-app-title" content="OpenHouse ICO development panel">
 
         <!-- Dependencies -->
+        <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css" />
+        <script src="../node_modules/jquery/dist/jquery.slim.min.js"></script>
+        <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
         <script src="../node_modules/angular/angular.min.js"></script>
     </head>
 
     <body>
-        <heros></heros>
+        <div class="container">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Private Sale</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Pre ICO Sale</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">ICO Sale</a>
+                </li>
+            </ul>   
+        </div>
 
         <!-- Project's files. -->
         <script src="app.js"></script>
