@@ -7,7 +7,9 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "start": "webpack-dev-server --open"
   },
   "repository": {
     "type": "git",
@@ -29,6 +31,7 @@
     "chai": "^4.1.2",
     "chai-as-promised": "^7.0.0",
     "coveralls": "^3.0.1",
+    "css-loader": "^2.1.1",
     "dotenv": "^4.0.0",
     "eslint": "^4.19.1",
     "eslint-config-standard": "^10.2.1",
@@ -41,15 +44,25 @@
     "ganache-cli": "6.1.0",
     "solidity-coverage": "^0.5.4",
     "solium": "^1.1.7",
+    "style-loader": "^0.23.1",
     "truffle": "4.1.11",
     "truffle-assertions": "^0.8.2",
     "truffle-hdwallet-provider": "0.0.5",
-    "typescript": "^3.4.4"
+    "ts-loader": "^4.1.0",
+    "typescript": "^3.4.4",
+    "url-loader": "^1.0.1",
+    "webpack-dev-server": "^3.1.11"
   },
   "dependencies": {
     "@types/angular": "^1.6.54",
+    "@types/angular-route": "^1.7.0",
     "angular": "^1.7.8",
+    "angular-route": "^1.7.8",
     "bootstrap": "^4.3.1",
-    "jquery": "^3.2.1"
+    "html-webpack-plugin": "^3.1.0",
+    "jquery": "^3.2.1",
+    "popper.js": "^1.15.0",
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.1"
   }
 }
