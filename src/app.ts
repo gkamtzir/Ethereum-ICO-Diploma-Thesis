@@ -2,9 +2,15 @@
 import * as angular from "angular";
 import "angular-route/angular-route.min.js";
 
-// Bootstrap dependencies.
+// Styling dependencies.
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap";
+import "./components/navbar/navbar.component.scss";
+
+// Application dependencies.
+
+// Components.
+import NavbarComponent from "./components/navbar/navbar.component";
 
 const module = angular.module("OpenHouseAdminPanel", ["ngRoute"]);
 
@@ -27,10 +33,8 @@ module.config(["$routeProvider", "$locationProvider",
             });
 }]);
 
-// The main controller of the application.
-module.controller("MainController",  function () {
-    this.activeTab = "#/privateSale";
-});
+// Wiring up the components.
+module.component("navbarComponent", new NavbarComponent());
 
 angular.element(document).ready(() => {
     angular.bootstrap(document, ["OpenHouseAdminPanel"]);

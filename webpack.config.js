@@ -13,10 +13,10 @@ module.exports = {
     module: {
         rules: [
             {test: /\.jpg$/, use: 'url-loader?mimetype=image/jpg'},
-            { test: /\.tsx?$/, use: 'ts-loader' },
+            {test: /\.tsx?$/, use: 'ts-loader'},
             {
-                test: /\.css$/,
-                use: ['style-loader', 'css-loader']    
+                test: /\.(s*)css$/,
+                use: ['style-loader', 'css-loader', 'sass-loader']    
             }
         ]
     },
