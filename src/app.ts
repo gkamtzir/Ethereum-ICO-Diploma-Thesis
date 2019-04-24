@@ -6,22 +6,32 @@ import "angular-route/angular-route.min.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap";
 
-const module = angular.module("openHouseAdminPanel", ["ngRoute"]);
+const module = angular.module("OpenHouseAdminPanel", ["ngRoute"]);
 
-module.config(["$routeProvider", "$locationProvider", ($routeProvider: angular.route.IRouteProvider, $locationProvider: angular.ILocationProvider) => {
-    $locationProvider.hashPrefix("");
-    $routeProvider
-        .when("/privateSale", {
-            template: "Private Sale",
-        })
-        .when("/preICOSale", {
-            template: "Pre ICO Sale"
-        })
-        .when("/ICOSale", {
-            template: "ICO Sale"
-        });
+// The routing configuration.
+module.config(["$routeProvider", "$locationProvider", 
+    ($routeProvider: angular.route.IRouteProvider, $locationProvider: angular.ILocationProvider) => {
+        $locationProvider.hashPrefix("");
+        $routeProvider
+            .when("/privateSale", {
+                template: "Private Sale",
+            })
+            .when("/preICOSale", {
+                template: "Pre ICO Sale"
+            })
+            .when("/ICOSale", {
+                template: "ICO Sale"
+            })
+            .otherwise({
+                redirectTo: "/privateSale"
+            });
 }]);
 
+// The main controller of the application.
+module.controller("MainController",  function () {
+    this.activeTab = "#/privateSale";
+});
+
 angular.element(document).ready(() => {
-    angular.bootstrap(document, ["openHouseAdminPanel"]);
+    angular.bootstrap(document, ["OpenHouseAdminPanel"]);
 });
