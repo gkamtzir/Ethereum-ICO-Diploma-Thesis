@@ -6,6 +6,7 @@ import "angular-route/angular-route.min.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap";
 
+import "./app.scss";
 import "./components/navbar/navbar.component.scss";
 import "./components/details/details.component.scss";
 import "./components/private-sale/private-sale.component.scss";

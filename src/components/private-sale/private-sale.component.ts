@@ -15,7 +15,6 @@ export default class PrivateSaleComponent implements ng.IComponentOptions {
         this.controllerAs = "$ctrl";
         this.template = `
         <div class="private-sale-component">
-            <h1>Private Sale</h1>
             <details-component></details-component>
         </div>
     `;
