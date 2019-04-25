@@ -105,7 +105,8 @@ export default class TimeComponent implements ng.IComponentOptions {
                     <div class="form-group align-right">
                         <label for="timespan-select">Select Timespan</label>
                         <select id="timespan-select" class="custom-select form-control" 
-                            ng-options="timespan.name for timespan in $ctrl.timespans" ng-model="$ctrl.selectedTimespan">
+                            ng-options="timespan.name for timespan in $ctrl.timespans" ng-model="$ctrl.selectedTimespan"
+                            ng-change="$ctrl.calculateFutureDate()">
                         </select>
                     </div>
                 </div>
