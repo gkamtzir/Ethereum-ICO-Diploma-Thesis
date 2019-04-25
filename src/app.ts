@@ -10,6 +10,7 @@ import "./app.scss";
 import "./components/navbar/navbar.component.scss";
 import "./components/details/details.component.scss";
 import "./components/private-sale/private-sale.component.scss";
+import "./components/time/time.component.scss";
 
 // Application dependencies.
 
@@ -17,6 +18,7 @@ import "./components/private-sale/private-sale.component.scss";
 import NavbarComponent from "./components/navbar/navbar.component";
 import DetailsComponent from "./components/details/details.component";
 import PrivateSaleComponent from "./components/private-sale/private-sale.component";
+import TimeComponent from "./components/time/time.component";
 
 const module = angular.module("OpenHouseAdminPanel", ["ngRoute"]);
 
@@ -43,6 +45,7 @@ module.config(["$routeProvider", "$locationProvider",
 module.component("navbarComponent", new NavbarComponent());
 module.component("detailsComponent", new DetailsComponent());
 module.component("privateSaleComponent", new PrivateSaleComponent());
+module.component("timeComponent", new TimeComponent());
 
 angular.element(document).ready(() => {
     angular.bootstrap(document, ["OpenHouseAdminPanel"]);

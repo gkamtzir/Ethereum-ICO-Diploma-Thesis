@@ -16,6 +16,7 @@ export default class PrivateSaleComponent implements ng.IComponentOptions {
         this.template = `
         <div class="private-sale-component">
             <details-component></details-component>
+            <time-component></time-component>
         </div>
     `;
     }
