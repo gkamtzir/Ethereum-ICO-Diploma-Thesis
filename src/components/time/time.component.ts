@@ -1,15 +1,18 @@
 class TimeController implements ng.IComponentController {
 
+    // Public variables.
     public timespans: any[];
     public selectedTimespan: any;
     public selectedRange: number;
     public currentDate: Date;
     public futureDate: Date;
     
+    // Private variables.
     private durations: any;
 
 
     constructor() {
+        // Initializing the durations.
         this.durations = {
             seconds: function(val: number) { return val; },
             minutes: function(val: number) { return val * this.seconds(60); },
@@ -19,6 +22,7 @@ class TimeController implements ng.IComponentController {
             years: function(val: number) { return val * this.days(365); },
         }
 
+        // Initializing the supported timespans.
         this.timespans = [
             {
                 name: "Seconds",
@@ -64,6 +68,15 @@ class TimeController implements ng.IComponentController {
             this.futureDate = new Date(currentTimeInMill);
         }
     }
+
+    /**
+     * Increases the time in the local ethereum blockchain (Ganache).
+     */
+    public increaseTime(): void {
+        console.log("Time increased");
+        this.currentDate = this.futureDate;
+        this.selectedRange = 0;
+    }
 }
 
 export default class TimeComponent implements ng.IComponentOptions {
@@ -100,7 +113,7 @@ export default class TimeComponent implements ng.IComponentOptions {
             <label for="time-manipulation">Time range</label>
             <input type="range" class="custom-range" id="time-manipulation" min="0" max="12" ng-model="$ctrl.selectedRange" ng-change="$ctrl.calculateFutureDate()">
             <br />
-            <button type="button" class="btn btn-primary">Increase Time</button>
+            <button type="button" class="btn btn-primary" ng-click="$ctrl.increaseTime()">Increase Time</button>
         </div>
     `;
     }
