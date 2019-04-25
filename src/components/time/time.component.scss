@@ -1,3 +1,19 @@
 .time-component {
+    margin-top: 20px;
+
+    .align-right {
+        float: right;
+    }
+
+    .date-row {
+        margin-top: 20px;
     
+        .date {
+            margin-bottom: 15px;
+        
+            .date-text {
+                font-weight: 500;
+            }
+        }
+    }
 }
