@@ -39,6 +39,11 @@ export default class DetailsComponent implements ng.IComponentOptions {
                         Redeemable Date:
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-sm">
+                        <b>Status:</b>
+                    </div>
+                </div>
             </div>
         </div>
     `;
