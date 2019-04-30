@@ -15,7 +15,7 @@ export default class AdminActionsComponent implements ng.IComponentOptions {
         this.controllerAs = "$ctrl";
         this.template = `
         <div class="admin-actions-component">
-            <h4>Admin actions</h4>
+            <h4>Onwer actions</h4>
 
             <div class="form-group row">
                 <label for="deactivate" class="col-sm-4 col-form-label">Deactivate Contract</label>

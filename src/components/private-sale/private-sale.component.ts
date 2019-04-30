@@ -22,7 +22,7 @@ export default class PrivateSaleComponent implements ng.IComponentOptions {
                     <basic-actions-component></basic-actions-component>
                 </div>
                 <div class="col-sm">
-                    <admin-actions-component></admin-actions-component>
+                    <owner-actions-component></owner-actions-component>
                 </div>
             </div>
         </div>

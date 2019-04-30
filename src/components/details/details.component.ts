@@ -41,6 +41,11 @@ export default class DetailsComponent implements ng.IComponentOptions {
                 </div>
                 <div class="row">
                     <div class="col-sm">
+                        Owner:
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm">
                         <b>Status:</b>
                     </div>
                 </div>
