@@ -10,6 +10,7 @@ import "./app.scss";
 import "./components/navbar/navbar.component.scss";
 import "./components/details/details.component.scss";
 import "./components/private-sale/private-sale.component.scss";
+import "./components/pre-ico-sale/pre-ico-sale.component.scss";
 import "./components/time/time.component.scss";
 import "./components/basic-actions/basic-actions.component.scss";
 import "./components/owner-actions/owner-actions.component.scss";
@@ -20,6 +21,7 @@ import "./components/owner-actions/owner-actions.component.scss";
 import NavbarComponent from "./components/navbar/navbar.component";
 import DetailsComponent from "./components/details/details.component";
 import PrivateSaleComponent from "./components/private-sale/private-sale.component";
+import PreICOSaleComponent from "./components/pre-ico-sale/pre-ico-sale.component";
 import TimeComponent from "./components/time/time.component";
 import BasicActionsComponent from "./components/basic-actions/basic-actions.component";
 import OwnerActionsComponent from "./components/owner-actions/owner-actions.component";
@@ -35,7 +37,7 @@ module.config(["$routeProvider", "$locationProvider",
                 template: "<private-sale-component></private-sale-component>",
             })
             .when("/preICOSale", {
-                template: "Pre ICO Sale"
+                template: "<pre-ico-sale-component></pre-ico-sale-component>"
             })
             .when("/ICOSale", {
                 template: "ICO Sale"
@@ -49,6 +51,7 @@ module.config(["$routeProvider", "$locationProvider",
 module.component("navbarComponent", new NavbarComponent());
 module.component("detailsComponent", new DetailsComponent());
 module.component("privateSaleComponent", new PrivateSaleComponent());
+module.component("preIcoSaleComponent", new PreICOSaleComponent());
 module.component("timeComponent", new TimeComponent());
 module.component("basicActionsComponent", new BasicActionsComponent());
 module.component("ownerActionsComponent", new OwnerActionsComponent());
