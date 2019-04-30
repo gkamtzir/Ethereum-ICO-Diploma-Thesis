@@ -1,6 +1,10 @@
 class AdminActionsController implements ng.IComponentController {
 
-    constructor() {}
+    public restricted: boolean;
+
+    constructor() {
+        this.restricted = false;
+    }
 }
 
 export default class AdminActionsComponent implements ng.IComponentOptions {
@@ -10,7 +14,9 @@ export default class AdminActionsComponent implements ng.IComponentOptions {
     public template: string;
 
     constructor() {
-        this.bindings = {};
+        this.bindings = {
+            restricted: "<"
+        };
         this.controller = AdminActionsController;
         this.controllerAs = "$ctrl";
         this.template = `
@@ -32,7 +38,7 @@ export default class AdminActionsComponent implements ng.IComponentOptions {
                 <button type="submit" class="btn btn-primary sm-4 action-button no-input-button">Reallocate</button>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group row" ng-if="$ctrl.restricted">
                 <label for="allowAddress" class="col-sm-4 col-form-label">Allow Address:</label>
                 <div class="col-sm-4">
                     <input type="text" class="form-control" id="allowAddress" placeholder="Enter Address">
