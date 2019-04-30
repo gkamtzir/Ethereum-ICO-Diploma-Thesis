@@ -17,6 +17,14 @@ export default class PrivateSaleComponent implements ng.IComponentOptions {
         <div class="private-sale-component">
             <details-component></details-component>
             <time-component></time-component>
+            <div class="row">
+                <div class="col-sm">
+                    <basic-actions-component></basic-actions-component>
+                </div>
+                <div class="col-sm">
+                    Admin actions
+                </div>
+            </div>
         </div>
     `;
     }
