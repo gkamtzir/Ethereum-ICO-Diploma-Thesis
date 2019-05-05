@@ -1,8 +1,24 @@
 class NavbarController implements ng.IComponentController {
+    
+    public static $inject = ["$location"]; 
+    
     public activeTab: string;
 
-    constructor() {
-        this.activeTab = "#/privateSale";
+    constructor(
+        public $location: ng.ILocationService
+    ) {
+        this.updateActiveTab();
+    }
+
+    /**
+     * Checks for the current url path and
+     * updates the activeTab variable.
+     */
+    public updateActiveTab(tab?: string): void {
+        if (tab != null)
+            this.activeTab = tab;
+        else
+            this.activeTab = this.$location.path();
     }
 }
 
@@ -20,20 +36,20 @@ export default class NavbarComponent implements ng.IComponentOptions {
         <div class="navbar-component">
             <ul class="nav nav-tabs">
                 <li class="nav-item">
-                    <a class="nav-link" ng-class="{active: $ctrl.activeTab === '#/privateSale'}"
-                        ng-click="$ctrl.activeTab = '#/privateSale'" href="#/privateSale">
+                    <a class="nav-link" ng-class="{active: $ctrl.activeTab === '/privateSale' || $ctrl.activeTab === ''}"
+                        ng-click="$ctrl.updateActiveTab('/privateSale')" href="#/privateSale">
                             Private Sale
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" ng-class="{active: $ctrl.activeTab === '#/preICOSale'}"
-                        ng-click="$ctrl.activeTab = '#/preICOSale'" href="#/preICOSale">
+                    <a class="nav-link" ng-class="{active: $ctrl.activeTab === '/preICOSale'}"
+                        ng-click="$ctrl.updateActiveTab('/preICOSale')" href="#/preICOSale">
                             Pre ICO Sale
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" ng-class="{active: $ctrl.activeTab === '#/ICOSale'}"
-                        ng-click="$ctrl.activeTab = '#/ICOSale'" href="#/ICOSale">
+                    <a class="nav-link" ng-class="{active: $ctrl.activeTab === '/ICOSale'}"
+                        ng-click="$ctrl.updateActiveTab('/ICOSale')" href="#/ICOSale">
                             ICO Sale
                     </a>
                 </li>
