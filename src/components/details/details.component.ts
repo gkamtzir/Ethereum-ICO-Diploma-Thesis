@@ -1,6 +1,11 @@
 class DetailsController implements ng.IComponentController {
 
-    constructor() {}
+    public static $inject = ["web3Service"];
+
+    constructor(
+        public web3Service: any
+    ) 
+    {}
 }
 
 export default class DetailsComponent implements ng.IComponentOptions {

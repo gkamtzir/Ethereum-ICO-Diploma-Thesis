@@ -28,6 +28,9 @@ import TimeComponent from "./components/time/time.component";
 import BasicActionsComponent from "./components/basic-actions/basic-actions.component";
 import OwnerActionsComponent from "./components/owner-actions/owner-actions.component";
 
+// Services.
+import Web3Service from "./services/web3.service";
+
 const module = angular.module("OpenHouseAdminPanel", ["ngRoute"]);
 
 // The routing configuration.
@@ -58,6 +61,9 @@ module.component("icoSaleComponent", new ICOSaleComponent());
 module.component("timeComponent", new TimeComponent());
 module.component("basicActionsComponent", new BasicActionsComponent());
 module.component("ownerActionsComponent", new OwnerActionsComponent());
+
+// Wiring up the services.
+module.service("web3Service", Web3Service);
 
 angular.element(document).ready(() => {
     angular.bootstrap(document, ["OpenHouseAdminPanel"]);
