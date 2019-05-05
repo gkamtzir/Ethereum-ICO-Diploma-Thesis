@@ -21,19 +21,19 @@ export default class NavbarComponent implements ng.IComponentOptions {
             <ul class="nav nav-tabs">
                 <li class="nav-item">
                     <a class="nav-link" ng-class="{active: $ctrl.activeTab === '#/privateSale'}"
-                        ng-click="$ctrl.activeTab = '#/privateSale'" href="/#/privateSale">
+                        ng-click="$ctrl.activeTab = '#/privateSale'" href="#/privateSale">
                             Private Sale
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" ng-class="{active: $ctrl.activeTab === '#/preICOSale'}"
-                        ng-click="$ctrl.activeTab = '#/preICOSale'" href="/#/preICOSale">
+                        ng-click="$ctrl.activeTab = '#/preICOSale'" href="#/preICOSale">
                             Pre ICO Sale
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" ng-class="{active: $ctrl.activeTab === '#/ICOSale'}"
-                        ng-click="$ctrl.activeTab = '#/ICOSale'" href="/#/ICOSale">
+                        ng-click="$ctrl.activeTab = '#/ICOSale'" href="#/ICOSale">
                             ICO Sale
                     </a>
                 </li>
