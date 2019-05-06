@@ -1,0 +1,828 @@
+{
+  "contractName": "ILeasing",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "numberOfTokens",
+          "type": "uint256"
+        },
+        {
+          "name": "price",
+          "type": "uint256"
+        },
+        {
+          "name": "duration",
+          "type": "uint256"
+        }
+      ],
+      "name": "createOffer",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "removeOffer",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "terminateLeasing",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "from",
+          "type": "address"
+        }
+      ],
+      "name": "leaseFrom",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": true,
+      "stateMutability": "payable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "pragma solidity ^0.5.7;\r\n\r\n/**\r\n  * @title ILeasing interface\r\n  * @notice Provides the basic functionality of the Leasing\r\n  * contract.\r\n  */\r\ninterface ILeasing {\r\n    function createOffer(uint256 numberOfTokens, uint256 price, uint256 duration) external returns(bool);\r\n    function removeOffer() external returns(bool);\r\n    function terminateLeasing() external returns(bool);\r\n    function leaseFrom(address payable from) external payable returns(bool);\r\n}",
+  "sourcePath": "/home/gkamtzir/thesis/Ethereum-ICO-Diploma-Thesis/interfaces/ILeasing.sol",
+  "ast": {
+    "absolutePath": "/home/gkamtzir/thesis/Ethereum-ICO-Diploma-Thesis/interfaces/ILeasing.sol",
+    "exportedSymbols": {
+      "ILeasing": [
+        2181
+      ]
+    },
+    "id": 2182,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 2152,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".7"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:12"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": "@title ILeasing interface\r\n@notice Provides the basic functionality of the Leasing\r\ncontract.\r",
+        "fullyImplemented": false,
+        "id": 2181,
+        "linearizedBaseContracts": [
+          2181
+        ],
+        "name": "ILeasing",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": null,
+            "documentation": null,
+            "id": 2163,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "createOffer",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2159,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2154,
+                  "name": "numberOfTokens",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2163,
+                  "src": "192:22:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2153,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "192:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2156,
+                  "name": "price",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2163,
+                  "src": "216:13:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2155,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "216:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2158,
+                  "name": "duration",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2163,
+                  "src": "231:16:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2157,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "231:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "191:57:12"
+            },
+            "returnParameters": {
+              "id": 2162,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2161,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2163,
+                  "src": "266:4:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 2160,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "266:4:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "265:6:12"
+            },
+            "scope": 2181,
+            "src": "171:101:12",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "id": 2168,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "removeOffer",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2164,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "298:2:12"
+            },
+            "returnParameters": {
+              "id": 2167,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2166,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2168,
+                  "src": "318:4:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 2165,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "318:4:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "317:6:12"
+            },
+            "scope": 2181,
+            "src": "278:46:12",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "id": 2173,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "terminateLeasing",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2169,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "355:2:12"
+            },
+            "returnParameters": {
+              "id": 2172,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2171,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2173,
+                  "src": "375:4:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 2170,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "375:4:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "374:6:12"
+            },
+            "scope": 2181,
+            "src": "330:51:12",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "id": 2180,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "leaseFrom",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2176,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2175,
+                  "name": "from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2180,
+                  "src": "406:20:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address_payable",
+                    "typeString": "address payable"
+                  },
+                  "typeName": {
+                    "id": 2174,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "406:15:12",
+                    "stateMutability": "payable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address_payable",
+                      "typeString": "address payable"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "405:22:12"
+            },
+            "returnParameters": {
+              "id": 2179,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2178,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2180,
+                  "src": "453:4:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 2177,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "453:4:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "452:6:12"
+            },
+            "scope": 2181,
+            "src": "387:72:12",
+            "stateMutability": "payable",
+            "superFunction": null,
+            "visibility": "external"
+          }
+        ],
+        "scope": 2182,
+        "src": "145:317:12"
+      }
+    ],
+    "src": "0:462:12"
+  },
+  "legacyAST": {
+    "absolutePath": "/home/gkamtzir/thesis/Ethereum-ICO-Diploma-Thesis/interfaces/ILeasing.sol",
+    "exportedSymbols": {
+      "ILeasing": [
+        2181
+      ]
+    },
+    "id": 2182,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 2152,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".7"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:12"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": "@title ILeasing interface\r\n@notice Provides the basic functionality of the Leasing\r\ncontract.\r",
+        "fullyImplemented": false,
+        "id": 2181,
+        "linearizedBaseContracts": [
+          2181
+        ],
+        "name": "ILeasing",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": null,
+            "documentation": null,
+            "id": 2163,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "createOffer",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2159,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2154,
+                  "name": "numberOfTokens",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2163,
+                  "src": "192:22:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2153,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "192:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2156,
+                  "name": "price",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2163,
+                  "src": "216:13:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2155,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "216:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2158,
+                  "name": "duration",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2163,
+                  "src": "231:16:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2157,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "231:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "191:57:12"
+            },
+            "returnParameters": {
+              "id": 2162,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2161,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2163,
+                  "src": "266:4:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 2160,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "266:4:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "265:6:12"
+            },
+            "scope": 2181,
+            "src": "171:101:12",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "id": 2168,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "removeOffer",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2164,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "298:2:12"
+            },
+            "returnParameters": {
+              "id": 2167,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2166,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2168,
+                  "src": "318:4:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 2165,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "318:4:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "317:6:12"
+            },
+            "scope": 2181,
+            "src": "278:46:12",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "id": 2173,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "terminateLeasing",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2169,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "355:2:12"
+            },
+            "returnParameters": {
+              "id": 2172,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2171,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2173,
+                  "src": "375:4:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 2170,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "375:4:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "374:6:12"
+            },
+            "scope": 2181,
+            "src": "330:51:12",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "id": 2180,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "leaseFrom",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2176,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2175,
+                  "name": "from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2180,
+                  "src": "406:20:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address_payable",
+                    "typeString": "address payable"
+                  },
+                  "typeName": {
+                    "id": 2174,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "406:15:12",
+                    "stateMutability": "payable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address_payable",
+                      "typeString": "address payable"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "405:22:12"
+            },
+            "returnParameters": {
+              "id": 2179,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2178,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2180,
+                  "src": "453:4:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 2177,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "453:4:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "452:6:12"
+            },
+            "scope": 2181,
+            "src": "387:72:12",
+            "stateMutability": "payable",
+            "superFunction": null,
+            "visibility": "external"
+          }
+        ],
+        "scope": 2182,
+        "src": "145:317:12"
+      }
+    ],
+    "src": "0:462:12"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.5.7+commit.6da8b019.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.0.2",
+  "updatedAt": "2019-05-05T13:36:18.641Z",
+  "devdoc": {
+    "methods": {},
+    "title": "ILeasing interface\r"
+  },
+  "userdoc": {
+    "methods": {},
+    "notice": "Provides the basic functionality of the Leasing\r contract.\r"
+  }
+}

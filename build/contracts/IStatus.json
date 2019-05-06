@@ -1,0 +1,712 @@
+{
+  "contractName": "IStatus",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "blockNumber",
+          "type": "uint256"
+        }
+      ],
+      "name": "Activated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "blockNumber",
+          "type": "uint256"
+        }
+      ],
+      "name": "Deactivated",
+      "type": "event"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getStatus",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint8"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "activate",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "deactivate",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "pragma solidity ^0.5.7;\r\n\r\n/**\r\n  * @title IStatus interface\r\n  * @notice Provides the basic activate/deactivate functions\r\n  * and the Status enumeration.\r\n  */\r\ninterface IStatus {\r\n    enum Status {\r\n        Activated,\r\n        Deactivated\r\n    }\r\n    function getStatus() external view returns(Status);\r\n    function activate() external returns(bool);\r\n    function deactivate() external returns(bool);\r\n    event Activated(uint256 indexed blockNumber);\r\n    event Deactivated(uint256 indexed blockNumber);\r\n}",
+  "sourcePath": "/home/gkamtzir/thesis/Ethereum-ICO-Diploma-Thesis/interfaces/IStatus.sol",
+  "ast": {
+    "absolutePath": "/home/gkamtzir/thesis/Ethereum-ICO-Diploma-Thesis/interfaces/IStatus.sol",
+    "exportedSymbols": {
+      "IStatus": [
+        2239
+      ]
+    },
+    "id": 2240,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 2212,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".7"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:14"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": "@title IStatus interface\r\n@notice Provides the basic activate/deactivate functions\r\nand the Status enumeration.\r",
+        "fullyImplemented": false,
+        "id": 2239,
+        "linearizedBaseContracts": [
+          2239
+        ],
+        "name": "IStatus",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "canonicalName": "IStatus.Status",
+            "id": 2215,
+            "members": [
+              {
+                "id": 2213,
+                "name": "Activated",
+                "nodeType": "EnumValue",
+                "src": "211:9:14"
+              },
+              {
+                "id": 2214,
+                "name": "Deactivated",
+                "nodeType": "EnumValue",
+                "src": "231:11:14"
+              }
+            ],
+            "name": "Status",
+            "nodeType": "EnumDefinition",
+            "src": "188:61:14"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "id": 2220,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getStatus",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2216,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "273:2:14"
+            },
+            "returnParameters": {
+              "id": 2219,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2218,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2220,
+                  "src": "298:6:14",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_enum$_Status_$2215",
+                    "typeString": "enum IStatus.Status"
+                  },
+                  "typeName": {
+                    "contractScope": null,
+                    "id": 2217,
+                    "name": "Status",
+                    "nodeType": "UserDefinedTypeName",
+                    "referencedDeclaration": 2215,
+                    "src": "298:6:14",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_enum$_Status_$2215",
+                      "typeString": "enum IStatus.Status"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "297:8:14"
+            },
+            "scope": 2239,
+            "src": "255:51:14",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "id": 2225,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "activate",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2221,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "329:2:14"
+            },
+            "returnParameters": {
+              "id": 2224,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2223,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2225,
+                  "src": "349:4:14",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 2222,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "349:4:14",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "348:6:14"
+            },
+            "scope": 2239,
+            "src": "312:43:14",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "id": 2230,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "deactivate",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2226,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "380:2:14"
+            },
+            "returnParameters": {
+              "id": 2229,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2228,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2230,
+                  "src": "400:4:14",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 2227,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "400:4:14",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "399:6:14"
+            },
+            "scope": 2239,
+            "src": "361:45:14",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 2234,
+            "name": "Activated",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 2233,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2232,
+                  "indexed": true,
+                  "name": "blockNumber",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2234,
+                  "src": "428:27:14",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2231,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "428:7:14",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "427:29:14"
+            },
+            "src": "412:45:14"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 2238,
+            "name": "Deactivated",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 2237,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2236,
+                  "indexed": true,
+                  "name": "blockNumber",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2238,
+                  "src": "481:27:14",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2235,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "481:7:14",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "480:29:14"
+            },
+            "src": "463:47:14"
+          }
+        ],
+        "scope": 2240,
+        "src": "163:350:14"
+      }
+    ],
+    "src": "0:513:14"
+  },
+  "legacyAST": {
+    "absolutePath": "/home/gkamtzir/thesis/Ethereum-ICO-Diploma-Thesis/interfaces/IStatus.sol",
+    "exportedSymbols": {
+      "IStatus": [
+        2239
+      ]
+    },
+    "id": 2240,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 2212,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".7"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:14"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": "@title IStatus interface\r\n@notice Provides the basic activate/deactivate functions\r\nand the Status enumeration.\r",
+        "fullyImplemented": false,
+        "id": 2239,
+        "linearizedBaseContracts": [
+          2239
+        ],
+        "name": "IStatus",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "canonicalName": "IStatus.Status",
+            "id": 2215,
+            "members": [
+              {
+                "id": 2213,
+                "name": "Activated",
+                "nodeType": "EnumValue",
+                "src": "211:9:14"
+              },
+              {
+                "id": 2214,
+                "name": "Deactivated",
+                "nodeType": "EnumValue",
+                "src": "231:11:14"
+              }
+            ],
+            "name": "Status",
+            "nodeType": "EnumDefinition",
+            "src": "188:61:14"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "id": 2220,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getStatus",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2216,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "273:2:14"
+            },
+            "returnParameters": {
+              "id": 2219,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2218,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2220,
+                  "src": "298:6:14",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_enum$_Status_$2215",
+                    "typeString": "enum IStatus.Status"
+                  },
+                  "typeName": {
+                    "contractScope": null,
+                    "id": 2217,
+                    "name": "Status",
+                    "nodeType": "UserDefinedTypeName",
+                    "referencedDeclaration": 2215,
+                    "src": "298:6:14",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_enum$_Status_$2215",
+                      "typeString": "enum IStatus.Status"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "297:8:14"
+            },
+            "scope": 2239,
+            "src": "255:51:14",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "id": 2225,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "activate",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2221,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "329:2:14"
+            },
+            "returnParameters": {
+              "id": 2224,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2223,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2225,
+                  "src": "349:4:14",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 2222,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "349:4:14",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "348:6:14"
+            },
+            "scope": 2239,
+            "src": "312:43:14",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "id": 2230,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "deactivate",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2226,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "380:2:14"
+            },
+            "returnParameters": {
+              "id": 2229,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2228,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2230,
+                  "src": "400:4:14",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 2227,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "400:4:14",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "399:6:14"
+            },
+            "scope": 2239,
+            "src": "361:45:14",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 2234,
+            "name": "Activated",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 2233,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2232,
+                  "indexed": true,
+                  "name": "blockNumber",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2234,
+                  "src": "428:27:14",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2231,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "428:7:14",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "427:29:14"
+            },
+            "src": "412:45:14"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 2238,
+            "name": "Deactivated",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 2237,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2236,
+                  "indexed": true,
+                  "name": "blockNumber",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2238,
+                  "src": "481:27:14",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2235,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "481:7:14",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "480:29:14"
+            },
+            "src": "463:47:14"
+          }
+        ],
+        "scope": 2240,
+        "src": "163:350:14"
+      }
+    ],
+    "src": "0:513:14"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.5.7+commit.6da8b019.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.0.2",
+  "updatedAt": "2019-05-05T13:36:18.642Z",
+  "devdoc": {
+    "methods": {},
+    "title": "IStatus interface\r"
+  },
+  "userdoc": {
+    "methods": {},
+    "notice": "Provides the basic activate/deactivate functions\r and the Status enumeration.\r"
+  }
+}

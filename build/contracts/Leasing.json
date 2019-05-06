@@ -1,0 +1,4298 @@
+{
+  "contractName": "Leasing",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "from",
+          "type": "address"
+        }
+      ],
+      "name": "leaseFrom",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": true,
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "terminateLeasing",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "numberOfTokens",
+          "type": "uint256"
+        },
+        {
+          "name": "price",
+          "type": "uint256"
+        },
+        {
+          "name": "duration",
+          "type": "uint256"
+        }
+      ],
+      "name": "createOffer",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "removeOffer",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "numberOfTokens",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "price",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "duration",
+          "type": "uint256"
+        }
+      ],
+      "name": "OfferCreated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "from",
+          "type": "address"
+        }
+      ],
+      "name": "OfferRemoved",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "to",
+          "type": "address"
+        }
+      ],
+      "name": "Leased",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "to",
+          "type": "address"
+        }
+      ],
+      "name": "LeaseTerminated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "to",
+          "type": "address"
+        }
+      ],
+      "name": "LeasingTerminated",
+      "type": "event"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "from",
+          "type": "address"
+        }
+      ],
+      "name": "getOfferNumberOfTokens",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "from",
+          "type": "address"
+        }
+      ],
+      "name": "getOfferPrice",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "from",
+          "type": "address"
+        }
+      ],
+      "name": "getOfferDuration",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "from",
+          "type": "address"
+        }
+      ],
+      "name": "getOfferLeasedTo",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "from",
+          "type": "address"
+        }
+      ],
+      "name": "getOfferLeasedTimestamp",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "from",
+          "type": "address"
+        }
+      ],
+      "name": "getRentedNumberOfTokens",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "from",
+          "type": "address"
+        }
+      ],
+      "name": "getRentedAvailableTokens",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "from",
+          "type": "address"
+        }
+      ],
+      "name": "getRentedFrom",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "pragma solidity ^0.5.7;\r\n\r\n/// Interfaces.\r\nimport \"../interfaces/ILeasingEvents.sol\";\r\nimport \"../interfaces/ILeasing.sol\";\r\n\r\ncontract Leasing is ILeasingEvents, ILeasing {\r\n    /// Structs.\r\n    struct LeasingLog {\r\n        uint256 numberOfTokens;\r\n        uint256 price;\r\n        uint256 duration;\r\n        address leasedTo;\r\n        uint256 leasedTimestamp;\r\n    }\r\n\r\n    struct Rented {\r\n        uint256 numberOfTokens;\r\n        uint256 availableNumberOfTokens;\r\n        address rentedFrom;\r\n    }\r\n\r\n    /// Events.\r\n    event OfferCreated(\r\n        address indexed from,\r\n        uint256 numberOfTokens,\r\n        uint256 price,\r\n        uint256 duration\r\n    );\r\n\r\n    event OfferRemoved(\r\n        address indexed from\r\n    );\r\n\r\n    event Leased(\r\n        address indexed from,\r\n        address indexed to\r\n    );\r\n\r\n    event LeaseTerminated(\r\n        address indexed from,\r\n        address indexed to\r\n    );\r\n\r\n    mapping(address => LeasingLog) internal offer;\r\n    mapping(address => Rented) internal rent;\r\n\r\n    /**\r\n      * @notice A getter function for the number of tokens in\r\n      * the specified address's offer.\r\n      * @param from The address that created the offer.\r\n      * @return The number of tokens the offer currently provides.\r\n      */\r\n    function getOfferNumberOfTokens(address from) public view returns(uint256) {\r\n        return offer[from].numberOfTokens;\r\n    }\r\n\r\n    /**\r\n      * @notice A getter function for the price of the specified \r\n      * address's offer.\r\n      * @param from The address that created the offer.\r\n      * @return The price of the offer.\r\n      */\r\n    function getOfferPrice(address from) public view returns(uint256) {\r\n        return offer[from].price;\r\n    }\r\n\r\n    /**\r\n      * @notice A getter function for the duration of the specified \r\n      * address's offer.\r\n      * @param from The address that created the offer.\r\n      * @return The duration of the offer.\r\n      */\r\n    function getOfferDuration(address from) public view returns(uint256) {\r\n        return offer[from].duration;\r\n    }\r\n\r\n    /**\r\n      * @notice A getter function for the address that accepted the specified \r\n      * address's offer.\r\n      * @param from The address that created the offer.\r\n      * @return The address that currently rented from the specified address.\r\n      */\r\n    function getOfferLeasedTo(address from) public view returns(address) {\r\n        return offer[from].leasedTo;\r\n    }\r\n\r\n    /**\r\n      * @notice A getter function for the timestamp at which the offer got accepted.\r\n      * @param from The address that created the offer.\r\n      * @return The timestamp at which the offer got accepted.\r\n      */\r\n    function getOfferLeasedTimestamp(address from) public view returns(uint256) {\r\n        return offer[from].leasedTimestamp;\r\n    }\r\n\r\n    /**\r\n      * @notice A getter function for the number of tokens the given\r\n      * address has rented.\r\n      * @param from The address that rented the tokens.\r\n      * @return The number of tokens that the given address\r\n      * has currently rented.\r\n      */\r\n    function getRentedNumberOfTokens(address from) public view returns(uint256) {\r\n        return rent[from].numberOfTokens;\r\n    }\r\n\r\n    /**\r\n      * @notice A getter function for the available tokens of the given\r\n      * address.\r\n      * @param from The address that rented the tokens.\r\n      * @return The number of available tokens the given address\r\n      * currently has.\r\n      */\r\n    function getRentedAvailableTokens(address from) public view returns(uint256) {\r\n        return rent[from].availableNumberOfTokens;\r\n    }\r\n\r\n    /**\r\n      * @notice A getter function for the address from which the given address\r\n      * has rented the tokens.\r\n      * @param from The address that rented the tokens.\r\n      * @return The address from which the given address has rented\r\n      * the tokens.\r\n      */\r\n    function getRentedFrom(address from) public view returns(address) {\r\n        return rent[from].rentedFrom;\r\n    }\r\n\r\n}",
+  "sourcePath": "/home/gkamtzir/thesis/Ethereum-ICO-Diploma-Thesis/contracts/Leasing.sol",
+  "ast": {
+    "absolutePath": "/home/gkamtzir/thesis/Ethereum-ICO-Diploma-Thesis/contracts/Leasing.sol",
+    "exportedSymbols": {
+      "Leasing": [
+        329
+      ]
+    },
+    "id": 330,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 166,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".7"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:3"
+      },
+      {
+        "absolutePath": "/home/gkamtzir/thesis/Ethereum-ICO-Diploma-Thesis/interfaces/ILeasingEvents.sol",
+        "file": "../interfaces/ILeasingEvents.sol",
+        "id": 167,
+        "nodeType": "ImportDirective",
+        "scope": 330,
+        "sourceUnit": 2211,
+        "src": "44:42:3",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/gkamtzir/thesis/Ethereum-ICO-Diploma-Thesis/interfaces/ILeasing.sol",
+        "file": "../interfaces/ILeasing.sol",
+        "id": 168,
+        "nodeType": "ImportDirective",
+        "scope": 330,
+        "sourceUnit": 2182,
+        "src": "88:36:3",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 169,
+              "name": "ILeasingEvents",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 2210,
+              "src": "148:14:3",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_ILeasingEvents_$2210",
+                "typeString": "contract ILeasingEvents"
+              }
+            },
+            "id": 170,
+            "nodeType": "InheritanceSpecifier",
+            "src": "148:14:3"
+          },
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 171,
+              "name": "ILeasing",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 2181,
+              "src": "164:8:3",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_ILeasing_$2181",
+                "typeString": "contract ILeasing"
+              }
+            },
+            "id": 172,
+            "nodeType": "InheritanceSpecifier",
+            "src": "164:8:3"
+          }
+        ],
+        "contractDependencies": [
+          2181,
+          2210
+        ],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": false,
+        "id": 329,
+        "linearizedBaseContracts": [
+          329,
+          2181,
+          2210
+        ],
+        "name": "Leasing",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "canonicalName": "Leasing.LeasingLog",
+            "id": 183,
+            "members": [
+              {
+                "constant": false,
+                "id": 174,
+                "name": "numberOfTokens",
+                "nodeType": "VariableDeclaration",
+                "scope": 183,
+                "src": "227:22:3",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 173,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "227:7:3",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 176,
+                "name": "price",
+                "nodeType": "VariableDeclaration",
+                "scope": 183,
+                "src": "260:13:3",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 175,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "260:7:3",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 178,
+                "name": "duration",
+                "nodeType": "VariableDeclaration",
+                "scope": 183,
+                "src": "284:16:3",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 177,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "284:7:3",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 180,
+                "name": "leasedTo",
+                "nodeType": "VariableDeclaration",
+                "scope": 183,
+                "src": "311:16:3",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 179,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "311:7:3",
+                  "stateMutability": "nonpayable",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 182,
+                "name": "leasedTimestamp",
+                "nodeType": "VariableDeclaration",
+                "scope": 183,
+                "src": "338:23:3",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 181,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "338:7:3",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "LeasingLog",
+            "nodeType": "StructDefinition",
+            "scope": 329,
+            "src": "198:171:3",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "Leasing.Rented",
+            "id": 190,
+            "members": [
+              {
+                "constant": false,
+                "id": 185,
+                "name": "numberOfTokens",
+                "nodeType": "VariableDeclaration",
+                "scope": 190,
+                "src": "402:22:3",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 184,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "402:7:3",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 187,
+                "name": "availableNumberOfTokens",
+                "nodeType": "VariableDeclaration",
+                "scope": 190,
+                "src": "435:31:3",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 186,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "435:7:3",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 189,
+                "name": "rentedFrom",
+                "nodeType": "VariableDeclaration",
+                "scope": 190,
+                "src": "477:18:3",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 188,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "477:7:3",
+                  "stateMutability": "nonpayable",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "Rented",
+            "nodeType": "StructDefinition",
+            "scope": 329,
+            "src": "377:126:3",
+            "visibility": "public"
+          },
+          {
+            "anonymous": false,
+            "documentation": "Events.",
+            "id": 200,
+            "name": "OfferCreated",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 199,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 192,
+                  "indexed": true,
+                  "name": "from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 200,
+                  "src": "557:20:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 191,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "557:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 194,
+                  "indexed": false,
+                  "name": "numberOfTokens",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 200,
+                  "src": "588:22:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 193,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "588:7:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 196,
+                  "indexed": false,
+                  "name": "price",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 200,
+                  "src": "621:13:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 195,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "621:7:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 198,
+                  "indexed": false,
+                  "name": "duration",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 200,
+                  "src": "645:16:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 197,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "645:7:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "546:122:3"
+            },
+            "src": "528:141:3"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 204,
+            "name": "OfferRemoved",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 203,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 202,
+                  "indexed": true,
+                  "name": "from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 204,
+                  "src": "706:20:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 201,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "706:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "695:38:3"
+            },
+            "src": "677:57:3"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 210,
+            "name": "Leased",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 209,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 206,
+                  "indexed": true,
+                  "name": "from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 210,
+                  "src": "765:20:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 205,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "765:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 208,
+                  "indexed": true,
+                  "name": "to",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 210,
+                  "src": "796:18:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 207,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "796:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "754:67:3"
+            },
+            "src": "742:80:3"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 216,
+            "name": "LeaseTerminated",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 215,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 212,
+                  "indexed": true,
+                  "name": "from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 216,
+                  "src": "862:20:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 211,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "862:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 214,
+                  "indexed": true,
+                  "name": "to",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 216,
+                  "src": "893:18:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 213,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "893:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "851:67:3"
+            },
+            "src": "830:89:3"
+          },
+          {
+            "constant": false,
+            "id": 220,
+            "name": "offer",
+            "nodeType": "VariableDeclaration",
+            "scope": 329,
+            "src": "927:45:3",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_address_$_t_struct$_LeasingLog_$183_storage_$",
+              "typeString": "mapping(address => struct Leasing.LeasingLog)"
+            },
+            "typeName": {
+              "id": 219,
+              "keyType": {
+                "id": 217,
+                "name": "address",
+                "nodeType": "ElementaryTypeName",
+                "src": "935:7:3",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "927:30:3",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_address_$_t_struct$_LeasingLog_$183_storage_$",
+                "typeString": "mapping(address => struct Leasing.LeasingLog)"
+              },
+              "valueType": {
+                "contractScope": null,
+                "id": 218,
+                "name": "LeasingLog",
+                "nodeType": "UserDefinedTypeName",
+                "referencedDeclaration": 183,
+                "src": "946:10:3",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_LeasingLog_$183_storage_ptr",
+                  "typeString": "struct Leasing.LeasingLog"
+                }
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "constant": false,
+            "id": 224,
+            "name": "rent",
+            "nodeType": "VariableDeclaration",
+            "scope": 329,
+            "src": "979:40:3",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Rented_$190_storage_$",
+              "typeString": "mapping(address => struct Leasing.Rented)"
+            },
+            "typeName": {
+              "id": 223,
+              "keyType": {
+                "id": 221,
+                "name": "address",
+                "nodeType": "ElementaryTypeName",
+                "src": "987:7:3",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "979:26:3",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Rented_$190_storage_$",
+                "typeString": "mapping(address => struct Leasing.Rented)"
+              },
+              "valueType": {
+                "contractScope": null,
+                "id": 222,
+                "name": "Rented",
+                "nodeType": "UserDefinedTypeName",
+                "referencedDeclaration": 190,
+                "src": "998:6:3",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_Rented_$190_storage_ptr",
+                  "typeString": "struct Leasing.Rented"
+                }
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 236,
+              "nodeType": "Block",
+              "src": "1350:52:3",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "expression": {
+                      "argumentTypes": null,
+                      "baseExpression": {
+                        "argumentTypes": null,
+                        "id": 231,
+                        "name": "offer",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 220,
+                        "src": "1368:5:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_address_$_t_struct$_LeasingLog_$183_storage_$",
+                          "typeString": "mapping(address => struct Leasing.LeasingLog storage ref)"
+                        }
+                      },
+                      "id": 233,
+                      "indexExpression": {
+                        "argumentTypes": null,
+                        "id": 232,
+                        "name": "from",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 226,
+                        "src": "1374:4:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "nodeType": "IndexAccess",
+                      "src": "1368:11:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_LeasingLog_$183_storage",
+                        "typeString": "struct Leasing.LeasingLog storage ref"
+                      }
+                    },
+                    "id": 234,
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "memberName": "numberOfTokens",
+                    "nodeType": "MemberAccess",
+                    "referencedDeclaration": 174,
+                    "src": "1368:26:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "functionReturnParameters": 230,
+                  "id": 235,
+                  "nodeType": "Return",
+                  "src": "1361:33:3"
+                }
+              ]
+            },
+            "documentation": "@notice A getter function for the number of tokens in\r\nthe specified address's offer.\r\n@param from The address that created the offer.\r\n@return The number of tokens the offer currently provides.\r",
+            "id": 237,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getOfferNumberOfTokens",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 227,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 226,
+                  "name": "from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 237,
+                  "src": "1307:12:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 225,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1307:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1306:14:3"
+            },
+            "returnParameters": {
+              "id": 230,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 229,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 237,
+                  "src": "1341:7:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 228,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1341:7:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1340:9:3"
+            },
+            "scope": 329,
+            "src": "1275:127:3",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 249,
+              "nodeType": "Block",
+              "src": "1686:43:3",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "expression": {
+                      "argumentTypes": null,
+                      "baseExpression": {
+                        "argumentTypes": null,
+                        "id": 244,
+                        "name": "offer",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 220,
+                        "src": "1704:5:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_address_$_t_struct$_LeasingLog_$183_storage_$",
+                          "typeString": "mapping(address => struct Leasing.LeasingLog storage ref)"
+                        }
+                      },
+                      "id": 246,
+                      "indexExpression": {
+                        "argumentTypes": null,
+                        "id": 245,
+                        "name": "from",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 239,
+                        "src": "1710:4:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "nodeType": "IndexAccess",
+                      "src": "1704:11:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_LeasingLog_$183_storage",
+                        "typeString": "struct Leasing.LeasingLog storage ref"
+                      }
+                    },
+                    "id": 247,
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "memberName": "price",
+                    "nodeType": "MemberAccess",
+                    "referencedDeclaration": 176,
+                    "src": "1704:17:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "functionReturnParameters": 243,
+                  "id": 248,
+                  "nodeType": "Return",
+                  "src": "1697:24:3"
+                }
+              ]
+            },
+            "documentation": "@notice A getter function for the price of the specified \r\naddress's offer.\r\n@param from The address that created the offer.\r\n@return The price of the offer.\r",
+            "id": 250,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getOfferPrice",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 240,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 239,
+                  "name": "from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 250,
+                  "src": "1643:12:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 238,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1643:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1642:14:3"
+            },
+            "returnParameters": {
+              "id": 243,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 242,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 250,
+                  "src": "1677:7:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 241,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1677:7:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1676:9:3"
+            },
+            "scope": 329,
+            "src": "1620:109:3",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 262,
+              "nodeType": "Block",
+              "src": "2022:46:3",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "expression": {
+                      "argumentTypes": null,
+                      "baseExpression": {
+                        "argumentTypes": null,
+                        "id": 257,
+                        "name": "offer",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 220,
+                        "src": "2040:5:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_address_$_t_struct$_LeasingLog_$183_storage_$",
+                          "typeString": "mapping(address => struct Leasing.LeasingLog storage ref)"
+                        }
+                      },
+                      "id": 259,
+                      "indexExpression": {
+                        "argumentTypes": null,
+                        "id": 258,
+                        "name": "from",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 252,
+                        "src": "2046:4:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "nodeType": "IndexAccess",
+                      "src": "2040:11:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_LeasingLog_$183_storage",
+                        "typeString": "struct Leasing.LeasingLog storage ref"
+                      }
+                    },
+                    "id": 260,
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "memberName": "duration",
+                    "nodeType": "MemberAccess",
+                    "referencedDeclaration": 178,
+                    "src": "2040:20:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "functionReturnParameters": 256,
+                  "id": 261,
+                  "nodeType": "Return",
+                  "src": "2033:27:3"
+                }
+              ]
+            },
+            "documentation": "@notice A getter function for the duration of the specified \r\naddress's offer.\r\n@param from The address that created the offer.\r\n@return The duration of the offer.\r",
+            "id": 263,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getOfferDuration",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 253,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 252,
+                  "name": "from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 263,
+                  "src": "1979:12:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 251,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1979:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1978:14:3"
+            },
+            "returnParameters": {
+              "id": 256,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 255,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 263,
+                  "src": "2013:7:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 254,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2013:7:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2012:9:3"
+            },
+            "scope": 329,
+            "src": "1953:115:3",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 275,
+              "nodeType": "Block",
+              "src": "2406:46:3",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "expression": {
+                      "argumentTypes": null,
+                      "baseExpression": {
+                        "argumentTypes": null,
+                        "id": 270,
+                        "name": "offer",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 220,
+                        "src": "2424:5:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_address_$_t_struct$_LeasingLog_$183_storage_$",
+                          "typeString": "mapping(address => struct Leasing.LeasingLog storage ref)"
+                        }
+                      },
+                      "id": 272,
+                      "indexExpression": {
+                        "argumentTypes": null,
+                        "id": 271,
+                        "name": "from",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 265,
+                        "src": "2430:4:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "nodeType": "IndexAccess",
+                      "src": "2424:11:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_LeasingLog_$183_storage",
+                        "typeString": "struct Leasing.LeasingLog storage ref"
+                      }
+                    },
+                    "id": 273,
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "memberName": "leasedTo",
+                    "nodeType": "MemberAccess",
+                    "referencedDeclaration": 180,
+                    "src": "2424:20:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "functionReturnParameters": 269,
+                  "id": 274,
+                  "nodeType": "Return",
+                  "src": "2417:27:3"
+                }
+              ]
+            },
+            "documentation": "@notice A getter function for the address that accepted the specified \r\naddress's offer.\r\n@param from The address that created the offer.\r\n@return The address that currently rented from the specified address.\r",
+            "id": 276,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getOfferLeasedTo",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 266,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 265,
+                  "name": "from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 276,
+                  "src": "2363:12:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 264,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2363:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2362:14:3"
+            },
+            "returnParameters": {
+              "id": 269,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 268,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 276,
+                  "src": "2397:7:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 267,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2397:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2396:9:3"
+            },
+            "scope": 329,
+            "src": "2337:115:3",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 288,
+              "nodeType": "Block",
+              "src": "2762:53:3",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "expression": {
+                      "argumentTypes": null,
+                      "baseExpression": {
+                        "argumentTypes": null,
+                        "id": 283,
+                        "name": "offer",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 220,
+                        "src": "2780:5:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_address_$_t_struct$_LeasingLog_$183_storage_$",
+                          "typeString": "mapping(address => struct Leasing.LeasingLog storage ref)"
+                        }
+                      },
+                      "id": 285,
+                      "indexExpression": {
+                        "argumentTypes": null,
+                        "id": 284,
+                        "name": "from",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 278,
+                        "src": "2786:4:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "nodeType": "IndexAccess",
+                      "src": "2780:11:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_LeasingLog_$183_storage",
+                        "typeString": "struct Leasing.LeasingLog storage ref"
+                      }
+                    },
+                    "id": 286,
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "memberName": "leasedTimestamp",
+                    "nodeType": "MemberAccess",
+                    "referencedDeclaration": 182,
+                    "src": "2780:27:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "functionReturnParameters": 282,
+                  "id": 287,
+                  "nodeType": "Return",
+                  "src": "2773:34:3"
+                }
+              ]
+            },
+            "documentation": "@notice A getter function for the timestamp at which the offer got accepted.\r\n@param from The address that created the offer.\r\n@return The timestamp at which the offer got accepted.\r",
+            "id": 289,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getOfferLeasedTimestamp",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 279,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 278,
+                  "name": "from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 289,
+                  "src": "2719:12:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 277,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2719:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2718:14:3"
+            },
+            "returnParameters": {
+              "id": 282,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 281,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 289,
+                  "src": "2753:7:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 280,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2753:7:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2752:9:3"
+            },
+            "scope": 329,
+            "src": "2686:129:3",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 301,
+              "nodeType": "Block",
+              "src": "3166:51:3",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "expression": {
+                      "argumentTypes": null,
+                      "baseExpression": {
+                        "argumentTypes": null,
+                        "id": 296,
+                        "name": "rent",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 224,
+                        "src": "3184:4:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Rented_$190_storage_$",
+                          "typeString": "mapping(address => struct Leasing.Rented storage ref)"
+                        }
+                      },
+                      "id": 298,
+                      "indexExpression": {
+                        "argumentTypes": null,
+                        "id": 297,
+                        "name": "from",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 291,
+                        "src": "3189:4:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "nodeType": "IndexAccess",
+                      "src": "3184:10:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_Rented_$190_storage",
+                        "typeString": "struct Leasing.Rented storage ref"
+                      }
+                    },
+                    "id": 299,
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "memberName": "numberOfTokens",
+                    "nodeType": "MemberAccess",
+                    "referencedDeclaration": 185,
+                    "src": "3184:25:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "functionReturnParameters": 295,
+                  "id": 300,
+                  "nodeType": "Return",
+                  "src": "3177:32:3"
+                }
+              ]
+            },
+            "documentation": "@notice A getter function for the number of tokens the given\r\naddress has rented.\r\n@param from The address that rented the tokens.\r\n@return The number of tokens that the given address\r\nhas currently rented.\r",
+            "id": 302,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getRentedNumberOfTokens",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 292,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 291,
+                  "name": "from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 302,
+                  "src": "3123:12:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 290,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3123:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3122:14:3"
+            },
+            "returnParameters": {
+              "id": 295,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 294,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 302,
+                  "src": "3157:7:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 293,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3157:7:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3156:9:3"
+            },
+            "scope": 329,
+            "src": "3090:127:3",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 314,
+              "nodeType": "Block",
+              "src": "3559:60:3",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "expression": {
+                      "argumentTypes": null,
+                      "baseExpression": {
+                        "argumentTypes": null,
+                        "id": 309,
+                        "name": "rent",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 224,
+                        "src": "3577:4:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Rented_$190_storage_$",
+                          "typeString": "mapping(address => struct Leasing.Rented storage ref)"
+                        }
+                      },
+                      "id": 311,
+                      "indexExpression": {
+                        "argumentTypes": null,
+                        "id": 310,
+                        "name": "from",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 304,
+                        "src": "3582:4:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "nodeType": "IndexAccess",
+                      "src": "3577:10:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_Rented_$190_storage",
+                        "typeString": "struct Leasing.Rented storage ref"
+                      }
+                    },
+                    "id": 312,
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "memberName": "availableNumberOfTokens",
+                    "nodeType": "MemberAccess",
+                    "referencedDeclaration": 187,
+                    "src": "3577:34:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "functionReturnParameters": 308,
+                  "id": 313,
+                  "nodeType": "Return",
+                  "src": "3570:41:3"
+                }
+              ]
+            },
+            "documentation": "@notice A getter function for the available tokens of the given\r\naddress.\r\n@param from The address that rented the tokens.\r\n@return The number of available tokens the given address\r\ncurrently has.\r",
+            "id": 315,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getRentedAvailableTokens",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 305,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 304,
+                  "name": "from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 315,
+                  "src": "3516:12:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 303,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3516:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3515:14:3"
+            },
+            "returnParameters": {
+              "id": 308,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 307,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 315,
+                  "src": "3550:7:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 306,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3550:7:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3549:9:3"
+            },
+            "scope": 329,
+            "src": "3482:137:3",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 327,
+              "nodeType": "Block",
+              "src": "3971:47:3",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "expression": {
+                      "argumentTypes": null,
+                      "baseExpression": {
+                        "argumentTypes": null,
+                        "id": 322,
+                        "name": "rent",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 224,
+                        "src": "3989:4:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Rented_$190_storage_$",
+                          "typeString": "mapping(address => struct Leasing.Rented storage ref)"
+                        }
+                      },
+                      "id": 324,
+                      "indexExpression": {
+                        "argumentTypes": null,
+                        "id": 323,
+                        "name": "from",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 317,
+                        "src": "3994:4:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "nodeType": "IndexAccess",
+                      "src": "3989:10:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_Rented_$190_storage",
+                        "typeString": "struct Leasing.Rented storage ref"
+                      }
+                    },
+                    "id": 325,
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "memberName": "rentedFrom",
+                    "nodeType": "MemberAccess",
+                    "referencedDeclaration": 189,
+                    "src": "3989:21:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "functionReturnParameters": 321,
+                  "id": 326,
+                  "nodeType": "Return",
+                  "src": "3982:28:3"
+                }
+              ]
+            },
+            "documentation": "@notice A getter function for the address from which the given address\r\nhas rented the tokens.\r\n@param from The address that rented the tokens.\r\n@return The address from which the given address has rented\r\nthe tokens.\r",
+            "id": 328,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getRentedFrom",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 318,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 317,
+                  "name": "from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 328,
+                  "src": "3928:12:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 316,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3928:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3927:14:3"
+            },
+            "returnParameters": {
+              "id": 321,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 320,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 328,
+                  "src": "3962:7:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 319,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3962:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3961:9:3"
+            },
+            "scope": 329,
+            "src": "3905:113:3",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          }
+        ],
+        "scope": 330,
+        "src": "128:3895:3"
+      }
+    ],
+    "src": "0:4023:3"
+  },
+  "legacyAST": {
+    "absolutePath": "/home/gkamtzir/thesis/Ethereum-ICO-Diploma-Thesis/contracts/Leasing.sol",
+    "exportedSymbols": {
+      "Leasing": [
+        329
+      ]
+    },
+    "id": 330,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 166,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".7"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:3"
+      },
+      {
+        "absolutePath": "/home/gkamtzir/thesis/Ethereum-ICO-Diploma-Thesis/interfaces/ILeasingEvents.sol",
+        "file": "../interfaces/ILeasingEvents.sol",
+        "id": 167,
+        "nodeType": "ImportDirective",
+        "scope": 330,
+        "sourceUnit": 2211,
+        "src": "44:42:3",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/gkamtzir/thesis/Ethereum-ICO-Diploma-Thesis/interfaces/ILeasing.sol",
+        "file": "../interfaces/ILeasing.sol",
+        "id": 168,
+        "nodeType": "ImportDirective",
+        "scope": 330,
+        "sourceUnit": 2182,
+        "src": "88:36:3",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 169,
+              "name": "ILeasingEvents",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 2210,
+              "src": "148:14:3",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_ILeasingEvents_$2210",
+                "typeString": "contract ILeasingEvents"
+              }
+            },
+            "id": 170,
+            "nodeType": "InheritanceSpecifier",
+            "src": "148:14:3"
+          },
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 171,
+              "name": "ILeasing",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 2181,
+              "src": "164:8:3",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_ILeasing_$2181",
+                "typeString": "contract ILeasing"
+              }
+            },
+            "id": 172,
+            "nodeType": "InheritanceSpecifier",
+            "src": "164:8:3"
+          }
+        ],
+        "contractDependencies": [
+          2181,
+          2210
+        ],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": false,
+        "id": 329,
+        "linearizedBaseContracts": [
+          329,
+          2181,
+          2210
+        ],
+        "name": "Leasing",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "canonicalName": "Leasing.LeasingLog",
+            "id": 183,
+            "members": [
+              {
+                "constant": false,
+                "id": 174,
+                "name": "numberOfTokens",
+                "nodeType": "VariableDeclaration",
+                "scope": 183,
+                "src": "227:22:3",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 173,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "227:7:3",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 176,
+                "name": "price",
+                "nodeType": "VariableDeclaration",
+                "scope": 183,
+                "src": "260:13:3",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 175,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "260:7:3",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 178,
+                "name": "duration",
+                "nodeType": "VariableDeclaration",
+                "scope": 183,
+                "src": "284:16:3",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 177,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "284:7:3",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 180,
+                "name": "leasedTo",
+                "nodeType": "VariableDeclaration",
+                "scope": 183,
+                "src": "311:16:3",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 179,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "311:7:3",
+                  "stateMutability": "nonpayable",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 182,
+                "name": "leasedTimestamp",
+                "nodeType": "VariableDeclaration",
+                "scope": 183,
+                "src": "338:23:3",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 181,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "338:7:3",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "LeasingLog",
+            "nodeType": "StructDefinition",
+            "scope": 329,
+            "src": "198:171:3",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "Leasing.Rented",
+            "id": 190,
+            "members": [
+              {
+                "constant": false,
+                "id": 185,
+                "name": "numberOfTokens",
+                "nodeType": "VariableDeclaration",
+                "scope": 190,
+                "src": "402:22:3",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 184,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "402:7:3",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 187,
+                "name": "availableNumberOfTokens",
+                "nodeType": "VariableDeclaration",
+                "scope": 190,
+                "src": "435:31:3",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 186,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "435:7:3",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 189,
+                "name": "rentedFrom",
+                "nodeType": "VariableDeclaration",
+                "scope": 190,
+                "src": "477:18:3",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 188,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "477:7:3",
+                  "stateMutability": "nonpayable",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "Rented",
+            "nodeType": "StructDefinition",
+            "scope": 329,
+            "src": "377:126:3",
+            "visibility": "public"
+          },
+          {
+            "anonymous": false,
+            "documentation": "Events.",
+            "id": 200,
+            "name": "OfferCreated",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 199,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 192,
+                  "indexed": true,
+                  "name": "from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 200,
+                  "src": "557:20:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 191,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "557:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 194,
+                  "indexed": false,
+                  "name": "numberOfTokens",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 200,
+                  "src": "588:22:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 193,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "588:7:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 196,
+                  "indexed": false,
+                  "name": "price",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 200,
+                  "src": "621:13:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 195,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "621:7:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 198,
+                  "indexed": false,
+                  "name": "duration",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 200,
+                  "src": "645:16:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 197,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "645:7:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "546:122:3"
+            },
+            "src": "528:141:3"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 204,
+            "name": "OfferRemoved",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 203,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 202,
+                  "indexed": true,
+                  "name": "from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 204,
+                  "src": "706:20:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 201,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "706:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "695:38:3"
+            },
+            "src": "677:57:3"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 210,
+            "name": "Leased",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 209,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 206,
+                  "indexed": true,
+                  "name": "from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 210,
+                  "src": "765:20:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 205,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "765:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 208,
+                  "indexed": true,
+                  "name": "to",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 210,
+                  "src": "796:18:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 207,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "796:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "754:67:3"
+            },
+            "src": "742:80:3"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 216,
+            "name": "LeaseTerminated",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 215,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 212,
+                  "indexed": true,
+                  "name": "from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 216,
+                  "src": "862:20:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 211,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "862:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 214,
+                  "indexed": true,
+                  "name": "to",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 216,
+                  "src": "893:18:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 213,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "893:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "851:67:3"
+            },
+            "src": "830:89:3"
+          },
+          {
+            "constant": false,
+            "id": 220,
+            "name": "offer",
+            "nodeType": "VariableDeclaration",
+            "scope": 329,
+            "src": "927:45:3",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_address_$_t_struct$_LeasingLog_$183_storage_$",
+              "typeString": "mapping(address => struct Leasing.LeasingLog)"
+            },
+            "typeName": {
+              "id": 219,
+              "keyType": {
+                "id": 217,
+                "name": "address",
+                "nodeType": "ElementaryTypeName",
+                "src": "935:7:3",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "927:30:3",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_address_$_t_struct$_LeasingLog_$183_storage_$",
+                "typeString": "mapping(address => struct Leasing.LeasingLog)"
+              },
+              "valueType": {
+                "contractScope": null,
+                "id": 218,
+                "name": "LeasingLog",
+                "nodeType": "UserDefinedTypeName",
+                "referencedDeclaration": 183,
+                "src": "946:10:3",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_LeasingLog_$183_storage_ptr",
+                  "typeString": "struct Leasing.LeasingLog"
+                }
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "constant": false,
+            "id": 224,
+            "name": "rent",
+            "nodeType": "VariableDeclaration",
+            "scope": 329,
+            "src": "979:40:3",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Rented_$190_storage_$",
+              "typeString": "mapping(address => struct Leasing.Rented)"
+            },
+            "typeName": {
+              "id": 223,
+              "keyType": {
+                "id": 221,
+                "name": "address",
+                "nodeType": "ElementaryTypeName",
+                "src": "987:7:3",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "979:26:3",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Rented_$190_storage_$",
+                "typeString": "mapping(address => struct Leasing.Rented)"
+              },
+              "valueType": {
+                "contractScope": null,
+                "id": 222,
+                "name": "Rented",
+                "nodeType": "UserDefinedTypeName",
+                "referencedDeclaration": 190,
+                "src": "998:6:3",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_Rented_$190_storage_ptr",
+                  "typeString": "struct Leasing.Rented"
+                }
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 236,
+              "nodeType": "Block",
+              "src": "1350:52:3",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "expression": {
+                      "argumentTypes": null,
+                      "baseExpression": {
+                        "argumentTypes": null,
+                        "id": 231,
+                        "name": "offer",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 220,
+                        "src": "1368:5:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_address_$_t_struct$_LeasingLog_$183_storage_$",
+                          "typeString": "mapping(address => struct Leasing.LeasingLog storage ref)"
+                        }
+                      },
+                      "id": 233,
+                      "indexExpression": {
+                        "argumentTypes": null,
+                        "id": 232,
+                        "name": "from",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 226,
+                        "src": "1374:4:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "nodeType": "IndexAccess",
+                      "src": "1368:11:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_LeasingLog_$183_storage",
+                        "typeString": "struct Leasing.LeasingLog storage ref"
+                      }
+                    },
+                    "id": 234,
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "memberName": "numberOfTokens",
+                    "nodeType": "MemberAccess",
+                    "referencedDeclaration": 174,
+                    "src": "1368:26:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "functionReturnParameters": 230,
+                  "id": 235,
+                  "nodeType": "Return",
+                  "src": "1361:33:3"
+                }
+              ]
+            },
+            "documentation": "@notice A getter function for the number of tokens in\r\nthe specified address's offer.\r\n@param from The address that created the offer.\r\n@return The number of tokens the offer currently provides.\r",
+            "id": 237,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getOfferNumberOfTokens",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 227,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 226,
+                  "name": "from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 237,
+                  "src": "1307:12:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 225,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1307:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1306:14:3"
+            },
+            "returnParameters": {
+              "id": 230,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 229,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 237,
+                  "src": "1341:7:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 228,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1341:7:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1340:9:3"
+            },
+            "scope": 329,
+            "src": "1275:127:3",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 249,
+              "nodeType": "Block",
+              "src": "1686:43:3",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "expression": {
+                      "argumentTypes": null,
+                      "baseExpression": {
+                        "argumentTypes": null,
+                        "id": 244,
+                        "name": "offer",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 220,
+                        "src": "1704:5:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_address_$_t_struct$_LeasingLog_$183_storage_$",
+                          "typeString": "mapping(address => struct Leasing.LeasingLog storage ref)"
+                        }
+                      },
+                      "id": 246,
+                      "indexExpression": {
+                        "argumentTypes": null,
+                        "id": 245,
+                        "name": "from",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 239,
+                        "src": "1710:4:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "nodeType": "IndexAccess",
+                      "src": "1704:11:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_LeasingLog_$183_storage",
+                        "typeString": "struct Leasing.LeasingLog storage ref"
+                      }
+                    },
+                    "id": 247,
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "memberName": "price",
+                    "nodeType": "MemberAccess",
+                    "referencedDeclaration": 176,
+                    "src": "1704:17:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "functionReturnParameters": 243,
+                  "id": 248,
+                  "nodeType": "Return",
+                  "src": "1697:24:3"
+                }
+              ]
+            },
+            "documentation": "@notice A getter function for the price of the specified \r\naddress's offer.\r\n@param from The address that created the offer.\r\n@return The price of the offer.\r",
+            "id": 250,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getOfferPrice",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 240,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 239,
+                  "name": "from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 250,
+                  "src": "1643:12:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 238,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1643:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1642:14:3"
+            },
+            "returnParameters": {
+              "id": 243,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 242,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 250,
+                  "src": "1677:7:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 241,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1677:7:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1676:9:3"
+            },
+            "scope": 329,
+            "src": "1620:109:3",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 262,
+              "nodeType": "Block",
+              "src": "2022:46:3",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "expression": {
+                      "argumentTypes": null,
+                      "baseExpression": {
+                        "argumentTypes": null,
+                        "id": 257,
+                        "name": "offer",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 220,
+                        "src": "2040:5:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_address_$_t_struct$_LeasingLog_$183_storage_$",
+                          "typeString": "mapping(address => struct Leasing.LeasingLog storage ref)"
+                        }
+                      },
+                      "id": 259,
+                      "indexExpression": {
+                        "argumentTypes": null,
+                        "id": 258,
+                        "name": "from",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 252,
+                        "src": "2046:4:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "nodeType": "IndexAccess",
+                      "src": "2040:11:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_LeasingLog_$183_storage",
+                        "typeString": "struct Leasing.LeasingLog storage ref"
+                      }
+                    },
+                    "id": 260,
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "memberName": "duration",
+                    "nodeType": "MemberAccess",
+                    "referencedDeclaration": 178,
+                    "src": "2040:20:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "functionReturnParameters": 256,
+                  "id": 261,
+                  "nodeType": "Return",
+                  "src": "2033:27:3"
+                }
+              ]
+            },
+            "documentation": "@notice A getter function for the duration of the specified \r\naddress's offer.\r\n@param from The address that created the offer.\r\n@return The duration of the offer.\r",
+            "id": 263,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getOfferDuration",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 253,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 252,
+                  "name": "from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 263,
+                  "src": "1979:12:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 251,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1979:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1978:14:3"
+            },
+            "returnParameters": {
+              "id": 256,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 255,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 263,
+                  "src": "2013:7:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 254,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2013:7:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2012:9:3"
+            },
+            "scope": 329,
+            "src": "1953:115:3",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 275,
+              "nodeType": "Block",
+              "src": "2406:46:3",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "expression": {
+                      "argumentTypes": null,
+                      "baseExpression": {
+                        "argumentTypes": null,
+                        "id": 270,
+                        "name": "offer",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 220,
+                        "src": "2424:5:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_address_$_t_struct$_LeasingLog_$183_storage_$",
+                          "typeString": "mapping(address => struct Leasing.LeasingLog storage ref)"
+                        }
+                      },
+                      "id": 272,
+                      "indexExpression": {
+                        "argumentTypes": null,
+                        "id": 271,
+                        "name": "from",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 265,
+                        "src": "2430:4:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "nodeType": "IndexAccess",
+                      "src": "2424:11:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_LeasingLog_$183_storage",
+                        "typeString": "struct Leasing.LeasingLog storage ref"
+                      }
+                    },
+                    "id": 273,
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "memberName": "leasedTo",
+                    "nodeType": "MemberAccess",
+                    "referencedDeclaration": 180,
+                    "src": "2424:20:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "functionReturnParameters": 269,
+                  "id": 274,
+                  "nodeType": "Return",
+                  "src": "2417:27:3"
+                }
+              ]
+            },
+            "documentation": "@notice A getter function for the address that accepted the specified \r\naddress's offer.\r\n@param from The address that created the offer.\r\n@return The address that currently rented from the specified address.\r",
+            "id": 276,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getOfferLeasedTo",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 266,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 265,
+                  "name": "from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 276,
+                  "src": "2363:12:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 264,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2363:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2362:14:3"
+            },
+            "returnParameters": {
+              "id": 269,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 268,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 276,
+                  "src": "2397:7:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 267,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2397:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2396:9:3"
+            },
+            "scope": 329,
+            "src": "2337:115:3",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 288,
+              "nodeType": "Block",
+              "src": "2762:53:3",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "expression": {
+                      "argumentTypes": null,
+                      "baseExpression": {
+                        "argumentTypes": null,
+                        "id": 283,
+                        "name": "offer",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 220,
+                        "src": "2780:5:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_address_$_t_struct$_LeasingLog_$183_storage_$",
+                          "typeString": "mapping(address => struct Leasing.LeasingLog storage ref)"
+                        }
+                      },
+                      "id": 285,
+                      "indexExpression": {
+                        "argumentTypes": null,
+                        "id": 284,
+                        "name": "from",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 278,
+                        "src": "2786:4:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "nodeType": "IndexAccess",
+                      "src": "2780:11:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_LeasingLog_$183_storage",
+                        "typeString": "struct Leasing.LeasingLog storage ref"
+                      }
+                    },
+                    "id": 286,
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "memberName": "leasedTimestamp",
+                    "nodeType": "MemberAccess",
+                    "referencedDeclaration": 182,
+                    "src": "2780:27:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "functionReturnParameters": 282,
+                  "id": 287,
+                  "nodeType": "Return",
+                  "src": "2773:34:3"
+                }
+              ]
+            },
+            "documentation": "@notice A getter function for the timestamp at which the offer got accepted.\r\n@param from The address that created the offer.\r\n@return The timestamp at which the offer got accepted.\r",
+            "id": 289,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getOfferLeasedTimestamp",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 279,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 278,
+                  "name": "from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 289,
+                  "src": "2719:12:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 277,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2719:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2718:14:3"
+            },
+            "returnParameters": {
+              "id": 282,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 281,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 289,
+                  "src": "2753:7:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 280,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2753:7:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2752:9:3"
+            },
+            "scope": 329,
+            "src": "2686:129:3",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 301,
+              "nodeType": "Block",
+              "src": "3166:51:3",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "expression": {
+                      "argumentTypes": null,
+                      "baseExpression": {
+                        "argumentTypes": null,
+                        "id": 296,
+                        "name": "rent",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 224,
+                        "src": "3184:4:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Rented_$190_storage_$",
+                          "typeString": "mapping(address => struct Leasing.Rented storage ref)"
+                        }
+                      },
+                      "id": 298,
+                      "indexExpression": {
+                        "argumentTypes": null,
+                        "id": 297,
+                        "name": "from",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 291,
+                        "src": "3189:4:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "nodeType": "IndexAccess",
+                      "src": "3184:10:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_Rented_$190_storage",
+                        "typeString": "struct Leasing.Rented storage ref"
+                      }
+                    },
+                    "id": 299,
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "memberName": "numberOfTokens",
+                    "nodeType": "MemberAccess",
+                    "referencedDeclaration": 185,
+                    "src": "3184:25:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "functionReturnParameters": 295,
+                  "id": 300,
+                  "nodeType": "Return",
+                  "src": "3177:32:3"
+                }
+              ]
+            },
+            "documentation": "@notice A getter function for the number of tokens the given\r\naddress has rented.\r\n@param from The address that rented the tokens.\r\n@return The number of tokens that the given address\r\nhas currently rented.\r",
+            "id": 302,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getRentedNumberOfTokens",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 292,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 291,
+                  "name": "from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 302,
+                  "src": "3123:12:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 290,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3123:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3122:14:3"
+            },
+            "returnParameters": {
+              "id": 295,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 294,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 302,
+                  "src": "3157:7:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 293,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3157:7:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3156:9:3"
+            },
+            "scope": 329,
+            "src": "3090:127:3",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 314,
+              "nodeType": "Block",
+              "src": "3559:60:3",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "expression": {
+                      "argumentTypes": null,
+                      "baseExpression": {
+                        "argumentTypes": null,
+                        "id": 309,
+                        "name": "rent",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 224,
+                        "src": "3577:4:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Rented_$190_storage_$",
+                          "typeString": "mapping(address => struct Leasing.Rented storage ref)"
+                        }
+                      },
+                      "id": 311,
+                      "indexExpression": {
+                        "argumentTypes": null,
+                        "id": 310,
+                        "name": "from",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 304,
+                        "src": "3582:4:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "nodeType": "IndexAccess",
+                      "src": "3577:10:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_Rented_$190_storage",
+                        "typeString": "struct Leasing.Rented storage ref"
+                      }
+                    },
+                    "id": 312,
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "memberName": "availableNumberOfTokens",
+                    "nodeType": "MemberAccess",
+                    "referencedDeclaration": 187,
+                    "src": "3577:34:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "functionReturnParameters": 308,
+                  "id": 313,
+                  "nodeType": "Return",
+                  "src": "3570:41:3"
+                }
+              ]
+            },
+            "documentation": "@notice A getter function for the available tokens of the given\r\naddress.\r\n@param from The address that rented the tokens.\r\n@return The number of available tokens the given address\r\ncurrently has.\r",
+            "id": 315,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getRentedAvailableTokens",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 305,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 304,
+                  "name": "from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 315,
+                  "src": "3516:12:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 303,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3516:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3515:14:3"
+            },
+            "returnParameters": {
+              "id": 308,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 307,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 315,
+                  "src": "3550:7:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 306,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3550:7:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3549:9:3"
+            },
+            "scope": 329,
+            "src": "3482:137:3",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 327,
+              "nodeType": "Block",
+              "src": "3971:47:3",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "expression": {
+                      "argumentTypes": null,
+                      "baseExpression": {
+                        "argumentTypes": null,
+                        "id": 322,
+                        "name": "rent",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 224,
+                        "src": "3989:4:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Rented_$190_storage_$",
+                          "typeString": "mapping(address => struct Leasing.Rented storage ref)"
+                        }
+                      },
+                      "id": 324,
+                      "indexExpression": {
+                        "argumentTypes": null,
+                        "id": 323,
+                        "name": "from",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 317,
+                        "src": "3994:4:3",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "nodeType": "IndexAccess",
+                      "src": "3989:10:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_Rented_$190_storage",
+                        "typeString": "struct Leasing.Rented storage ref"
+                      }
+                    },
+                    "id": 325,
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "memberName": "rentedFrom",
+                    "nodeType": "MemberAccess",
+                    "referencedDeclaration": 189,
+                    "src": "3989:21:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "functionReturnParameters": 321,
+                  "id": 326,
+                  "nodeType": "Return",
+                  "src": "3982:28:3"
+                }
+              ]
+            },
+            "documentation": "@notice A getter function for the address from which the given address\r\nhas rented the tokens.\r\n@param from The address that rented the tokens.\r\n@return The address from which the given address has rented\r\nthe tokens.\r",
+            "id": 328,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getRentedFrom",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 318,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 317,
+                  "name": "from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 328,
+                  "src": "3928:12:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 316,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3928:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3927:14:3"
+            },
+            "returnParameters": {
+              "id": 321,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 320,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 328,
+                  "src": "3962:7:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 319,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3962:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3961:9:3"
+            },
+            "scope": 329,
+            "src": "3905:113:3",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          }
+        ],
+        "scope": 330,
+        "src": "128:3895:3"
+      }
+    ],
+    "src": "0:4023:3"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.5.7+commit.6da8b019.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.0.2",
+  "updatedAt": "2019-05-05T13:36:18.621Z",
+  "devdoc": {
+    "methods": {
+      "getOfferDuration(address)": {
+        "params": {
+          "from": "The address that created the offer.\r"
+        },
+        "return": "The duration of the offer.\r"
+      },
+      "getOfferLeasedTimestamp(address)": {
+        "params": {
+          "from": "The address that created the offer.\r"
+        },
+        "return": "The timestamp at which the offer got accepted.\r"
+      },
+      "getOfferLeasedTo(address)": {
+        "params": {
+          "from": "The address that created the offer.\r"
+        },
+        "return": "The address that currently rented from the specified address.\r"
+      },
+      "getOfferNumberOfTokens(address)": {
+        "params": {
+          "from": "The address that created the offer.\r"
+        },
+        "return": "The number of tokens the offer currently provides.\r"
+      },
+      "getOfferPrice(address)": {
+        "params": {
+          "from": "The address that created the offer.\r"
+        },
+        "return": "The price of the offer.\r"
+      },
+      "getRentedAvailableTokens(address)": {
+        "params": {
+          "from": "The address that rented the tokens.\r"
+        },
+        "return": "The number of available tokens the given address\r currently has.\r"
+      },
+      "getRentedFrom(address)": {
+        "params": {
+          "from": "The address that rented the tokens.\r"
+        },
+        "return": "The address from which the given address has rented\r the tokens.\r"
+      },
+      "getRentedNumberOfTokens(address)": {
+        "params": {
+          "from": "The address that rented the tokens.\r"
+        },
+        "return": "The number of tokens that the given address\r has currently rented.\r"
+      }
+    }
+  },
+  "userdoc": {
+    "methods": {
+      "getOfferDuration(address)": {
+        "notice": "A getter function for the duration of the specified \r address's offer.\r"
+      },
+      "getOfferLeasedTimestamp(address)": {
+        "notice": "A getter function for the timestamp at which the offer got accepted.\r"
+      },
+      "getOfferLeasedTo(address)": {
+        "notice": "A getter function for the address that accepted the specified \r address's offer.\r"
+      },
+      "getOfferNumberOfTokens(address)": {
+        "notice": "A getter function for the number of tokens in\r the specified address's offer.\r"
+      },
+      "getOfferPrice(address)": {
+        "notice": "A getter function for the price of the specified \r address's offer.\r"
+      },
+      "getRentedAvailableTokens(address)": {
+        "notice": "A getter function for the available tokens of the given\r address.\r"
+      },
+      "getRentedFrom(address)": {
+        "notice": "A getter function for the address from which the given address\r has rented the tokens.\r"
+      },
+      "getRentedNumberOfTokens(address)": {
+        "notice": "A getter function for the number of tokens the given\r address has rented.\r"
+      }
+    }
+  }
+}

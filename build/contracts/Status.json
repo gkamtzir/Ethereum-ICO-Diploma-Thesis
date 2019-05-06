@@ -1,0 +1,894 @@
+{
+  "contractName": "Status",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "activate",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "deactivate",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "blockNumber",
+          "type": "uint256"
+        }
+      ],
+      "name": "Activated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "blockNumber",
+          "type": "uint256"
+        }
+      ],
+      "name": "Deactivated",
+      "type": "event"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getStatus",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint8"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "pragma solidity ^0.5.7;\r\n\r\n/// Interfaces.\r\nimport \"../interfaces/IStatus.sol\";\r\n\r\ncontract Status is IStatus {\r\n\r\n    Status internal status;\r\n\r\n    /// Events.\r\n    event Activated(\r\n        uint256 indexed blockNumber\r\n    );\r\n\r\n    event Deactivated(\r\n        uint256 indexed blockNumber\r\n    );\r\n\r\n    /// Verifies that contract is active.\r\n    modifier isActivated() {\r\n        require(status == Status.Activated);\r\n        _;\r\n    }\r\n\r\n    /**\r\n      * @notice A getter function for contract's status.\r\n      * @return The current status of the contract.\r\n      */\r\n    function getStatus() public view returns(Status) {\r\n        return status;\r\n    }\r\n\r\n}",
+  "sourcePath": "/home/gkamtzir/thesis/Ethereum-ICO-Diploma-Thesis/contracts/Status.sol",
+  "ast": {
+    "absolutePath": "/home/gkamtzir/thesis/Ethereum-ICO-Diploma-Thesis/contracts/Status.sol",
+    "exportedSymbols": {
+      "Status": [
+        2040
+      ]
+    },
+    "id": 2041,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 2007,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".7"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:9"
+      },
+      {
+        "absolutePath": "/home/gkamtzir/thesis/Ethereum-ICO-Diploma-Thesis/interfaces/IStatus.sol",
+        "file": "../interfaces/IStatus.sol",
+        "id": 2008,
+        "nodeType": "ImportDirective",
+        "scope": 2041,
+        "sourceUnit": 2240,
+        "src": "44:35:9",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 2009,
+              "name": "IStatus",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 2239,
+              "src": "102:7:9",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_IStatus_$2239",
+                "typeString": "contract IStatus"
+              }
+            },
+            "id": 2010,
+            "nodeType": "InheritanceSpecifier",
+            "src": "102:7:9"
+          }
+        ],
+        "contractDependencies": [
+          2239
+        ],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": false,
+        "id": 2040,
+        "linearizedBaseContracts": [
+          2040,
+          2239
+        ],
+        "name": "Status",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "constant": false,
+            "id": 2012,
+            "name": "status",
+            "nodeType": "VariableDeclaration",
+            "scope": 2040,
+            "src": "119:22:9",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_enum$_Status_$2215",
+              "typeString": "enum IStatus.Status"
+            },
+            "typeName": {
+              "contractScope": null,
+              "id": 2011,
+              "name": "Status",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 2215,
+              "src": "119:6:9",
+              "typeDescriptions": {
+                "typeIdentifier": "t_enum$_Status_$2215",
+                "typeString": "enum IStatus.Status"
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "anonymous": false,
+            "documentation": "Events.",
+            "id": 2016,
+            "name": "Activated",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 2015,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2014,
+                  "indexed": true,
+                  "name": "blockNumber",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2016,
+                  "src": "193:27:9",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2013,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "193:7:9",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "182:45:9"
+            },
+            "src": "167:61:9"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 2020,
+            "name": "Deactivated",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 2019,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2018,
+                  "indexed": true,
+                  "name": "blockNumber",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2020,
+                  "src": "264:27:9",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2017,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "264:7:9",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "253:45:9"
+            },
+            "src": "236:63:9"
+          },
+          {
+            "body": {
+              "id": 2030,
+              "nodeType": "Block",
+              "src": "373:66:9",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "commonType": {
+                          "typeIdentifier": "t_enum$_Status_$2215",
+                          "typeString": "enum IStatus.Status"
+                        },
+                        "id": 2026,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "argumentTypes": null,
+                          "id": 2023,
+                          "name": "status",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 2012,
+                          "src": "392:6:9",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_enum$_Status_$2215",
+                            "typeString": "enum IStatus.Status"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": "==",
+                        "rightExpression": {
+                          "argumentTypes": null,
+                          "expression": {
+                            "argumentTypes": null,
+                            "id": 2024,
+                            "name": "Status",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 2215,
+                            "src": "402:6:9",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_type$_t_enum$_Status_$2215_$",
+                              "typeString": "type(enum IStatus.Status)"
+                            }
+                          },
+                          "id": 2025,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "lValueRequested": false,
+                          "memberName": "Activated",
+                          "nodeType": "MemberAccess",
+                          "referencedDeclaration": null,
+                          "src": "402:16:9",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_enum$_Status_$2215",
+                            "typeString": "enum IStatus.Status"
+                          }
+                        },
+                        "src": "392:26:9",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      ],
+                      "id": 2022,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        2385,
+                        2386
+                      ],
+                      "referencedDeclaration": 2385,
+                      "src": "384:7:9",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
+                        "typeString": "function (bool) pure"
+                      }
+                    },
+                    "id": 2027,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "384:35:9",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 2028,
+                  "nodeType": "ExpressionStatement",
+                  "src": "384:35:9"
+                },
+                {
+                  "id": 2029,
+                  "nodeType": "PlaceholderStatement",
+                  "src": "430:1:9"
+                }
+              ]
+            },
+            "documentation": "Verifies that contract is active.",
+            "id": 2031,
+            "name": "isActivated",
+            "nodeType": "ModifierDefinition",
+            "parameters": {
+              "id": 2021,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "370:2:9"
+            },
+            "src": "350:89:9",
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 2038,
+              "nodeType": "Block",
+              "src": "626:32:9",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 2036,
+                    "name": "status",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 2012,
+                    "src": "644:6:9",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_enum$_Status_$2215",
+                      "typeString": "enum IStatus.Status"
+                    }
+                  },
+                  "functionReturnParameters": 2035,
+                  "id": 2037,
+                  "nodeType": "Return",
+                  "src": "637:13:9"
+                }
+              ]
+            },
+            "documentation": "@notice A getter function for contract's status.\r\n@return The current status of the contract.\r",
+            "id": 2039,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getStatus",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2032,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "595:2:9"
+            },
+            "returnParameters": {
+              "id": 2035,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2034,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2039,
+                  "src": "618:6:9",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_enum$_Status_$2215",
+                    "typeString": "enum IStatus.Status"
+                  },
+                  "typeName": {
+                    "contractScope": null,
+                    "id": 2033,
+                    "name": "Status",
+                    "nodeType": "UserDefinedTypeName",
+                    "referencedDeclaration": 2215,
+                    "src": "618:6:9",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_enum$_Status_$2215",
+                      "typeString": "enum IStatus.Status"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "617:8:9"
+            },
+            "scope": 2040,
+            "src": "577:81:9",
+            "stateMutability": "view",
+            "superFunction": 2220,
+            "visibility": "public"
+          }
+        ],
+        "scope": 2041,
+        "src": "83:580:9"
+      }
+    ],
+    "src": "0:663:9"
+  },
+  "legacyAST": {
+    "absolutePath": "/home/gkamtzir/thesis/Ethereum-ICO-Diploma-Thesis/contracts/Status.sol",
+    "exportedSymbols": {
+      "Status": [
+        2040
+      ]
+    },
+    "id": 2041,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 2007,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".7"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:9"
+      },
+      {
+        "absolutePath": "/home/gkamtzir/thesis/Ethereum-ICO-Diploma-Thesis/interfaces/IStatus.sol",
+        "file": "../interfaces/IStatus.sol",
+        "id": 2008,
+        "nodeType": "ImportDirective",
+        "scope": 2041,
+        "sourceUnit": 2240,
+        "src": "44:35:9",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 2009,
+              "name": "IStatus",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 2239,
+              "src": "102:7:9",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_IStatus_$2239",
+                "typeString": "contract IStatus"
+              }
+            },
+            "id": 2010,
+            "nodeType": "InheritanceSpecifier",
+            "src": "102:7:9"
+          }
+        ],
+        "contractDependencies": [
+          2239
+        ],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": false,
+        "id": 2040,
+        "linearizedBaseContracts": [
+          2040,
+          2239
+        ],
+        "name": "Status",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "constant": false,
+            "id": 2012,
+            "name": "status",
+            "nodeType": "VariableDeclaration",
+            "scope": 2040,
+            "src": "119:22:9",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_enum$_Status_$2215",
+              "typeString": "enum IStatus.Status"
+            },
+            "typeName": {
+              "contractScope": null,
+              "id": 2011,
+              "name": "Status",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 2215,
+              "src": "119:6:9",
+              "typeDescriptions": {
+                "typeIdentifier": "t_enum$_Status_$2215",
+                "typeString": "enum IStatus.Status"
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "anonymous": false,
+            "documentation": "Events.",
+            "id": 2016,
+            "name": "Activated",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 2015,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2014,
+                  "indexed": true,
+                  "name": "blockNumber",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2016,
+                  "src": "193:27:9",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2013,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "193:7:9",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "182:45:9"
+            },
+            "src": "167:61:9"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 2020,
+            "name": "Deactivated",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 2019,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2018,
+                  "indexed": true,
+                  "name": "blockNumber",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2020,
+                  "src": "264:27:9",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2017,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "264:7:9",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "253:45:9"
+            },
+            "src": "236:63:9"
+          },
+          {
+            "body": {
+              "id": 2030,
+              "nodeType": "Block",
+              "src": "373:66:9",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "commonType": {
+                          "typeIdentifier": "t_enum$_Status_$2215",
+                          "typeString": "enum IStatus.Status"
+                        },
+                        "id": 2026,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "argumentTypes": null,
+                          "id": 2023,
+                          "name": "status",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 2012,
+                          "src": "392:6:9",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_enum$_Status_$2215",
+                            "typeString": "enum IStatus.Status"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": "==",
+                        "rightExpression": {
+                          "argumentTypes": null,
+                          "expression": {
+                            "argumentTypes": null,
+                            "id": 2024,
+                            "name": "Status",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 2215,
+                            "src": "402:6:9",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_type$_t_enum$_Status_$2215_$",
+                              "typeString": "type(enum IStatus.Status)"
+                            }
+                          },
+                          "id": 2025,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "lValueRequested": false,
+                          "memberName": "Activated",
+                          "nodeType": "MemberAccess",
+                          "referencedDeclaration": null,
+                          "src": "402:16:9",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_enum$_Status_$2215",
+                            "typeString": "enum IStatus.Status"
+                          }
+                        },
+                        "src": "392:26:9",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      ],
+                      "id": 2022,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        2385,
+                        2386
+                      ],
+                      "referencedDeclaration": 2385,
+                      "src": "384:7:9",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
+                        "typeString": "function (bool) pure"
+                      }
+                    },
+                    "id": 2027,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "384:35:9",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 2028,
+                  "nodeType": "ExpressionStatement",
+                  "src": "384:35:9"
+                },
+                {
+                  "id": 2029,
+                  "nodeType": "PlaceholderStatement",
+                  "src": "430:1:9"
+                }
+              ]
+            },
+            "documentation": "Verifies that contract is active.",
+            "id": 2031,
+            "name": "isActivated",
+            "nodeType": "ModifierDefinition",
+            "parameters": {
+              "id": 2021,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "370:2:9"
+            },
+            "src": "350:89:9",
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 2038,
+              "nodeType": "Block",
+              "src": "626:32:9",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 2036,
+                    "name": "status",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 2012,
+                    "src": "644:6:9",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_enum$_Status_$2215",
+                      "typeString": "enum IStatus.Status"
+                    }
+                  },
+                  "functionReturnParameters": 2035,
+                  "id": 2037,
+                  "nodeType": "Return",
+                  "src": "637:13:9"
+                }
+              ]
+            },
+            "documentation": "@notice A getter function for contract's status.\r\n@return The current status of the contract.\r",
+            "id": 2039,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getStatus",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2032,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "595:2:9"
+            },
+            "returnParameters": {
+              "id": 2035,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2034,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2039,
+                  "src": "618:6:9",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_enum$_Status_$2215",
+                    "typeString": "enum IStatus.Status"
+                  },
+                  "typeName": {
+                    "contractScope": null,
+                    "id": 2033,
+                    "name": "Status",
+                    "nodeType": "UserDefinedTypeName",
+                    "referencedDeclaration": 2215,
+                    "src": "618:6:9",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_enum$_Status_$2215",
+                      "typeString": "enum IStatus.Status"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "617:8:9"
+            },
+            "scope": 2040,
+            "src": "577:81:9",
+            "stateMutability": "view",
+            "superFunction": 2220,
+            "visibility": "public"
+          }
+        ],
+        "scope": 2041,
+        "src": "83:580:9"
+      }
+    ],
+    "src": "0:663:9"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.5.7+commit.6da8b019.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.0.2",
+  "updatedAt": "2019-05-05T13:36:18.640Z",
+  "devdoc": {
+    "methods": {
+      "getStatus()": {
+        "return": "The current status of the contract.\r"
+      }
+    }
+  },
+  "userdoc": {
+    "methods": {
+      "getStatus()": {
+        "notice": "A getter function for contract's status.\r"
+      }
+    }
+  }
+}

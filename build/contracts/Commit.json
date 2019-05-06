@@ -1,0 +1,1690 @@
+{
+  "contractName": "Commit",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "numberOfTokens",
+          "type": "uint256"
+        }
+      ],
+      "name": "commitFromBalance",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "numberOfTokens",
+          "type": "uint256"
+        }
+      ],
+      "name": "commitToRented",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "numberOfTokens",
+          "type": "uint256"
+        }
+      ],
+      "name": "commitToBalance",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "numberOfTokens",
+          "type": "uint256"
+        }
+      ],
+      "name": "commitFromRented",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "numberOfTokens",
+          "type": "uint256"
+        }
+      ],
+      "name": "CommitedFromBalance",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "numberOfTokens",
+          "type": "uint256"
+        }
+      ],
+      "name": "CommitedToBalance",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "numberOfTokens",
+          "type": "uint256"
+        }
+      ],
+      "name": "CommitedFromRented",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "numberOfTokens",
+          "type": "uint256"
+        }
+      ],
+      "name": "CommitedToRented",
+      "type": "event"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getCommitedFromBalance",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getCommitedFromRented",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "pragma solidity ^0.5.7;\r\n\r\n/// Interfaces.\r\nimport \"../interfaces/ICommit.sol\";\r\n\r\ncontract Commit is ICommit {\r\n    /// Structs.\r\n    struct CommitStatus {\r\n        uint256 fromBalance;\r\n        uint256 fromRented;\r\n    }\r\n\r\n    mapping(address => CommitStatus) internal commited;\r\n\r\n    /// Events.\r\n    event CommitedFromBalance(\r\n        address indexed from,\r\n        uint256 numberOfTokens\r\n    );\r\n\r\n    event CommitedToBalance(\r\n        address indexed from,\r\n        uint256 numberOfTokens\r\n    );\r\n\r\n    event CommitedFromRented(\r\n        address indexed from,\r\n        uint256 numberOfTokens\r\n    );\r\n\r\n    event CommitedToRented(\r\n        address indexed from,\r\n        uint256 numberOfTokens\r\n    );\r\n\r\n    /**\r\n      * @notice A getter function for the commited tokens of the\r\n      * sender that come from the balance.\r\n      * @return The number of commited tokens of the sender that\r\n      * come from the balance.\r\n      */\r\n    function getCommitedFromBalance() public view returns(uint256) {\r\n        return commited[msg.sender].fromBalance;\r\n    }\r\n\r\n    /**\r\n      * @notice A getter function for the commited tokens of the\r\n      * sender that come from the rented tokens.\r\n      * @return The number of commited tokens of the sender that\r\n      * come from the rented tokens.\r\n      */\r\n    function getCommitedFromRented() public view returns(uint256) {\r\n        return commited[msg.sender].fromRented;\r\n    }\r\n\r\n}",
+  "sourcePath": "/home/gkamtzir/thesis/Ethereum-ICO-Diploma-Thesis/contracts/Commit.sol",
+  "ast": {
+    "absolutePath": "/home/gkamtzir/thesis/Ethereum-ICO-Diploma-Thesis/contracts/Commit.sol",
+    "exportedSymbols": {
+      "Commit": [
+        62
+      ]
+    },
+    "id": 63,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".7"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:0"
+      },
+      {
+        "absolutePath": "/home/gkamtzir/thesis/Ethereum-ICO-Diploma-Thesis/interfaces/ICommit.sol",
+        "file": "../interfaces/ICommit.sol",
+        "id": 2,
+        "nodeType": "ImportDirective",
+        "scope": 63,
+        "sourceUnit": 2082,
+        "src": "44:35:0",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 3,
+              "name": "ICommit",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 2081,
+              "src": "102:7:0",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_ICommit_$2081",
+                "typeString": "contract ICommit"
+              }
+            },
+            "id": 4,
+            "nodeType": "InheritanceSpecifier",
+            "src": "102:7:0"
+          }
+        ],
+        "contractDependencies": [
+          2081
+        ],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": false,
+        "id": 62,
+        "linearizedBaseContracts": [
+          62,
+          2081
+        ],
+        "name": "Commit",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "canonicalName": "Commit.CommitStatus",
+            "id": 9,
+            "members": [
+              {
+                "constant": false,
+                "id": 6,
+                "name": "fromBalance",
+                "nodeType": "VariableDeclaration",
+                "scope": 9,
+                "src": "166:19:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 5,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "166:7:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 8,
+                "name": "fromRented",
+                "nodeType": "VariableDeclaration",
+                "scope": 9,
+                "src": "196:18:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 7,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "196:7:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "CommitStatus",
+            "nodeType": "StructDefinition",
+            "scope": 62,
+            "src": "135:87:0",
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "id": 13,
+            "name": "commited",
+            "nodeType": "VariableDeclaration",
+            "scope": 62,
+            "src": "230:50:0",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_address_$_t_struct$_CommitStatus_$9_storage_$",
+              "typeString": "mapping(address => struct Commit.CommitStatus)"
+            },
+            "typeName": {
+              "id": 12,
+              "keyType": {
+                "id": 10,
+                "name": "address",
+                "nodeType": "ElementaryTypeName",
+                "src": "238:7:0",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "230:32:0",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_address_$_t_struct$_CommitStatus_$9_storage_$",
+                "typeString": "mapping(address => struct Commit.CommitStatus)"
+              },
+              "valueType": {
+                "contractScope": null,
+                "id": 11,
+                "name": "CommitStatus",
+                "nodeType": "UserDefinedTypeName",
+                "referencedDeclaration": 9,
+                "src": "249:12:0",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_CommitStatus_$9_storage_ptr",
+                  "typeString": "struct Commit.CommitStatus"
+                }
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "anonymous": false,
+            "documentation": "Events.",
+            "id": 19,
+            "name": "CommitedFromBalance",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 18,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 15,
+                  "indexed": true,
+                  "name": "from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 19,
+                  "src": "342:20:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 14,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "342:7:0",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 17,
+                  "indexed": false,
+                  "name": "numberOfTokens",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 19,
+                  "src": "373:22:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 16,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "373:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "331:71:0"
+            },
+            "src": "306:97:0"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 25,
+            "name": "CommitedToBalance",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 24,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 21,
+                  "indexed": true,
+                  "name": "from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 25,
+                  "src": "445:20:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 20,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "445:7:0",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 23,
+                  "indexed": false,
+                  "name": "numberOfTokens",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 25,
+                  "src": "476:22:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 22,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "476:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "434:71:0"
+            },
+            "src": "411:95:0"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 31,
+            "name": "CommitedFromRented",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 30,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 27,
+                  "indexed": true,
+                  "name": "from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 31,
+                  "src": "549:20:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 26,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "549:7:0",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 29,
+                  "indexed": false,
+                  "name": "numberOfTokens",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 31,
+                  "src": "580:22:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 28,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "580:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "538:71:0"
+            },
+            "src": "514:96:0"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 37,
+            "name": "CommitedToRented",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 36,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 33,
+                  "indexed": true,
+                  "name": "from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 37,
+                  "src": "651:20:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 32,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "651:7:0",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 35,
+                  "indexed": false,
+                  "name": "numberOfTokens",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 37,
+                  "src": "682:22:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 34,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "682:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "640:71:0"
+            },
+            "src": "618:94:0"
+          },
+          {
+            "body": {
+              "id": 48,
+              "nodeType": "Block",
+              "src": "1010:58:0",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "expression": {
+                      "argumentTypes": null,
+                      "baseExpression": {
+                        "argumentTypes": null,
+                        "id": 42,
+                        "name": "commited",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 13,
+                        "src": "1028:8:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_address_$_t_struct$_CommitStatus_$9_storage_$",
+                          "typeString": "mapping(address => struct Commit.CommitStatus storage ref)"
+                        }
+                      },
+                      "id": 45,
+                      "indexExpression": {
+                        "argumentTypes": null,
+                        "expression": {
+                          "argumentTypes": null,
+                          "id": 43,
+                          "name": "msg",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 2382,
+                          "src": "1037:3:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_magic_message",
+                            "typeString": "msg"
+                          }
+                        },
+                        "id": 44,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberName": "sender",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": null,
+                        "src": "1037:10:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address_payable",
+                          "typeString": "address payable"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "nodeType": "IndexAccess",
+                      "src": "1028:20:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_CommitStatus_$9_storage",
+                        "typeString": "struct Commit.CommitStatus storage ref"
+                      }
+                    },
+                    "id": 46,
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "memberName": "fromBalance",
+                    "nodeType": "MemberAccess",
+                    "referencedDeclaration": 6,
+                    "src": "1028:32:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "functionReturnParameters": 41,
+                  "id": 47,
+                  "nodeType": "Return",
+                  "src": "1021:39:0"
+                }
+              ]
+            },
+            "documentation": "@notice A getter function for the commited tokens of the\r\nsender that come from the balance.\r\n@return The number of commited tokens of the sender that\r\ncome from the balance.\r",
+            "id": 49,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getCommitedFromBalance",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 38,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "978:2:0"
+            },
+            "returnParameters": {
+              "id": 41,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 40,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 49,
+                  "src": "1001:7:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 39,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1001:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1000:9:0"
+            },
+            "scope": 62,
+            "src": "947:121:0",
+            "stateMutability": "view",
+            "superFunction": 2047,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 60,
+              "nodeType": "Block",
+              "src": "1377:57:0",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "expression": {
+                      "argumentTypes": null,
+                      "baseExpression": {
+                        "argumentTypes": null,
+                        "id": 54,
+                        "name": "commited",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 13,
+                        "src": "1395:8:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_address_$_t_struct$_CommitStatus_$9_storage_$",
+                          "typeString": "mapping(address => struct Commit.CommitStatus storage ref)"
+                        }
+                      },
+                      "id": 57,
+                      "indexExpression": {
+                        "argumentTypes": null,
+                        "expression": {
+                          "argumentTypes": null,
+                          "id": 55,
+                          "name": "msg",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 2382,
+                          "src": "1404:3:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_magic_message",
+                            "typeString": "msg"
+                          }
+                        },
+                        "id": 56,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberName": "sender",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": null,
+                        "src": "1404:10:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address_payable",
+                          "typeString": "address payable"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "nodeType": "IndexAccess",
+                      "src": "1395:20:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_CommitStatus_$9_storage",
+                        "typeString": "struct Commit.CommitStatus storage ref"
+                      }
+                    },
+                    "id": 58,
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "memberName": "fromRented",
+                    "nodeType": "MemberAccess",
+                    "referencedDeclaration": 8,
+                    "src": "1395:31:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "functionReturnParameters": 53,
+                  "id": 59,
+                  "nodeType": "Return",
+                  "src": "1388:38:0"
+                }
+              ]
+            },
+            "documentation": "@notice A getter function for the commited tokens of the\r\nsender that come from the rented tokens.\r\n@return The number of commited tokens of the sender that\r\ncome from the rented tokens.\r",
+            "id": 61,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getCommitedFromRented",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 50,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1345:2:0"
+            },
+            "returnParameters": {
+              "id": 53,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 52,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 61,
+                  "src": "1368:7:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 51,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1368:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1367:9:0"
+            },
+            "scope": 62,
+            "src": "1315:119:0",
+            "stateMutability": "view",
+            "superFunction": 2052,
+            "visibility": "public"
+          }
+        ],
+        "scope": 63,
+        "src": "83:1356:0"
+      }
+    ],
+    "src": "0:1439:0"
+  },
+  "legacyAST": {
+    "absolutePath": "/home/gkamtzir/thesis/Ethereum-ICO-Diploma-Thesis/contracts/Commit.sol",
+    "exportedSymbols": {
+      "Commit": [
+        62
+      ]
+    },
+    "id": 63,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".7"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:0"
+      },
+      {
+        "absolutePath": "/home/gkamtzir/thesis/Ethereum-ICO-Diploma-Thesis/interfaces/ICommit.sol",
+        "file": "../interfaces/ICommit.sol",
+        "id": 2,
+        "nodeType": "ImportDirective",
+        "scope": 63,
+        "sourceUnit": 2082,
+        "src": "44:35:0",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 3,
+              "name": "ICommit",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 2081,
+              "src": "102:7:0",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_ICommit_$2081",
+                "typeString": "contract ICommit"
+              }
+            },
+            "id": 4,
+            "nodeType": "InheritanceSpecifier",
+            "src": "102:7:0"
+          }
+        ],
+        "contractDependencies": [
+          2081
+        ],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": false,
+        "id": 62,
+        "linearizedBaseContracts": [
+          62,
+          2081
+        ],
+        "name": "Commit",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "canonicalName": "Commit.CommitStatus",
+            "id": 9,
+            "members": [
+              {
+                "constant": false,
+                "id": 6,
+                "name": "fromBalance",
+                "nodeType": "VariableDeclaration",
+                "scope": 9,
+                "src": "166:19:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 5,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "166:7:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 8,
+                "name": "fromRented",
+                "nodeType": "VariableDeclaration",
+                "scope": 9,
+                "src": "196:18:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 7,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "196:7:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "CommitStatus",
+            "nodeType": "StructDefinition",
+            "scope": 62,
+            "src": "135:87:0",
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "id": 13,
+            "name": "commited",
+            "nodeType": "VariableDeclaration",
+            "scope": 62,
+            "src": "230:50:0",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_address_$_t_struct$_CommitStatus_$9_storage_$",
+              "typeString": "mapping(address => struct Commit.CommitStatus)"
+            },
+            "typeName": {
+              "id": 12,
+              "keyType": {
+                "id": 10,
+                "name": "address",
+                "nodeType": "ElementaryTypeName",
+                "src": "238:7:0",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "230:32:0",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_address_$_t_struct$_CommitStatus_$9_storage_$",
+                "typeString": "mapping(address => struct Commit.CommitStatus)"
+              },
+              "valueType": {
+                "contractScope": null,
+                "id": 11,
+                "name": "CommitStatus",
+                "nodeType": "UserDefinedTypeName",
+                "referencedDeclaration": 9,
+                "src": "249:12:0",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_CommitStatus_$9_storage_ptr",
+                  "typeString": "struct Commit.CommitStatus"
+                }
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "anonymous": false,
+            "documentation": "Events.",
+            "id": 19,
+            "name": "CommitedFromBalance",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 18,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 15,
+                  "indexed": true,
+                  "name": "from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 19,
+                  "src": "342:20:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 14,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "342:7:0",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 17,
+                  "indexed": false,
+                  "name": "numberOfTokens",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 19,
+                  "src": "373:22:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 16,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "373:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "331:71:0"
+            },
+            "src": "306:97:0"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 25,
+            "name": "CommitedToBalance",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 24,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 21,
+                  "indexed": true,
+                  "name": "from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 25,
+                  "src": "445:20:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 20,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "445:7:0",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 23,
+                  "indexed": false,
+                  "name": "numberOfTokens",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 25,
+                  "src": "476:22:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 22,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "476:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "434:71:0"
+            },
+            "src": "411:95:0"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 31,
+            "name": "CommitedFromRented",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 30,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 27,
+                  "indexed": true,
+                  "name": "from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 31,
+                  "src": "549:20:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 26,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "549:7:0",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 29,
+                  "indexed": false,
+                  "name": "numberOfTokens",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 31,
+                  "src": "580:22:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 28,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "580:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "538:71:0"
+            },
+            "src": "514:96:0"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 37,
+            "name": "CommitedToRented",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 36,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 33,
+                  "indexed": true,
+                  "name": "from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 37,
+                  "src": "651:20:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 32,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "651:7:0",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 35,
+                  "indexed": false,
+                  "name": "numberOfTokens",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 37,
+                  "src": "682:22:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 34,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "682:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "640:71:0"
+            },
+            "src": "618:94:0"
+          },
+          {
+            "body": {
+              "id": 48,
+              "nodeType": "Block",
+              "src": "1010:58:0",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "expression": {
+                      "argumentTypes": null,
+                      "baseExpression": {
+                        "argumentTypes": null,
+                        "id": 42,
+                        "name": "commited",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 13,
+                        "src": "1028:8:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_address_$_t_struct$_CommitStatus_$9_storage_$",
+                          "typeString": "mapping(address => struct Commit.CommitStatus storage ref)"
+                        }
+                      },
+                      "id": 45,
+                      "indexExpression": {
+                        "argumentTypes": null,
+                        "expression": {
+                          "argumentTypes": null,
+                          "id": 43,
+                          "name": "msg",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 2382,
+                          "src": "1037:3:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_magic_message",
+                            "typeString": "msg"
+                          }
+                        },
+                        "id": 44,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberName": "sender",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": null,
+                        "src": "1037:10:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address_payable",
+                          "typeString": "address payable"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "nodeType": "IndexAccess",
+                      "src": "1028:20:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_CommitStatus_$9_storage",
+                        "typeString": "struct Commit.CommitStatus storage ref"
+                      }
+                    },
+                    "id": 46,
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "memberName": "fromBalance",
+                    "nodeType": "MemberAccess",
+                    "referencedDeclaration": 6,
+                    "src": "1028:32:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "functionReturnParameters": 41,
+                  "id": 47,
+                  "nodeType": "Return",
+                  "src": "1021:39:0"
+                }
+              ]
+            },
+            "documentation": "@notice A getter function for the commited tokens of the\r\nsender that come from the balance.\r\n@return The number of commited tokens of the sender that\r\ncome from the balance.\r",
+            "id": 49,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getCommitedFromBalance",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 38,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "978:2:0"
+            },
+            "returnParameters": {
+              "id": 41,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 40,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 49,
+                  "src": "1001:7:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 39,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1001:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1000:9:0"
+            },
+            "scope": 62,
+            "src": "947:121:0",
+            "stateMutability": "view",
+            "superFunction": 2047,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 60,
+              "nodeType": "Block",
+              "src": "1377:57:0",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "expression": {
+                      "argumentTypes": null,
+                      "baseExpression": {
+                        "argumentTypes": null,
+                        "id": 54,
+                        "name": "commited",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 13,
+                        "src": "1395:8:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_address_$_t_struct$_CommitStatus_$9_storage_$",
+                          "typeString": "mapping(address => struct Commit.CommitStatus storage ref)"
+                        }
+                      },
+                      "id": 57,
+                      "indexExpression": {
+                        "argumentTypes": null,
+                        "expression": {
+                          "argumentTypes": null,
+                          "id": 55,
+                          "name": "msg",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 2382,
+                          "src": "1404:3:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_magic_message",
+                            "typeString": "msg"
+                          }
+                        },
+                        "id": 56,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberName": "sender",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": null,
+                        "src": "1404:10:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address_payable",
+                          "typeString": "address payable"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "nodeType": "IndexAccess",
+                      "src": "1395:20:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_CommitStatus_$9_storage",
+                        "typeString": "struct Commit.CommitStatus storage ref"
+                      }
+                    },
+                    "id": 58,
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "memberName": "fromRented",
+                    "nodeType": "MemberAccess",
+                    "referencedDeclaration": 8,
+                    "src": "1395:31:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "functionReturnParameters": 53,
+                  "id": 59,
+                  "nodeType": "Return",
+                  "src": "1388:38:0"
+                }
+              ]
+            },
+            "documentation": "@notice A getter function for the commited tokens of the\r\nsender that come from the rented tokens.\r\n@return The number of commited tokens of the sender that\r\ncome from the rented tokens.\r",
+            "id": 61,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getCommitedFromRented",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 50,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1345:2:0"
+            },
+            "returnParameters": {
+              "id": 53,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 52,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 61,
+                  "src": "1368:7:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 51,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1368:7:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1367:9:0"
+            },
+            "scope": 62,
+            "src": "1315:119:0",
+            "stateMutability": "view",
+            "superFunction": 2052,
+            "visibility": "public"
+          }
+        ],
+        "scope": 63,
+        "src": "83:1356:0"
+      }
+    ],
+    "src": "0:1439:0"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.5.7+commit.6da8b019.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.0.2",
+  "updatedAt": "2019-05-05T13:36:18.618Z",
+  "devdoc": {
+    "methods": {
+      "getCommitedFromBalance()": {
+        "return": "The number of commited tokens of the sender that\r come from the balance.\r"
+      },
+      "getCommitedFromRented()": {
+        "return": "The number of commited tokens of the sender that\r come from the rented tokens.\r"
+      }
+    }
+  },
+  "userdoc": {
+    "methods": {
+      "getCommitedFromBalance()": {
+        "notice": "A getter function for the commited tokens of the\r sender that come from the balance.\r"
+      },
+      "getCommitedFromRented()": {
+        "notice": "A getter function for the commited tokens of the\r sender that come from the rented tokens.\r"
+      }
+    }
+  }
+}
