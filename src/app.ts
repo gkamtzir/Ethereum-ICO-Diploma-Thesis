@@ -18,6 +18,9 @@ import "./components/owner-actions/owner-actions.component.scss";
 
 // Application dependencies.
 
+// Importing contract json files.
+import * as OpenHouseToken from "../build/contracts/OpenHouseToken.json";
+
 // Components.
 import NavbarComponent from "./components/navbar/navbar.component";
 import DetailsComponent from "./components/details/details.component";
@@ -64,6 +67,9 @@ module.component("ownerActionsComponent", new OwnerActionsComponent());
 
 // Wiring up the services.
 module.service("web3Service", Web3Service);
+
+// Wiring up the constants.
+module.constant("OpenHouseToken", OpenHouseToken);
 
 angular.element(document).ready(() => {
     angular.bootstrap(document, ["OpenHouseAdminPanel"]);
