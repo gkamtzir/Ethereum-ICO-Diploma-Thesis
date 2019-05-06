@@ -1,4 +1,4 @@
-const { latestTime } = require("./latestTime");
+const Web3 = require("web3");
 
 module.exports = {
     /**
@@ -6,6 +6,7 @@ module.exports = {
      * @param duration The duration of the time. 
      */
     increaseTime: async (duration) => {
+        const web3 = new Web3(new Web3.providers.HttpProvider("http://83.212.115.201:5555"));
         const id = Date.now();
 
         return new Promise((resolve, reject) => {
