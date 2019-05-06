@@ -20,6 +20,7 @@ import "./components/owner-actions/owner-actions.component.scss";
 
 // Importing contract json files.
 import * as OpenHouseToken from "../build/contracts/OpenHouseToken.json";
+import * as PrivateSale from "../build/contracts/PrivateSale.json";
 
 // Components.
 import NavbarComponent from "./components/navbar/navbar.component";
@@ -70,6 +71,10 @@ module.service("web3Service", Web3Service);
 
 // Wiring up the constants.
 module.constant("OpenHouseToken", OpenHouseToken);
+module.constant("PrivateSale", PrivateSale);
+
+module.constant("OpenHouseTokenContractAddress", "0x8d0E3b91823d984967319727E926fDD1e8E928C7");
+module.constant("PrivateSaleContractAddress", "0xd3a3685D5e7D786390ec0eA868B6FBB55C34f692");
 
 angular.element(document).ready(() => {
     angular.bootstrap(document, ["OpenHouseAdminPanel"]);
