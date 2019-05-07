@@ -1,6 +1,18 @@
+import IWeb3Service from "../../interfaces/services/web3.interface";
+
 class PrivateSaleController implements ng.IComponentController {
 
-    constructor() {}
+    public static $inject = ["web3Service"];
+
+    public privateSaleContract: any;
+
+    constructor(
+        public web3Service: IWeb3Service
+    ) {}
+
+    $onInit() {
+        this.privateSaleContract = this.web3Service.privateSaleContract;
+    }
 }
 
 export default class PrivateSaleComponent implements ng.IComponentOptions {
@@ -15,7 +27,7 @@ export default class PrivateSaleComponent implements ng.IComponentOptions {
         this.controllerAs = "$ctrl";
         this.template = `
         <div class="private-sale-component">
-            <details-component></details-component>
+            <details-component sale-contract="$ctrl.privateSaleContract"></details-component>
             <time-component></time-component>
             <div class="row">
                 <div class="col-sm">

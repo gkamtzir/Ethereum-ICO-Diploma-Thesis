@@ -1,11 +1,54 @@
+import IDetails from "../../interfaces/components/details/details.interface";
+
+// Enumerations.
+import { Status } from "../../enumerations/ContractStatus";
+
 class DetailsController implements ng.IComponentController {
 
-    public static $inject = ["web3Service"];
+    public static $inject = ["$scope"];
+    
+    public saleContract: any;
+    public status: any;
+
+    public details: IDetails = {
+        price: null,
+        minCap: null,
+        maxCap: null,
+        startDate: null,
+        endDate: null,
+        redeemableAfterDate: null,
+        owner: null,
+        status: null
+    };
 
     constructor(
-        public web3Service: any
+        public $scope: ng.IScope
     ) 
     {}
+
+    async $onInit() {
+        this.status = Status;
+        
+        if (this.saleContract != null) {
+            this.details.price = await this.saleContract.methods.getTokenPrice().call();
+            this.details.minCap = await this.saleContract.methods.getTokensMinCap().call();
+            this.details.maxCap = await this.saleContract.methods.getTokensMaxCap().call();
+            
+            let startTimestamp = await this.saleContract.methods.getStartTimestamp().call();
+            this.details.startDate = new Date(startTimestamp * 1000);
+    
+            let endTimestamp = await this.saleContract.methods.getEndTimestamp().call();
+            this.details.endDate = new Date(endTimestamp * 1000);
+    
+            let redeemableAfterTimestamp = await this.saleContract.methods.getRedeemableAfterTimestamp().call();
+            this.details.redeemableAfterDate = new Date(redeemableAfterTimestamp * 1000);
+    
+            this.details.owner = await this.saleContract.methods.getOwner().call();
+            this.details.status = await this.saleContract.methods.getStatus().call();
+    
+            this.$scope.$apply();
+        }
+    }
 }
 
 export default class DetailsComponent implements ng.IComponentOptions {
@@ -15,7 +58,9 @@ export default class DetailsComponent implements ng.IComponentOptions {
     public template: string;
 
     constructor() {
-        this.bindings = {};
+        this.bindings = {
+            "saleContract": "<"
+        };
         this.controller = DetailsController;
         this.controllerAs = "$ctrl";
         this.template = `
@@ -24,34 +69,38 @@ export default class DetailsComponent implements ng.IComponentOptions {
             <div class="details-card">
                 <div class="row">
                     <div class="col-sm">
-                        Price:
+                        Price: <span class="details-value">{{ $ctrl.details.price }}</span>
                     </div>
                     <div class="col-sm">
-                        Minimum cap:
+                        Minimum cap: <span class="details-value">{{ $ctrl.details.minCap }}</span>
                     </div>
                     <div class="col-sm">
-                        Maximum cap:
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm">
-                        Start Date:
-                    </div>
-                    <div class="col-sm">
-                        End Date:
-                    </div>
-                    <div class="col-sm">
-                        Redeemable Date:
+                        Maximum cap: <span class="details-value">{{ $ctrl.details.maxCap }}</span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm">
-                        Owner:
+                        Start Date: <span class="details-value">{{ $ctrl.details.startDate | date: "medium" }}</span>
+                    </div>
+                    <div class="col-sm">
+                        End Date: <span class="details-value">{{ $ctrl.details.endDate | date: "medium" }}</span>
+                    </div>
+                    <div class="col-sm">
+                        Redeemable Date: <span class="details-value">{{ $ctrl.details.redeemableAfterDate | date: "medium" }}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm">
+                        Owner: <span class="details-value">{{ $ctrl.details.owner }}</span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm">
                         <b>Status:</b>
+                        <span class="details-value">
+                            <span ng-if="$ctrl.details.status == $ctrl.status.Activated">Activated</span>
+                            <span ng-if="$ctrl.details.status == $ctrl.status.Deactivated">Deactivated</span>
+                        </span>
                     </div>
                 </div>
             </div>
