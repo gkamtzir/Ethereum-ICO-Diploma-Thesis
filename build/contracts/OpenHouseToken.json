@@ -26113,12 +26113,18 @@
     "1557161344370": {
       "events": {},
       "links": {},
-      "address": "0xfb043373443F8AC9Dc6EB876ab2EDBa567894AC6",
-      "transactionHash": "0xfaf283a9d01d028079e3c125ca577cec8fc7f1d4160651291b594b05fb1cd900"
+      "address": "0x8d0E3b91823d984967319727E926fDD1e8E928C7",
+      "transactionHash": "0xc25508089a59919b6f09ce56ff97bdf9576f193794c89f035f928b193c695b1f"
+    },
+    "1557210269332": {
+      "events": {},
+      "links": {},
+      "address": "0x7fBD0f66Eb81058fca21479367B9f8F50448352d",
+      "transactionHash": "0x45bc37af51a204af2461e1e6b774ddcac9077c0b02cc38be400db979a5720520"
     }
   },
   "schemaVersion": "3.0.2",
-  "updatedAt": "2019-05-06T16:49:45.040Z",
+  "updatedAt": "2019-05-07T07:06:22.960Z",
   "devdoc": {
     "author": "George Kamtziridis, gkamtzir@auth.gr\r",
     "methods": {
