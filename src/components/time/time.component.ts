@@ -1,4 +1,8 @@
+import IWeb3Service from "../../interfaces/services/web3.interface";
+
 class TimeController implements ng.IComponentController {
+
+    public static $inject = ["web3Service", "$scope"];
 
     // Public variables.
     public timespans: any[];
@@ -10,8 +14,10 @@ class TimeController implements ng.IComponentController {
     // Private variables.
     private durations: any;
 
-
-    constructor() {
+    constructor(
+        public web3Service: IWeb3Service,
+        public $scope: ng.IScope
+    ) {
         // Initializing the durations.
         this.durations = {
             seconds: function(val: number) { return val; },
@@ -50,10 +56,14 @@ class TimeController implements ng.IComponentController {
             }
         ];
 
-        this.currentDate = new Date(Date.now());
-        this.futureDate = new Date(Date.now());
         this.selectedRange = 0;
         this.selectedTimespan = this.timespans[0];
+    }
+
+    async $onInit() {
+        let currentTimestamp = await this.web3Service.latestTime();
+        this.currentDate = new Date(currentTimestamp * 1000);
+        this.futureDate = new Date(currentTimestamp * 1000);
     }
 
     /**
@@ -72,10 +82,13 @@ class TimeController implements ng.IComponentController {
     /**
      * Increases the time in the local ethereum blockchain (Ganache).
      */
-    public increaseTime(): void {
+    public async increaseTime() {
         console.log("Time increased");
+        let duration = this.durations[this.selectedTimespan.type](this.selectedRange);
+        await this.web3Service.increaseTime(duration);
         this.currentDate = this.futureDate;
         this.selectedRange = 0;
+        this.$scope.$apply();
     }
 }
 

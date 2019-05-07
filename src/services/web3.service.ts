@@ -26,4 +26,48 @@ export default class Web3Service {
         this.privateSaleContract = new this.web3.eth.Contract(this.PrivateSale.abi, this.PrivateSaleContractAddress);
     }
 
+    /**
+     * Returns the latest timestamp of the
+     * blockchain.
+     */
+    public async latestTime() {
+        let block = await this.web3.eth.getBlock('latest');
+        return block.timestamp;
+    }
+
+    /**
+     * Increases ganache time by the passed duration in seconds.
+     * @param duration The duration of the time in seconds. 
+     */
+    public async increaseTime(duration: number) {
+        const id = Date.now();
+
+        return new Promise((resolve, reject) => {
+            this.web3.currentProvider.send({
+                jsonrpc: '2.0',
+                method: 'evm_increaseTime',
+                params: [duration],
+                id: id,
+            }, err1 => {
+                if (err1) return reject(err1);
+
+                this.web3.currentProvider.send({
+                    jsonrpc: '2.0',
+                    method: 'evm_mine',
+                    id: id + 1,
+                }, (err2, res) => {
+                    return err2 ? reject(err2) : resolve(res);
+                });
+            });
+        });
+    }
+
+    /**
+     * Returns the given wei value to ether.
+     * @param number The value in wei.
+     */
+    public ether(number: number) {
+        return new this.web3.utils.BN(this.web3.utils.toWei(number.toString(), "ether"));
+    }
+
 }
