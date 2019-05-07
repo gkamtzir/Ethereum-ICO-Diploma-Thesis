@@ -1,3 +1,6 @@
+// Enumerations.
+import { Status } from "../../../enumerations/ContractStatus";
+
 export default interface IDetails {
     price: number;
     minCap: number;
@@ -6,5 +9,5 @@ export default interface IDetails {
     endDate: Date;
     redeemableAfterDate: Date;
     owner: string;
-    status: number;
+    status: Status;
 }
