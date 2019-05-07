@@ -80,10 +80,10 @@ export default class DetailsComponent implements ng.IComponentOptions {
                         Price: <span class="details-value">{{ $ctrl.details.price }}</span>
                     </div>
                     <div class="col-sm">
-                        Minimum cap: <span class="details-value">{{ $ctrl.details.minCap }}</span>
+                        Minimum cap: <span class="details-value">{{ $ctrl.details.minCap | dotSeparatorFilter }}</span>
                     </div>
                     <div class="col-sm">
-                        Maximum cap: <span class="details-value">{{ $ctrl.details.maxCap }}</span>
+                        Maximum cap: <span class="details-value">{{ $ctrl.details.maxCap | dotSeparatorFilter}}</span>
                     </div>
                 </div>
                 <div class="row">

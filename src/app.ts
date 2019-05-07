@@ -35,6 +35,9 @@ import OwnerActionsComponent from "./components/owner-actions/owner-actions.comp
 // Services.
 import Web3Service from "./services/web3.service";
 
+// Filters.
+import { DotSeparatorFilter } from "./filters/dot-separator.filter";
+
 const module = angular.module("OpenHouseAdminPanel", ["ngRoute"]);
 
 // The routing configuration.
@@ -69,12 +72,15 @@ module.component("ownerActionsComponent", new OwnerActionsComponent());
 // Wiring up the services.
 module.service("web3Service", Web3Service);
 
+// Wiring up the filters.
+module.filter("dotSeparatorFilter", DotSeparatorFilter);
+
 // Wiring up the constants.
 module.constant("OpenHouseToken", OpenHouseToken);
 module.constant("PrivateSale", PrivateSale);
 
-module.constant("OpenHouseTokenContractAddress", "0x8d0E3b91823d984967319727E926fDD1e8E928C7");
-module.constant("PrivateSaleContractAddress", "0xd3a3685D5e7D786390ec0eA868B6FBB55C34f692");
+module.constant("OpenHouseTokenContractAddress", "0x7fBD0f66Eb81058fca21479367B9f8F50448352d");
+module.constant("PrivateSaleContractAddress", "0x6c18791e47D9Ff68C178902c1DC51D12479671e8");
 
 angular.element(document).ready(() => {
     angular.bootstrap(document, ["OpenHouseAdminPanel"]);
