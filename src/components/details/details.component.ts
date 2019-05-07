@@ -9,6 +9,7 @@ class DetailsController implements ng.IComponentController {
     
     public saleContract: any;
     public status: any;
+    public hideLoader: boolean;
 
     public details: IDetails = {
         price: null,
@@ -24,7 +25,9 @@ class DetailsController implements ng.IComponentController {
     constructor(
         public $scope: ng.IScope
     ) 
-    {}
+    {
+        this.hideLoader = false;
+    }
 
     async $onInit() {
         this.status = Status;
@@ -45,9 +48,11 @@ class DetailsController implements ng.IComponentController {
     
             this.details.owner = await this.saleContract.methods.getOwner().call();
             this.details.status = await this.saleContract.methods.getStatus().call();
-    
+
+            this.hideLoader = true;
             this.$scope.$apply();
         }
+
     }
 }
 
@@ -65,6 +70,9 @@ export default class DetailsComponent implements ng.IComponentOptions {
         this.controllerAs = "$ctrl";
         this.template = `
         <div class="details-component">
+            <div class="loader-overlay" ng-hide="$ctrl.hideLoader">
+                <div class="spin-loader"></div>
+            </div>
             <h4>Details</h4>
             <div class="details-card">
                 <div class="row">
