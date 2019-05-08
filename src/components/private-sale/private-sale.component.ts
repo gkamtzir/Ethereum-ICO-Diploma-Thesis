@@ -5,13 +5,15 @@ class PrivateSaleController implements ng.IComponentController {
     public static $inject = ["web3Service"];
 
     public privateSaleContract: any;
+    public account: string;
 
     constructor(
         public web3Service: IWeb3Service
     ) {}
 
-    $onInit() {
+    async $onInit() {
         this.privateSaleContract = this.web3Service.privateSaleContract;
+        this.account = await this.web3Service.getMetamaskAccountOrNull();
     }
 }
 
@@ -34,7 +36,7 @@ export default class PrivateSaleComponent implements ng.IComponentOptions {
                     <basic-actions-component></basic-actions-component>
                 </div>
                 <div class="col-sm">
-                    <owner-actions-component restricted="true"></owner-actions-component>
+                    <owner-actions-component sale-contract="$ctrl.privateSaleContract" account="$ctrl.account" restricted="true"></owner-actions-component>
                 </div>
             </div>
         </div>

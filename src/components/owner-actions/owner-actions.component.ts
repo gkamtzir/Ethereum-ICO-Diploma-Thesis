@@ -1,9 +1,34 @@
 class AdminActionsController implements ng.IComponentController {
 
+    public saleContract: any;
+    public account: string;
     public restricted: boolean;
 
     constructor() {
         this.restricted = false;
+    }
+
+    /**
+     * Deactivates the sale contract.
+     */
+    public async deactivate() {
+        try {
+            await this.saleContract.methods.deactivate().send({ from: this.account });
+        } catch (exception) {
+            console.log("Only the owner can deactivate the contract.");
+        }
+
+    }
+
+    /**
+     * Activates the sale contract.
+     */
+    public async activate() {
+        try {
+            await this.saleContract.methods.activate().send({ from: this.account });
+        } catch (exception) {
+            console.log("Only the owner can activate the contract.");
+        }
     }
 }
 
@@ -15,6 +40,8 @@ export default class AdminActionsComponent implements ng.IComponentOptions {
 
     constructor() {
         this.bindings = {
+            saleContract: "<",
+            account: "<",
             restricted: "<"
         };
         this.controller = AdminActionsController;
@@ -25,12 +52,12 @@ export default class AdminActionsComponent implements ng.IComponentOptions {
 
             <div class="form-group row">
                 <label for="deactivate" class="col-sm-4 col-form-label">Deactivate Contract</label>
-                <button type="submit" class="btn btn-danger sm-4 action-button no-input-button">Deactivate</button>
+                <button type="submit" class="btn btn-danger sm-4 action-button no-input-button" ng-click="$ctrl.deactivate()">Deactivate</button>
             </div>
 
             <div class="form-group row">
                 <label for="activate" class="col-sm-4 col-form-label">Activate Contract</label>
-                <button type="submit" class="btn btn-success sm-4 action-button no-input-button">Activate</button>
+                <button type="submit" class="btn btn-success sm-4 action-button no-input-button" ng-click="$ctrl.activate()">Activate</button>
             </div>
 
             <div class="form-group row">
