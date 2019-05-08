@@ -2,18 +2,30 @@ import IWeb3Service from "../../interfaces/services/web3.interface";
 
 class PrivateSaleController implements ng.IComponentController {
 
-    public static $inject = ["web3Service"];
+    public static $inject = ["web3Service", "$rootScope"];
 
     public privateSaleContract: any;
     public account: string;
+    public accountChangedListener: any;
 
     constructor(
-        public web3Service: IWeb3Service
-    ) {}
+        public web3Service: IWeb3Service,
+        public $rootScope: ng.IRootScopeService
+    ) {
+        // Listening for 'accountChanged' events.
+        this.accountChangedListener = this.$rootScope.$on("web3.service.accountChanged", async () => {
+            this.account = await this.web3Service.getMetamaskAccountOrNull();
+        });
+    }
 
     async $onInit() {
         this.privateSaleContract = this.web3Service.privateSaleContract;
         this.account = await this.web3Service.getMetamaskAccountOrNull();
+    }
+
+    $onDestroy() {
+        // Making sure we unbind the $rootScope listener.
+        this.accountChangedListener();
     }
 }
 

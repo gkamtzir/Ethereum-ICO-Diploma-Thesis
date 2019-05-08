@@ -2,6 +2,7 @@ import * as W3 from "web3";
 const Web3 = require("web3");
 
 declare var web3;
+declare var ethereum;
 
 export default class Web3Service {
 
@@ -9,7 +10,9 @@ export default class Web3Service {
         "OpenHouseToken",
         "PrivateSale",
         "OpenHouseTokenContractAddress",
-        "PrivateSaleContractAddress"
+        "PrivateSaleContractAddress",
+        "toastr",
+        "$rootScope"
     ];
 
     public web3: W3.default;
@@ -21,7 +24,9 @@ export default class Web3Service {
         public OpenHouseToken: any,
         public PrivateSale: any,
         public OpenHouseTokenContractAddress: string,
-        public PrivateSaleContractAddress: string
+        public PrivateSaleContractAddress: string,
+        public toastr: ng.toastr.IToastrService,
+        public $rootScope: ng.IRootScopeService
     ) {
         if (typeof web3 !== 'undefined')
             this.web3 = new Web3(web3.currentProvider);
@@ -30,6 +35,17 @@ export default class Web3Service {
 
         this.tokenContract = new this.web3.eth.Contract(this.OpenHouseToken.abi, this.OpenHouseTokenContractAddress);
         this.privateSaleContract = new this.web3.eth.Contract(this.PrivateSale.abi, this.PrivateSaleContractAddress);
+
+        // Watching for account changes.
+        ethereum.on('accountsChanged', accounts => {
+            this.toastr.info(`The selected account has changed to: ${accounts[0]}`, "Account Changed", {
+                timeOut: 8000
+            });
+
+            // Emit 'accountChanged' event.
+            this.$rootScope.$emit("web3.service.accountChanged");
+
+        });
     }
 
     /**
