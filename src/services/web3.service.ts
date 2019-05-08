@@ -1,6 +1,8 @@
 import * as W3 from "web3";
 const Web3 = require("web3");
 
+declare var web3;
+
 export default class Web3Service {
 
     public static $inject = [
@@ -13,6 +15,7 @@ export default class Web3Service {
     public web3: W3.default;
     public tokenContract: any;
     public privateSaleContract: W3.Contract;
+    public account;
 
     constructor(
         public OpenHouseToken: any,
@@ -20,10 +23,25 @@ export default class Web3Service {
         public OpenHouseTokenContractAddress: string,
         public PrivateSaleContractAddress: string
     ) {
-        this.web3 = new Web3(new Web3.providers.HttpProvider("http://83.212.115.201:5555"));
+        if (typeof web3 !== 'undefined')
+            this.web3 = new Web3(web3.currentProvider);
+        else
+            this.web3 = new Web3(new Web3.providers.HttpProvider("http://83.212.115.201:5555"));
 
         this.tokenContract = new this.web3.eth.Contract(this.OpenHouseToken.abi, this.OpenHouseTokenContractAddress);
         this.privateSaleContract = new this.web3.eth.Contract(this.PrivateSale.abi, this.PrivateSaleContractAddress);
+    }
+
+    /**
+     * Returns the active account on Metamask. If
+     * there isn't any it returns null.
+     */
+    public async getMetamaskAccountOrNull(){
+        let accounts = await this.web3.eth.getAccounts();
+        if (accounts.length > 0)
+            return accounts[0]
+        else
+            return null;
     }
 
     /**
