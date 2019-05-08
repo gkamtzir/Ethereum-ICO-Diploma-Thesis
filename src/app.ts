@@ -40,6 +40,8 @@ import { DotSeparatorFilter } from "./filters/dot-separator.filter";
 
 const module = angular.module("OpenHouseAdminPanel", ["ngRoute"]);
 
+declare var ethereum;
+
 // The routing configuration.
 module.config(["$routeProvider", "$locationProvider", 
     ($routeProvider: angular.route.IRouteProvider, $locationProvider: angular.ILocationProvider) => {
@@ -47,12 +49,27 @@ module.config(["$routeProvider", "$locationProvider",
         $routeProvider
             .when("/privateSale", {
                 template: "<private-sale-component></private-sale-component>",
+                resolve: {
+                    metamask: () => {
+                        return ethereum.enable();
+                    }
+                }
             })
             .when("/preICOSale", {
-                template: "<pre-ico-sale-component></pre-ico-sale-component>"
+                template: "<pre-ico-sale-component></pre-ico-sale-component>",
+                resolve: {
+                    metamask: () => {
+                        return ethereum.enable();
+                    }
+                }
             })
             .when("/ICOSale", {
-                template: "<ico-sale-component></ico-sale-component>"
+                template: "<ico-sale-component></ico-sale-component>",
+                resolve: {
+                    metamask: () => {
+                        return ethereum.enable();
+                    }
+                }
             })
             .otherwise({
                 redirectTo: "/privateSale"
@@ -79,8 +96,8 @@ module.filter("dotSeparatorFilter", DotSeparatorFilter);
 module.constant("OpenHouseToken", OpenHouseToken);
 module.constant("PrivateSale", PrivateSale);
 
-module.constant("OpenHouseTokenContractAddress", "0x7fBD0f66Eb81058fca21479367B9f8F50448352d");
-module.constant("PrivateSaleContractAddress", "0x6c18791e47D9Ff68C178902c1DC51D12479671e8");
+module.constant("OpenHouseTokenContractAddress", "0x1A5412Fbd937E1cB874B4a192a07cBE15f4B0704");
+module.constant("PrivateSaleContractAddress", "0xE3576997a6b12edd59f174B55bbf07B81b8cfB06");
 
 angular.element(document).ready(() => {
     angular.bootstrap(document, ["OpenHouseAdminPanel"]);
