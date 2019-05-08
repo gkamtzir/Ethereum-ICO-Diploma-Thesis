@@ -5,11 +5,14 @@ import { Status } from "../../enumerations/ContractStatus";
 
 class DetailsController implements ng.IComponentController {
 
-    public static $inject = ["$scope"];
+    public static $inject = ["$scope", "$rootScope"];
     
     public saleContract: any;
     public status: any;
     public hideLoader: boolean;
+
+    // Event listeners.
+    private statusChangedListener: any;
 
     public details: IDetails = {
         price: null,
@@ -23,10 +26,17 @@ class DetailsController implements ng.IComponentController {
     };
 
     constructor(
-        public $scope: ng.IScope
+        public $scope: ng.IScope,
+        public $rootScope: ng.IRootScopeService
     ) 
     {
         this.hideLoader = false;
+
+        // Listening for 'statusChanged' events.
+        this.statusChangedListener = this.$rootScope.$on("owner.component.statusChanged", async () => {
+            this.details.status = await this.saleContract.methods.getStatus().call();
+            this.$scope.$apply();
+        });
     }
 
     async $onInit() {
@@ -53,6 +63,11 @@ class DetailsController implements ng.IComponentController {
             this.$scope.$apply();
         }
 
+    }
+
+    $onDestroy() {
+        // Make sure we unbind the $rootScope listeners.
+        this.statusChangedListener();
     }
 }
 

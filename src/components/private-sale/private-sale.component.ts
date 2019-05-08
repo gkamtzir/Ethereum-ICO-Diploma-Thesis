@@ -6,7 +6,9 @@ class PrivateSaleController implements ng.IComponentController {
 
     public privateSaleContract: any;
     public account: string;
-    public accountChangedListener: any;
+
+    // Event listeners.
+    private accountChangedListener: any;
 
     constructor(
         public web3Service: IWeb3Service,
@@ -24,7 +26,7 @@ class PrivateSaleController implements ng.IComponentController {
     }
 
     $onDestroy() {
-        // Making sure we unbind the $rootScope listener.
+        // Making sure we unbind the $rootScope listeners.
         this.accountChangedListener();
     }
 }
