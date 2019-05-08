@@ -37,7 +37,7 @@ export default class Web3Service {
         this.privateSaleContract = new this.web3.eth.Contract(this.PrivateSale.abi, this.PrivateSaleContractAddress);
 
         // Watching for account changes.
-        ethereum.on('accountsChanged', accounts => {
+        ethereum.on("accountsChanged", accounts => {
             this.toastr.info(`The selected account has changed to: ${accounts[0]}`, "Account Changed", {
                 timeOut: 8000
             });
@@ -45,6 +45,13 @@ export default class Web3Service {
             // Emit 'accountChanged' event.
             this.$rootScope.$emit("web3.service.accountChanged");
 
+        });
+
+        // Watching for network changes.
+        ethereum.on("networkChanged", () => {
+            this.toastr.info("The selected network has changed. Please make sure you use the correct one", "Account Changed", {
+                timeOut: 8000
+            });
         });
     }
 
