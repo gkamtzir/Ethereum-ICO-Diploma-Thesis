@@ -1,10 +1,14 @@
 class AdminActionsController implements ng.IComponentController {
 
+    public static $inject = ["toastr"];
+
     public saleContract: any;
     public account: string;
     public restricted: boolean;
 
-    constructor() {
+    constructor(
+        public toastr: ng.toastr.IToastrService
+    ) {
         this.restricted = false;
     }
 
@@ -15,7 +19,7 @@ class AdminActionsController implements ng.IComponentController {
         try {
             await this.saleContract.methods.deactivate().send({ from: this.account });
         } catch (exception) {
-            console.log("Only the owner can deactivate the contract.");
+            this.toastr.error("Only the owner can deactivate the contract", "Error");
         }
 
     }
@@ -27,7 +31,7 @@ class AdminActionsController implements ng.IComponentController {
         try {
             await this.saleContract.methods.activate().send({ from: this.account });
         } catch (exception) {
-            console.log("Only the owner can activate the contract.");
+            this.toastr.error("Only the owner can activate the contract", "Error");
         }
     }
 }

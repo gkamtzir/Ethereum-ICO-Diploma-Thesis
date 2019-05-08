@@ -1,10 +1,12 @@
 // AngularJS dependencies.
 import * as angular from "angular";
 import "angular-route/angular-route.min.js";
+import "angular-toastr/dist/angular-toastr.tpls.min.js";
 
 // Styling dependencies.
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap";
+import "angular-toastr/dist/angular-toastr.min.css";
 
 import "./app.scss";
 import "./components/navbar/navbar.component.scss";
@@ -38,7 +40,7 @@ import Web3Service from "./services/web3.service";
 // Filters.
 import { DotSeparatorFilter } from "./filters/dot-separator.filter";
 
-const module = angular.module("OpenHouseAdminPanel", ["ngRoute"]);
+const module = angular.module("OpenHouseAdminPanel", ["ngRoute", "toastr"]);
 
 declare var ethereum;
 
@@ -96,8 +98,8 @@ module.filter("dotSeparatorFilter", DotSeparatorFilter);
 module.constant("OpenHouseToken", OpenHouseToken);
 module.constant("PrivateSale", PrivateSale);
 
-module.constant("OpenHouseTokenContractAddress", "0x1A5412Fbd937E1cB874B4a192a07cBE15f4B0704");
-module.constant("PrivateSaleContractAddress", "0xE3576997a6b12edd59f174B55bbf07B81b8cfB06");
+module.constant("OpenHouseTokenContractAddress", "0xBe88b45eA95736D5fB1D83eB12A97c2FC50Bc319");
+module.constant("PrivateSaleContractAddress", "0xDCfe4a5B5A9730A779F1a0736a68A7156c25e2f4");
 
 angular.element(document).ready(() => {
     angular.bootstrap(document, ["OpenHouseAdminPanel"]);
