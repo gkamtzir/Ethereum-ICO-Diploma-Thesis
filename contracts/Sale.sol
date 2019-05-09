@@ -70,6 +70,11 @@ contract Sale is Status {
         uint256 numberOfTokens
     );
 
+    event OwnershipTransfered(
+        address indexed from,
+        address indexed to
+    );
+
     constructor(
         address token, 
         uint256 price,
@@ -193,6 +198,18 @@ contract Sale is Status {
         status = Status.Deactivated;
 
         emit Deactivated(block.number);
+
+        return true;
+    }
+
+    /**
+      * @notice Transfers the ownership of the contract.
+      * @return A boolean value indicating if the transfer has completed successfully.
+      */
+    function transferOwnership(address payable newOwner) public onlyOwner() returns(bool) {
+        owner = newOwner;
+
+        emit OwnershipTransfered(msg.sender, newOwner);
 
         return true;
     }
