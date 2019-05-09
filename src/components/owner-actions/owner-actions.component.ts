@@ -7,6 +7,7 @@ class AdminActionsController implements ng.IComponentController {
     public saleContract: any;
     public account: string;
     public restricted: boolean;
+    public address: string;
 
     constructor(
         public toastr: ng.toastr.IToastrService,
@@ -39,6 +40,17 @@ class AdminActionsController implements ng.IComponentController {
             this.$rootScope.$emit("owner.component.statusChanged");
         } catch (exception) {
             this.toastr.error("Only the owner can activate the contract", "Error");
+        }
+    }
+
+    /**
+     * Allow an address to participate in the sale.
+     */
+    public async allowAddress() {
+        try {
+            await this.saleContract.methods.allowAddress(this.address).send({ from: this.account });
+        } catch (exception) {
+            this.toastr.error("Please make sure the contract is activated and you are the owner", "Error");
         }
     }
 }
@@ -79,9 +91,9 @@ export default class AdminActionsComponent implements ng.IComponentOptions {
             <div class="form-group row" ng-if="$ctrl.restricted">
                 <label for="allowAddress" class="col-sm-4 col-form-label">Allow Address:</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" id="allowAddress" placeholder="Enter Address">
+                    <input type="text" class="form-control" id="allowAddress" ng-model="$ctrl.address" placeholder="Enter Address">
                 </div>
-                <button type="submit" class="btn btn-primary sm-4 action-button">Allow</button>
+                <button type="submit" class="btn btn-primary sm-4 action-button" ng-click="$ctrl.allowAddress()">Allow</button>
             </div>
 
             <div class="form-group row">
