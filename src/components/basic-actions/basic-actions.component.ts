@@ -1,6 +1,42 @@
+import IWeb3Service from "../../interfaces/services/web3.interface";
+const { BigNumber } = require("bignumber.js");
+
 class BasicActionsController implements ng.IComponentController {
 
-    constructor() {}
+    // Controller's injectables.
+    public static $inject = ["web3Service", "toastr"];
+
+    // Public variables.
+    public saleContract: any;
+    public account: string;
+    public numberOfTokens: number;
+
+    // Private variables.
+    private tokenPrice: any;
+
+    constructor(
+        public web3Service: IWeb3Service,
+        public toastr: ng.toastr.IToastrService
+    ) {
+        this.numberOfTokens = 0;
+    }
+
+    async $onInit() {
+        this.tokenPrice = await this.saleContract.methods.getTokenPrice().call();
+        this.tokenPrice = new BigNumber(this.tokenPrice); 
+    }
+
+    /**
+     * Buys tokens for the selected address.
+     */
+    public async buyTokens() {
+        try {
+            const cost = this.tokenPrice.times(this.numberOfTokens);
+            await this.saleContract.methods.buyTokens(this.numberOfTokens).send({ from: this.account, value: cost})
+        } catch (exception) {
+            this.toastr.error("Please make sure the contract is activated and the sale is live", "Error");
+        }
+    }
 }
 
 export default class BasicActionsComponent implements ng.IComponentOptions {
@@ -10,7 +46,10 @@ export default class BasicActionsComponent implements ng.IComponentOptions {
     public template: string;
 
     constructor() {
-        this.bindings = {};
+        this.bindings = {
+            saleContract: "<",
+            account: "<"
+        };
         this.controller = BasicActionsController;
         this.controllerAs = "$ctrl";
         this.template = `
@@ -20,9 +59,9 @@ export default class BasicActionsComponent implements ng.IComponentOptions {
             <div class="form-group row">
                 <label for="buyTokens" class="col-sm-4 col-form-label">Buy Tokens:</label>
                 <div class="col-sm-4">
-                    <input type="number" class="form-control" id="buyTokens" placeholder="Enter Tokens">
+                    <input type="number" class="form-control" id="buyTokens" ng-model="$ctrl.numberOfTokens" placeholder="Enter Tokens">
                 </div>
-                <button type="submit" class="btn btn-primary sm-4 action-button">Buy</button>
+                <button type="submit" class="btn btn-primary sm-4 action-button" ng-click="$ctrl.buyTokens()">Buy</button>
             </div>
 
             <div class="form-group row">

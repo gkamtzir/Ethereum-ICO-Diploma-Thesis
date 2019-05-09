@@ -51,7 +51,7 @@ export default class PrivateSaleComponent implements ng.IComponentOptions {
             <time-component></time-component>
             <div class="row">
                 <div class="col-sm">
-                    <basic-actions-component></basic-actions-component>
+                    <basic-actions-component sale-contract="$ctrl.privateSaleContract" account="$ctrl.account"></basic-actions-component>
                 </div>
                 <div class="col-sm">
                     <owner-actions-component sale-contract="$ctrl.privateSaleContract" account="$ctrl.account" restricted="true"></owner-actions-component>

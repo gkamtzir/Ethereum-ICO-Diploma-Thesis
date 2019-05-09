@@ -3,6 +3,8 @@ import * as angular from "angular";
 import "angular-route/angular-route.min.js";
 import "angular-toastr/dist/angular-toastr.tpls.min.js";
 
+import "bignumber.js/bignumber.min.js";
+
 // Styling dependencies.
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap";
@@ -98,8 +100,8 @@ module.filter("dotSeparatorFilter", DotSeparatorFilter);
 module.constant("OpenHouseToken", OpenHouseToken);
 module.constant("PrivateSale", PrivateSale);
 
-module.constant("OpenHouseTokenContractAddress", "0xBe88b45eA95736D5fB1D83eB12A97c2FC50Bc319");
-module.constant("PrivateSaleContractAddress", "0xDCfe4a5B5A9730A779F1a0736a68A7156c25e2f4");
+module.constant("OpenHouseTokenContractAddress", "0x3dcf361f50bd496cA4CF02564D06609cAf23Ce94");
+module.constant("PrivateSaleContractAddress", "0x1Cc4248Fe1703daA79557351E153dc399F5B0FF8");
 
 angular.element(document).ready(() => {
     angular.bootstrap(document, ["OpenHouseAdminPanel"]);
