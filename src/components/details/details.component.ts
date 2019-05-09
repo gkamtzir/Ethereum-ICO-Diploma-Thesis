@@ -11,6 +11,8 @@ class DetailsController implements ng.IComponentController {
     
     // Public variables.
     public saleContract: any;
+    public restricted: boolean;
+    public account: string;
     public status: any;
     public hideLoader: boolean;
 
@@ -25,7 +27,8 @@ class DetailsController implements ng.IComponentController {
         endDate: null,
         redeemableAfterDate: null,
         owner: null,
-        status: null
+        status: null,
+        allowance: false
     };
 
     constructor(
@@ -71,6 +74,14 @@ class DetailsController implements ng.IComponentController {
 
     }
 
+    async $onChanges(changes: any) {
+        // When the address changes we update the allowance field.
+        if (changes.account != null && changes.account.currentValue != null && this.restricted){
+            this.details.allowance = await this.saleContract.methods.getAddressAllowance(changes.account.currentValue).call();
+            this.$scope.$apply();
+        }
+    }
+
     $onDestroy() {
         // Make sure we unbind the $rootScope listeners.
         this.statusChangedListener();
@@ -85,7 +96,9 @@ export default class DetailsComponent implements ng.IComponentOptions {
 
     constructor() {
         this.bindings = {
-            "saleContract": "<"
+            "saleContract": "<",
+            "account": "<",
+            "restricted": "<"
         };
         this.controller = DetailsController;
         this.controllerAs = "$ctrl";
@@ -98,29 +111,50 @@ export default class DetailsComponent implements ng.IComponentOptions {
             <div class="details-card">
                 <div class="row">
                     <div class="col-sm">
-                        Price: <span class="details-value">{{ $ctrl.details.price }} (in ether)</span>
+                        Price:
+                        <span class="details-value">
+                            {{ $ctrl.details.price }} (in ether)
+                        </span>
                     </div>
                     <div class="col-sm">
-                        Minimum cap: <span class="details-value">{{ $ctrl.details.minCap | dotSeparatorFilter }}</span>
+                        Minimum cap:
+                        <span class="details-value">
+                            {{ $ctrl.details.minCap | dotSeparatorFilter }}
+                        </span>
                     </div>
                     <div class="col-sm">
-                        Maximum cap: <span class="details-value">{{ $ctrl.details.maxCap | dotSeparatorFilter}}</span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm">
-                        Start Date: <span class="details-value">{{ $ctrl.details.startDate | date: "medium" }}</span>
-                    </div>
-                    <div class="col-sm">
-                        End Date: <span class="details-value">{{ $ctrl.details.endDate | date: "medium" }}</span>
-                    </div>
-                    <div class="col-sm">
-                        Redeemable Date: <span class="details-value">{{ $ctrl.details.redeemableAfterDate | date: "medium" }}</span>
+                        Maximum cap:
+                        <span class="details-value">
+                            {{ $ctrl.details.maxCap | dotSeparatorFilter}}
+                        </span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm">
-                        Owner: <span class="details-value">{{ $ctrl.details.owner }}</span>
+                        Start Date:
+                        <span class="details-value">
+                            {{ $ctrl.details.startDate | date: "medium" }}
+                        </span>
+                    </div>
+                    <div class="col-sm">
+                        End Date:
+                        <span class="details-value">
+                            {{ $ctrl.details.endDate | date: "medium" }}
+                        </span>
+                    </div>
+                    <div class="col-sm">
+                        Redeemable Date:
+                        <span class="details-value">
+                            {{ $ctrl.details.redeemableAfterDate | date: "medium" }}
+                        </span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm">
+                        Owner:
+                        <span class="details-value">
+                            {{ $ctrl.details.owner }}
+                        </span>
                     </div>
                 </div>
                 <div class="row">
@@ -129,6 +163,27 @@ export default class DetailsComponent implements ng.IComponentOptions {
                         <span class="details-value">
                             <span ng-if="$ctrl.details.status == $ctrl.status.Activated">Activated</span>
                             <span ng-if="$ctrl.details.status == $ctrl.status.Deactivated">Deactivated</span>
+                        </span>
+                    </div>
+                </div>
+                <hr />
+                <div class="user-title">
+                    User details (based on Metamask)
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-sm">
+                        Address:
+                        <span class="details-value">
+                            {{ $ctrl.account }}
+                        </span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm" ng-if="$ctrl.restricted">
+                        Allowed:
+                        <span class="details-value">
+                            {{ $ctrl.details.allowance }}
                         </span>
                     </div>
                 </div>

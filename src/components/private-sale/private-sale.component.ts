@@ -3,7 +3,7 @@ import IWeb3Service from "../../interfaces/services/web3.interface";
 class PrivateSaleController implements ng.IComponentController {
 
     // Controller's injectables.
-    public static $inject = ["web3Service", "$rootScope"];
+    public static $inject = ["web3Service", "$scope", "$rootScope"];
 
     // Public variables.
     public privateSaleContract: any;
@@ -14,11 +14,13 @@ class PrivateSaleController implements ng.IComponentController {
 
     constructor(
         public web3Service: IWeb3Service,
+        public $scope: ng.IScope,
         public $rootScope: ng.IRootScopeService
     ) {
         // Listening for 'accountChanged' events.
         this.accountChangedListener = this.$rootScope.$on("web3.service.accountChanged", async () => {
             this.account = await this.web3Service.getMetamaskAccountOrNull();
+            this.$scope.$apply();
         });
     }
 
@@ -45,7 +47,7 @@ export default class PrivateSaleComponent implements ng.IComponentOptions {
         this.controllerAs = "$ctrl";
         this.template = `
         <div class="private-sale-component">
-            <details-component sale-contract="$ctrl.privateSaleContract"></details-component>
+            <details-component sale-contract="$ctrl.privateSaleContract" account="$ctrl.account" restricted="true"></details-component>
             <time-component></time-component>
             <div class="row">
                 <div class="col-sm">
