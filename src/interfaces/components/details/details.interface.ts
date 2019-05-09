@@ -10,5 +10,4 @@ export default interface IDetails {
     redeemableAfterDate: Date;
     owner: string;
     status: Status;
-    allowance: boolean;
 }

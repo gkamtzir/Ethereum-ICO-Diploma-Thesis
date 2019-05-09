@@ -4,7 +4,7 @@ const { BigNumber } = require("bignumber.js");
 class BasicActionsController implements ng.IComponentController {
 
     // Controller's injectables.
-    public static $inject = ["web3Service", "toastr"];
+    public static $inject = ["web3Service", "$rootScope", "toastr"];
 
     // Public variables.
     public saleContract: any;
@@ -16,6 +16,7 @@ class BasicActionsController implements ng.IComponentController {
 
     constructor(
         public web3Service: IWeb3Service,
+        public $rootScope: ng.IRootScopeService,
         public toastr: ng.toastr.IToastrService
     ) {
         this.numberOfTokens = 0;
@@ -23,7 +24,7 @@ class BasicActionsController implements ng.IComponentController {
 
     async $onInit() {
         this.tokenPrice = await this.saleContract.methods.getTokenPrice().call();
-        this.tokenPrice = new BigNumber(this.tokenPrice); 
+        this.tokenPrice = new BigNumber(this.tokenPrice);
     }
 
     /**
@@ -33,8 +34,10 @@ class BasicActionsController implements ng.IComponentController {
         try {
             const cost = this.tokenPrice.times(this.numberOfTokens);
             await this.saleContract.methods.buyTokens(this.numberOfTokens).send({ from: this.account, value: cost})
+            this.$rootScope.$emit("basic-actions.component.tokensBought");
         } catch (exception) {
-            this.toastr.error("Please make sure the contract is activated and the sale is live", "Error");
+            this.toastr.error(`Please make sure the contract is activated and the sale is live. 
+                Also be sure that there are available tokens left.`, "Error");
         }
     }
 }
@@ -55,9 +58,11 @@ export default class BasicActionsComponent implements ng.IComponentOptions {
         this.template = `
         <div class="basic-actions-component">
             <h4>Basic actions</h4>
-            
+
             <div class="form-group row">
-                <label for="buyTokens" class="col-sm-4 col-form-label">Buy Tokens:</label>
+                <label for="buyTokens" class="col-sm-4 col-form-label">
+                    Buy Tokens:
+                </label>
                 <div class="col-sm-4">
                     <input type="number" class="form-control" id="buyTokens" ng-model="$ctrl.numberOfTokens" placeholder="Enter Tokens">
                 </div>

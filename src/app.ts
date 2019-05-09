@@ -100,8 +100,8 @@ module.filter("dotSeparatorFilter", DotSeparatorFilter);
 module.constant("OpenHouseToken", OpenHouseToken);
 module.constant("PrivateSale", PrivateSale);
 
-module.constant("OpenHouseTokenContractAddress", "0x3dcf361f50bd496cA4CF02564D06609cAf23Ce94");
-module.constant("PrivateSaleContractAddress", "0x1Cc4248Fe1703daA79557351E153dc399F5B0FF8");
+module.constant("OpenHouseTokenContractAddress", "0xF88B6371d6D812f8811979913148dee6DDD9dE2F");
+module.constant("PrivateSaleContractAddress", "0x1C3b427cf267c0a72d7dF5e1EB283840954a9B9B");
 
 angular.element(document).ready(() => {
     angular.bootstrap(document, ["OpenHouseAdminPanel"]);
