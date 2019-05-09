@@ -6,6 +6,7 @@ declare var ethereum;
 
 export default class Web3Service {
 
+    // Service's injectables.
     public static $inject = [
         "OpenHouseToken",
         "PrivateSale",
@@ -15,10 +16,10 @@ export default class Web3Service {
         "$rootScope"
     ];
 
+    // Public variables.
     public web3: W3.default;
     public tokenContract: any;
     public privateSaleContract: W3.Contract;
-    public account;
 
     constructor(
         public OpenHouseToken: any,

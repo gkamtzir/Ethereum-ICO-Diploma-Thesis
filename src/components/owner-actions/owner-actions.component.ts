@@ -1,7 +1,9 @@
 class AdminActionsController implements ng.IComponentController {
 
+    // Controllers's injectables.
     public static $inject = ["toastr", "$rootScope"];
 
+    // Public variables.
     public saleContract: any;
     public account: string;
     public restricted: boolean;

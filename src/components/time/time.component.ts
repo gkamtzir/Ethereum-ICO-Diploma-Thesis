@@ -2,6 +2,7 @@ import IWeb3Service from "../../interfaces/services/web3.interface";
 
 class TimeController implements ng.IComponentController {
 
+    // Controller's injectables.
     public static $inject = ["web3Service", "$scope"];
 
     // Public variables.

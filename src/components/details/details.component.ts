@@ -6,8 +6,10 @@ import IWeb3Service from "../../interfaces/services/web3.interface";
 
 class DetailsController implements ng.IComponentController {
 
+    // Component's injectables.
     public static $inject = ["$scope", "$rootScope", "web3Service"];
     
+    // Public variables.
     public saleContract: any;
     public status: any;
     public hideLoader: boolean;

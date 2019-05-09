@@ -1,7 +1,9 @@
 class NavbarController implements ng.IComponentController {
     
+    // Controller's injectables.
     public static $inject = ["$location"]; 
     
+    // Public variables.
     public activeTab: string;
 
     constructor(

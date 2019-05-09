@@ -2,8 +2,10 @@ import IWeb3Service from "../../interfaces/services/web3.interface";
 
 class PrivateSaleController implements ng.IComponentController {
 
+    // Controller's injectables.
     public static $inject = ["web3Service", "$rootScope"];
 
+    // Public variables.
     public privateSaleContract: any;
     public account: string;
 
