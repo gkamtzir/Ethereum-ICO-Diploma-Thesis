@@ -2,10 +2,11 @@ import IDetails from "../../interfaces/components/details/details.interface";
 
 // Enumerations.
 import { Status } from "../../enumerations/ContractStatus";
+import IWeb3Service from "../../interfaces/services/web3.interface";
 
 class DetailsController implements ng.IComponentController {
 
-    public static $inject = ["$scope", "$rootScope"];
+    public static $inject = ["$scope", "$rootScope", "web3Service"];
     
     public saleContract: any;
     public status: any;
@@ -27,7 +28,8 @@ class DetailsController implements ng.IComponentController {
 
     constructor(
         public $scope: ng.IScope,
-        public $rootScope: ng.IRootScopeService
+        public $rootScope: ng.IRootScopeService,
+        public web3Service: IWeb3Service
     ) 
     {
         this.hideLoader = false;
@@ -44,6 +46,8 @@ class DetailsController implements ng.IComponentController {
         
         if (this.saleContract != null) {
             this.details.price = await this.saleContract.methods.getTokenPrice().call();
+            this.details.price = this.web3Service.toEther(this.details.price);
+
             this.details.minCap = await this.saleContract.methods.getTokensMinCap().call();
             this.details.maxCap = await this.saleContract.methods.getTokensMaxCap().call();
             
@@ -92,7 +96,7 @@ export default class DetailsComponent implements ng.IComponentOptions {
             <div class="details-card">
                 <div class="row">
                     <div class="col-sm">
-                        Price: <span class="details-value">{{ $ctrl.details.price }}</span>
+                        Price: <span class="details-value">{{ $ctrl.details.price }} (in ether)</span>
                     </div>
                     <div class="col-sm">
                         Minimum cap: <span class="details-value">{{ $ctrl.details.minCap | dotSeparatorFilter }}</span>

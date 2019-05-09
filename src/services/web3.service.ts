@@ -104,11 +104,19 @@ export default class Web3Service {
     }
 
     /**
-     * Returns the given wei value to ether.
-     * @param number The value in wei.
+     * Returns the given ether value to wei.
+     * @param amount The value in ether.
      */
-    public ether(number: number) {
-        return new this.web3.utils.BN(this.web3.utils.toWei(number.toString(), "ether"));
+    public toWei(amount: number): number {
+        return new this.web3.utils.BN(this.web3.utils.toWei(amount.toString(), "ether"));
+    }
+
+    /**
+     * Returns the given wei value to ether.
+     * @param amount The value in wei.
+     */
+    public toEther(amount: number): number {
+        return this.web3.utils.fromWei(amount.toString(), "ether");
     }
 
 }

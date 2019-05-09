@@ -4,4 +4,6 @@ export default interface IWeb3Service {
     getMetamaskAccountOrNull();
     increaseTime(duration: number);
     latestTime();
+    toWei(amount: number);
+    toEther(amount: number);
 }
