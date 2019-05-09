@@ -7,7 +7,9 @@ class AdminActionsController implements ng.IComponentController {
     public saleContract: any;
     public account: string;
     public restricted: boolean;
-    public address: string;
+
+    public addressToBeAllowed: string;
+    public addressToBeOwner: string;
 
     constructor(
         public toastr: ng.toastr.IToastrService,
@@ -48,9 +50,22 @@ class AdminActionsController implements ng.IComponentController {
      */
     public async allowAddress() {
         try {
-            await this.saleContract.methods.allowAddress(this.address).send({ from: this.account });
+            await this.saleContract.methods.allowAddress(this.addressToBeAllowed).send({ from: this.account });
         } catch (exception) {
             this.toastr.error("Please make sure the contract is activated and you are the owner", "Error");
+        }
+    }
+
+    /**
+     * Transfers the ownership of the contract to
+     * another address.
+     */
+    public async transferOwnership() {
+        try {
+            await this.saleContract.methods.transferOwnership(this.addressToBeOwner).send({ from: this.account });
+            this.$rootScope.$emit("owner.component.ownerChanged");
+        } catch (exception) {
+            this.toastr.error("Please make sure you are the owner", "Error");
         }
     }
 }
@@ -91,7 +106,7 @@ export default class AdminActionsComponent implements ng.IComponentOptions {
             <div class="form-group row" ng-if="$ctrl.restricted">
                 <label for="allowAddress" class="col-sm-4 col-form-label">Allow Address:</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" id="allowAddress" ng-model="$ctrl.address" placeholder="Enter Address">
+                    <input type="text" class="form-control" id="allowAddress" ng-model="$ctrl.addressToBeAllowed" placeholder="Enter Address">
                 </div>
                 <button type="submit" class="btn btn-primary sm-4 action-button" ng-click="$ctrl.allowAddress()">Allow</button>
             </div>
@@ -99,9 +114,9 @@ export default class AdminActionsComponent implements ng.IComponentOptions {
             <div class="form-group row">
                 <label for="transferOwnership" class="col-sm-4 col-form-label">Transfer Ownership:</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" id="transferOwnership" placeholder="Enter Address">
+                    <input type="text" class="form-control" id="transferOwnership" ng-model="$ctrl.addressToBeOwner" placeholder="Enter Address">
                 </div>
-                <button type="submit" class="btn btn-primary sm-4 action-button">Transfer</button>
+                <button type="submit" class="btn btn-primary sm-4 action-button" ng-click="$ctrl.transferOwnership()">Transfer</button>
             </div>
         </div>
     `;

@@ -18,6 +18,7 @@ class DetailsController implements ng.IComponentController {
 
     // Event listeners.
     private statusChangedListener: any;
+    private ownerChangedListener: any;
 
     public details: IDetails = {
         price: null,
@@ -42,6 +43,12 @@ class DetailsController implements ng.IComponentController {
         // Listening for 'statusChanged' events.
         this.statusChangedListener = this.$rootScope.$on("owner.component.statusChanged", async () => {
             this.details.status = await this.saleContract.methods.getStatus().call();
+            this.$scope.$apply();
+        });
+
+        // Listening for 'ownerChanged' events.
+        this.ownerChangedListener = this.$rootScope.$on("owner.component.ownerChanged", async () => {
+            this.details.owner = await this.saleContract.methods.getOwner().call();
             this.$scope.$apply();
         });
     }
@@ -85,6 +92,7 @@ class DetailsController implements ng.IComponentController {
     $onDestroy() {
         // Make sure we unbind the $rootScope listeners.
         this.statusChangedListener();
+        this.ownerChangedListener();
     }
 }
 
