@@ -70,6 +70,21 @@ class AdminActionsController implements ng.IComponentController, IOwnerActions {
             this.toastr.error("Please make sure you are the owner", "Error");
         }
     }
+
+    /**
+     * Reallocates the remaining tokens back to the owner. If
+     * the sale was successful then all the raised ether will
+     * be sent back to the owner as well.
+     */
+    public async reallocateTokens() {
+        try {
+            await this.saleContract.methods.reallocateTokens().send({ from: this.account });
+            this.toastr.success("The tokens have been successfully reallocated", "Success");
+        } catch (exception) {
+            this.toastr.error(`Please make sure of the following: 1) The contract is activated,
+             2) The sale has ended, 3) You are the owner`, "Error");
+        }
+    }
 }
 
 export default class AdminActionsComponent implements ng.IComponentOptions {
@@ -102,7 +117,7 @@ export default class AdminActionsComponent implements ng.IComponentOptions {
 
             <div class="form-group row">
                 <label for="reallocate" class="col-sm-4 col-form-label">Reallocate Tokens</label>
-                <button type="submit" class="btn btn-primary sm-4 action-button no-input-button">Reallocate</button>
+                <button type="submit" class="btn btn-primary sm-4 action-button no-input-button" ng-click="$ctrl.reallocateTokens()">Reallocate</button>
             </div>
 
             <div class="form-group row" ng-if="$ctrl.restricted">
