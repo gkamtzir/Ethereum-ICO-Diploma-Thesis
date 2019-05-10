@@ -53,6 +53,7 @@ class AdminActionsController implements ng.IComponentController, IOwnerActions {
     public async allowAddress() {
         try {
             await this.saleContract.methods.allowAddress(this.addressToBeAllowed).send({ from: this.account });
+            this.toastr.success("The address has been allowed to participate in the sale", "Allowed");
         } catch (exception) {
             this.toastr.error("Please make sure the contract is activated and you are the owner", "Error");
         }
@@ -66,6 +67,7 @@ class AdminActionsController implements ng.IComponentController, IOwnerActions {
         try {
             await this.saleContract.methods.transferOwnership(this.addressToBeOwner).send({ from: this.account });
             this.$rootScope.$emit("owner.component.ownerChanged");
+            this.toastr.success("The ownership of the contract has been transfered successfully", "Transfered Onwership");
         } catch (exception) {
             this.toastr.error("Please make sure you are the owner", "Error");
         }
