@@ -1,4 +1,6 @@
-class AdminActionsController implements ng.IComponentController {
+import IOwnerActions from "../../interfaces/components/owner-actions/owner-actions.interface";
+
+class AdminActionsController implements ng.IComponentController, IOwnerActions {
 
     // Controllers's injectables.
     public static $inject = ["toastr", "$rootScope"];
