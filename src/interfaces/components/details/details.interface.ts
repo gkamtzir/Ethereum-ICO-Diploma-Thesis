@@ -8,6 +8,7 @@ export default interface IDetails {
     startDate: Date;
     endDate: Date;
     redeemableAfterDate: Date;
+    tokensSold: number;
     owner: string;
     status: Status;
 }

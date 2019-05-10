@@ -19,6 +19,7 @@ class DetailsController implements ng.IComponentController {
     // Event listeners.
     private statusChangedListener: any;
     private ownerChangedListener: any;
+    private tokensBoughtListener: any;
 
     public details: IDetails = {
         price: null,
@@ -27,6 +28,7 @@ class DetailsController implements ng.IComponentController {
         startDate: null,
         endDate: null,
         redeemableAfterDate: null,
+        tokensSold: null,
         owner: null,
         status: null
     };
@@ -50,6 +52,12 @@ class DetailsController implements ng.IComponentController {
             this.details.owner = await this.saleContract.methods.getOwner().call();
             this.$scope.$apply();
         });
+
+        // Listening for 'tokensBought' events.
+        this.tokensBoughtListener = this.$rootScope.$on("basic-actions.component.tokensBought", async () => {
+            this.details.tokensSold = await this.saleContract.methods.getTokensSold().call();
+            this.$scope.$apply();
+        });
     }
 
     async $onInit() {
@@ -71,6 +79,8 @@ class DetailsController implements ng.IComponentController {
             let redeemableAfterTimestamp = await this.saleContract.methods.getRedeemableAfterTimestamp().call();
             this.details.redeemableAfterDate = new Date(redeemableAfterTimestamp * 1000);
     
+            this.details.tokensSold = await this.saleContract.methods.getTokensSold().call();
+
             this.details.owner = await this.saleContract.methods.getOwner().call();
             this.details.status = await this.saleContract.methods.getStatus().call();
 
@@ -84,6 +94,7 @@ class DetailsController implements ng.IComponentController {
         // Make sure we unbind the $rootScope listeners.
         this.statusChangedListener();
         this.ownerChangedListener();
+        this.tokensBoughtListener();
     }
 }
 
@@ -145,6 +156,14 @@ export default class DetailsComponent implements ng.IComponentOptions {
                         Redeemable Date:
                         <span class="details-value">
                             {{ $ctrl.details.redeemableAfterDate | date: "medium" }}
+                        </span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm">
+                        Tokens Sold:
+                        <span class="details-value">
+                            {{ $ctrl.details.tokensSold }}
                         </span>
                     </div>
                 </div>
