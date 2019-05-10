@@ -42,6 +42,19 @@ class BasicActionsController implements ng.IComponentController, IBasicActions {
                 Also be sure that there are available tokens left.`, "Error");
         }
     }
+
+    /**
+     * Refunds user's tokens when the sale has failed.
+     */
+    public async refundTokens() {
+        try {
+            await this.saleContract.methods.refundTokens().send({ from: this.account });
+            this.$rootScope.$emit("basic-actions.component.tokensBought");
+        } catch (exception) {
+            this.toastr.error(`Please make sure of the following: 1) The contract is active, 
+                2) The sale has ended, 3) The sale has failed, 4) You have bought tokens`, "Error");
+        }
+    }
 }
 
 export default class BasicActionsComponent implements ng.IComponentOptions {
@@ -73,12 +86,12 @@ export default class BasicActionsComponent implements ng.IComponentOptions {
 
             <div class="form-group row">
                 <label for="refundTokens" class="col-sm-4 col-form-label">Refund Tokens</label>
-                <button type="submit" class="btn btn-primary sm-4 action-button no-input-button">Refund</button>
+                <button type="submit" class="btn btn-primary sm-4 action-button no-input-button" ng-click="$ctrl.refundTokens()">Refund</button>
             </div>
 
             <div class="form-group row">
                 <label for="redeemTokens" class="col-sm-4 col-form-label">Redeem Tokens</label>
-                <button type="submit" class="btn btn-primary sm-4 action-button no-input-button">Redeem</button>
+                <button type="submit" class="btn btn-primary sm-4 action-button no-input-button" ng-click="$ctrl.redeemTokens()">Redeem</button>
             </div>
         </div>
     `;
