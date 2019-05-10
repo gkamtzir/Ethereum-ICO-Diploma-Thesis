@@ -44,12 +44,28 @@ class BasicActionsController implements ng.IComponentController, IBasicActions {
     }
 
     /**
+     * Redeems user's tokens when the sale has been completed successfully
+     * and the tokens are redeemable.
+     */
+    public async redeemTokens() {
+        try {
+            await this.saleContract.methods.redeemTokens().send({ from: this.account });
+            this.$rootScope.$emit("basic-actions.component.tokensBought");
+            this.toastr.success("Your tokens have been successfully redeemed", "Redeemed");
+        } catch (exception) {
+            this.toastr.error(`Please make sure of the following: 1) The contract is active, 
+                2) The sale has ended, 3) You have bought tokens, 4) The tokens are redeemable`, "Error");
+        }
+    }
+
+    /**
      * Refunds user's tokens when the sale has failed.
      */
     public async refundTokens() {
         try {
             await this.saleContract.methods.refundTokens().send({ from: this.account });
             this.$rootScope.$emit("basic-actions.component.tokensBought");
+            this.toastr.success("Your tokens have been successfully refunded", "Refunded");
         } catch (exception) {
             this.toastr.error(`Please make sure of the following: 1) The contract is active, 
                 2) The sale has ended, 3) The sale has failed, 4) You have bought tokens`, "Error");
