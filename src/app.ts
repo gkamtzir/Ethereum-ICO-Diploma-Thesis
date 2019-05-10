@@ -13,6 +13,7 @@ import "angular-toastr/dist/angular-toastr.min.css";
 import "./app.scss";
 import "./components/navbar/navbar.component.scss";
 import "./components/details/details.component.scss";
+import "./components/user-details/user-details.component.scss";
 import "./components/private-sale/private-sale.component.scss";
 import "./components/pre-ico-sale/pre-ico-sale.component.scss";
 import "./components/ico-sale/ico-sale.component.scss";
@@ -29,6 +30,7 @@ import * as PrivateSale from "../build/contracts/PrivateSale.json";
 // Components.
 import NavbarComponent from "./components/navbar/navbar.component";
 import DetailsComponent from "./components/details/details.component";
+import UserDetailsComponent from "./components/user-details/user-details.component";
 import PrivateSaleComponent from "./components/private-sale/private-sale.component";
 import PreICOSaleComponent from "./components/pre-ico-sale/pre-ico-sale.component";
 import ICOSaleComponent from "./components/ico-sale/ico-sale.component";
@@ -83,6 +85,7 @@ module.config(["$routeProvider", "$locationProvider",
 // Wiring up the components.
 module.component("navbarComponent", new NavbarComponent());
 module.component("detailsComponent", new DetailsComponent());
+module.component("userDetailsComponent", new UserDetailsComponent());
 module.component("privateSaleComponent", new PrivateSaleComponent());
 module.component("preIcoSaleComponent", new PreICOSaleComponent());
 module.component("icoSaleComponent", new ICOSaleComponent());
@@ -100,8 +103,8 @@ module.filter("dotSeparatorFilter", DotSeparatorFilter);
 module.constant("OpenHouseToken", OpenHouseToken);
 module.constant("PrivateSale", PrivateSale);
 
-module.constant("OpenHouseTokenContractAddress", "0xF88B6371d6D812f8811979913148dee6DDD9dE2F");
-module.constant("PrivateSaleContractAddress", "0x1C3b427cf267c0a72d7dF5e1EB283840954a9B9B");
+module.constant("OpenHouseTokenContractAddress", "0x4E76F6d1dE892502Ce8d95612D02919ED7d82360");
+module.constant("PrivateSaleContractAddress", "0x40F59D40336a3D298C2039FEFFD64C124A2394C8");
 
 angular.element(document).ready(() => {
     angular.bootstrap(document, ["OpenHouseAdminPanel"]);

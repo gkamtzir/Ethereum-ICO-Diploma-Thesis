@@ -1,9 +1,8 @@
 import IDetails from "../../interfaces/components/details/details.interface";
-import IUserDetails from "../../interfaces/components/details/user.interface";
+import IWeb3Service from "../../interfaces/services/web3.interface";
 
 // Enumerations.
 import { Status } from "../../enumerations/ContractStatus";
-import IWeb3Service from "../../interfaces/services/web3.interface";
 
 class DetailsController implements ng.IComponentController {
 
@@ -20,7 +19,6 @@ class DetailsController implements ng.IComponentController {
     // Event listeners.
     private statusChangedListener: any;
     private ownerChangedListener: any;
-    private tokensBoughtListener: any;
 
     public details: IDetails = {
         price: null,
@@ -31,11 +29,6 @@ class DetailsController implements ng.IComponentController {
         redeemableAfterDate: null,
         owner: null,
         status: null
-    };
-
-    public userDetails: IUserDetails = {
-        allowance: false,
-        tokensBought: 0
     };
 
     constructor(
@@ -55,12 +48,6 @@ class DetailsController implements ng.IComponentController {
         // Listening for 'ownerChanged' events.
         this.ownerChangedListener = this.$rootScope.$on("owner.component.ownerChanged", async () => {
             this.details.owner = await this.saleContract.methods.getOwner().call();
-            this.$scope.$apply();
-        });
-
-        // Listening for 'boughtTokens' events.
-        this.tokensBoughtListener = this.$rootScope.$on("basic-actions.component.tokensBought", async () => {
-            this.userDetails.tokensBought = await this.saleContract.methods.getBalanceOf(this.account).call();
             this.$scope.$apply();
         });
     }
@@ -93,20 +80,10 @@ class DetailsController implements ng.IComponentController {
 
     }
 
-    async $onChanges(changes: any) {
-        // When the address changes we update the allowance field.
-        if (changes.account != null && changes.account.currentValue != null && this.restricted){
-            this.userDetails.allowance = await this.saleContract.methods.getAddressAllowance(changes.account.currentValue).call();
-            this.userDetails.tokensBought = await this.saleContract.methods.getBalanceOf(changes.account.currentValue).call();
-            this.$scope.$apply();
-        }
-    }
-
     $onDestroy() {
         // Make sure we unbind the $rootScope listeners.
         this.statusChangedListener();
         this.ownerChangedListener();
-        this.tokensBoughtListener();
     }
 }
 
@@ -189,34 +166,7 @@ export default class DetailsComponent implements ng.IComponentOptions {
                     </div>
                 </div>
                 <hr />
-                <div class="user-title">
-                    User details (based on Metamask)
-                </div>
-                <br />
-                <div class="row">
-                    <div class="col-sm">
-                        Address:
-                        <span class="details-value">
-                            {{ $ctrl.account }}
-                        </span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md">
-                        Tokens Bought:
-                        <span class="details-value">
-                            {{ $ctrl.userDetails.tokensBought }}
-                        </span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm" ng-if="$ctrl.restricted">
-                        Allowed:
-                        <span class="details-value">
-                            {{ $ctrl.userDetails.allowance }}
-                        </span>
-                    </div>
-                </div>
+                <user-details-component sale-contract="$ctrl.saleContract" account="$ctrl.account" restricted="$ctrl.restricted"></user-details-component>
             </div>
         </div>
     `;
