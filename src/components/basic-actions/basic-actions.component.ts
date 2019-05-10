@@ -1,7 +1,9 @@
 import IWeb3Service from "../../interfaces/services/web3.interface";
+import IBasicActions from "../../interfaces/components/basic-actions/basic-actions.interface";
+
 const { BigNumber } = require("bignumber.js");
 
-class BasicActionsController implements ng.IComponentController {
+class BasicActionsController implements ng.IComponentController, IBasicActions {
 
     // Controller's injectables.
     public static $inject = ["web3Service", "$rootScope", "toastr"];
