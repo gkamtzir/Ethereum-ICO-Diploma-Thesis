@@ -32,28 +32,28 @@ module.exports = {
         tokensMaxCap: 100000,
         // Ether price.
         tokenPrice:  0.00035,
-        // 1 month.
-        duration: 2592000,
-        // 4 months.
-        redeemableAfter: 10368000
+        // 4 weeks.
+        duration: 2419200,
+        // 32 weeks approx 8 months.
+        redeemableAfter: 19353600
     },
     preICOSale: {
         tokensMinCap: 10000,
         tokensMaxCap: 100000,
         // Ether price.
         tokenPrice: 0.0007,
-        // 1 month.
-        duration: 2592000,
-        // 4 months.
-        redeemableAfter: 10368000
+        // 4 weeks.
+        duration: 2419200,
+        // 24 weeks approx 6 months.
+        redeemableAfter: 14515200
     },
     ICOSale: {
         tokensMinCap: 10000,
         tokensMaxCap: 100000,
         // Ether price.
         tokenPrice: 0.0021,
-        // 1 month.
-        duration: 2592000,
+        // 4 weeks.
+        duration: 2419200,
         // Immediately.
         redeemableAfter: 0
     }
