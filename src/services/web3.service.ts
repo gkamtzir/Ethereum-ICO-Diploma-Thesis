@@ -11,9 +11,11 @@ export default class Web3Service {
         "OpenHouseToken",
         "PrivateSale",
         "PreICOSale",
+        "ICOSale",
         "OpenHouseTokenContractAddress",
         "PrivateSaleContractAddress",
         "PreICOSaleContractAddress",
+        "ICOSaleContractAddress",
         "toastr",
         "$rootScope"
     ];
@@ -23,14 +25,17 @@ export default class Web3Service {
     public tokenContract: any;
     public privateSaleContract: any;
     public preICOSaleContract: any;
+    public ICOSaleContract: any;
 
     constructor(
         public OpenHouseToken: any,
         public PrivateSale: any,
         public PreICOSale: any,
+        public ICOSale: any,
         public OpenHouseTokenContractAddress: string,
         public PrivateSaleContractAddress: string,
         public PreICOSaleContractAddress: string,
+        public ICOSaleContractAddress: string,
         public toastr: ng.toastr.IToastrService,
         public $rootScope: ng.IRootScopeService
     ) {
@@ -42,6 +47,7 @@ export default class Web3Service {
         this.tokenContract = new this.web3.eth.Contract(this.OpenHouseToken.abi, this.OpenHouseTokenContractAddress);
         this.privateSaleContract = new this.web3.eth.Contract(this.PrivateSale.abi, this.PrivateSaleContractAddress);
         this.preICOSaleContract = new this.web3.eth.Contract(this.PreICOSale.abi, this.PreICOSaleContractAddress);
+        this.ICOSaleContract = new this.web3.eth.Contract(this.ICOSale.abi, this.ICOSaleContractAddress);
 
         // Watching for account changes.
         ethereum.on("accountsChanged", accounts => {

@@ -2,6 +2,7 @@ export default interface IWeb3Service {
     tokenContract: any;
     privateSaleContract: any;
     preICOSaleContract: any;
+    ICOSaleContract: any;
     getMetamaskAccountOrNull();
     increaseTime(duration: number);
     latestTime();

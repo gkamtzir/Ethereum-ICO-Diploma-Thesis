@@ -1,6 +1,7 @@
 const OpenHouseToken = artifacts.require("OpenHouseToken.sol");
 const PrivateSale = artifacts.require("PrivateSale.sol");
 const PreICOSale = artifacts.require("PreICOSale.sol");
+const ICOSale = artifacts.require("ICOSale.sol");
 
 const configuration = require("../config.js");
 const { duration } = require("../test/helpers/increaseTime");
@@ -33,7 +34,7 @@ async function deployPrivateSale(openHouseInstance, deployer) {
 }
 
 /**
- * Deploys the pre ico sale contract.
+ * Deploys the pre-ICO sale contract.
  * @param openHouseInstance The token instance
  * @param deployer The deployer instance
  */
@@ -57,10 +58,36 @@ async function deployPreICOSale(openHouseInstance, deployer) {
         redeemableAfter);
 }
 
+/**
+ * Deploys the ICO sale contract.
+ * @param openHouseInstance The token instance
+ * @param deployer The deployer instance
+ */
+async function deployICOSale(openHouseInstance, deployer) {
+    let start = await latestTime();
+    start += duration.weeks(20);
+
+    let end = start + configuration.ICOSale.duration;
+    
+    let redeemableAfter = await latestTime();
+    redeemableAfter += configuration.ICOSale.redeemableAfter;
+
+    await deployer.deploy(
+        ICOSale,
+        openHouseInstance.address,
+        ether(configuration.ICOSale.tokenPrice),
+        configuration.ICOSale.tokensMinCap,
+        configuration.ICOSale.tokensMaxCap,
+        start,
+        end,
+        redeemableAfter);
+}
+
 module.exports = async (deployer) => {
     deployer.deploy(OpenHouseToken, configuration.basicConfiguration.totalSupply)
         .then(async (openHouseInstance) => {
             await deployPrivateSale(openHouseInstance, deployer);
             await deployPreICOSale(openHouseInstance, deployer);
+            await deployICOSale(openHouseInstance, deployer);
         });
 };

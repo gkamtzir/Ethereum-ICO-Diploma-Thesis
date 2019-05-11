@@ -27,6 +27,7 @@ import "./components/owner-actions/owner-actions.component.scss";
 import * as OpenHouseToken from "../build/contracts/OpenHouseToken.json";
 import * as PrivateSale from "../build/contracts/PrivateSale.json";
 import * as PreICOSale from "../build/contracts/PreICOSale.json";
+import * as ICOSale from "../build/contracts/ICOSale.json";
 
 // Components.
 import NavbarComponent from "./components/navbar/navbar.component";
@@ -104,10 +105,12 @@ module.filter("dotSeparatorFilter", DotSeparatorFilter);
 module.constant("OpenHouseToken", OpenHouseToken);
 module.constant("PrivateSale", PrivateSale);
 module.constant("PreICOSale", PreICOSale);
+module.constant("ICOSale", ICOSale);
 
-module.constant("OpenHouseTokenContractAddress", "0x24e6e8257B93185BF4223c7411Cc7BdC9Efb2F55");
-module.constant("PrivateSaleContractAddress", "0xa5cd7d2D66B92D5b44f4f5f5E6CAdC6b3264337E");
-module.constant("PreICOSaleContractAddress", "0x0b4386fDA95c387E2E35FE5A1442dcF114Ff7Ff2");
+module.constant("OpenHouseTokenContractAddress", "0x392A546d03b3B5E20E028973f6036675d510b8aB");
+module.constant("PrivateSaleContractAddress", "0x8be46Ad6D8e905F1909ff2E23e99A26a1Ff36826");
+module.constant("PreICOSaleContractAddress", "0xA7AC48a9e16DC1B50a9Ea22501aA655D0B78AE23");
+module.constant("ICOSaleContractAddress", "0x9Fef9Bb995C8924789461F6Ec844d898fF44eF0D");
 
 angular.element(document).ready(() => {
     angular.bootstrap(document, ["OpenHouseAdminPanel"]);

@@ -34,8 +34,8 @@ module.exports = {
         tokenPrice:  0.00035,
         // 4 weeks.
         duration: 2419200,
-        // 32 weeks approx 8 months.
-        redeemableAfter: 19353600
+        // 36 weeks approx 8 months.
+        redeemableAfter: 21772800
     },
     preICOSale: {
         tokensMinCap: 10000,
@@ -44,8 +44,8 @@ module.exports = {
         tokenPrice: 0.0007,
         // 4 weeks.
         duration: 2419200,
-        // 24 weeks approx 6 months.
-        redeemableAfter: 14515200
+        // 28 weeks approx 6 months.
+        redeemableAfter: 16934400
     },
     ICOSale: {
         tokensMinCap: 10000,
@@ -54,7 +54,7 @@ module.exports = {
         tokenPrice: 0.0021,
         // 4 weeks.
         duration: 2419200,
-        // Immediately.
-        redeemableAfter: 0
+        // 24 weeks approx 6 months.
+        redeemableAfter: 14515200
     }
 }
