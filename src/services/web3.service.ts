@@ -6,12 +6,14 @@ declare var ethereum;
 
 export default class Web3Service {
 
-    // Service's injectables.
+    // Service"s injectables.
     public static $inject = [
         "OpenHouseToken",
         "PrivateSale",
+        "PreICOSale",
         "OpenHouseTokenContractAddress",
         "PrivateSaleContractAddress",
+        "PreICOSaleContractAddress",
         "toastr",
         "$rootScope"
     ];
@@ -19,23 +21,27 @@ export default class Web3Service {
     // Public variables.
     public web3: W3.default;
     public tokenContract: any;
-    public privateSaleContract: W3.Contract;
+    public privateSaleContract: any;
+    public preICOSaleContract: any;
 
     constructor(
         public OpenHouseToken: any,
         public PrivateSale: any,
+        public PreICOSale: any,
         public OpenHouseTokenContractAddress: string,
         public PrivateSaleContractAddress: string,
+        public PreICOSaleContractAddress: string,
         public toastr: ng.toastr.IToastrService,
         public $rootScope: ng.IRootScopeService
     ) {
-        if (typeof web3 !== 'undefined')
+        if (typeof web3 !== "undefined")
             this.web3 = new Web3(web3.currentProvider);
         else
             this.web3 = new Web3(new Web3.providers.HttpProvider("http://83.212.115.201:5555"));
 
         this.tokenContract = new this.web3.eth.Contract(this.OpenHouseToken.abi, this.OpenHouseTokenContractAddress);
         this.privateSaleContract = new this.web3.eth.Contract(this.PrivateSale.abi, this.PrivateSaleContractAddress);
+        this.preICOSaleContract = new this.web3.eth.Contract(this.PreICOSale.abi, this.PreICOSaleContractAddress);
 
         // Watching for account changes.
         ethereum.on("accountsChanged", accounts => {
@@ -43,7 +49,7 @@ export default class Web3Service {
                 timeOut: 8000
             });
 
-            // Emit 'accountChanged' event.
+            // Emit "accountChanged" event.
             this.$rootScope.$emit("web3.service.accountChanged");
 
         });
@@ -73,7 +79,7 @@ export default class Web3Service {
      * blockchain.
      */
     public async latestTime() {
-        let block = await this.web3.eth.getBlock('latest');
+        let block = await this.web3.eth.getBlock("latest");
         return block.timestamp;
     }
 
@@ -86,16 +92,16 @@ export default class Web3Service {
 
         return new Promise((resolve, reject) => {
             this.web3.currentProvider.send({
-                jsonrpc: '2.0',
-                method: 'evm_increaseTime',
+                jsonrpc: "2.0",
+                method: "evm_increaseTime",
                 params: [duration],
                 id: id,
             }, err1 => {
                 if (err1) return reject(err1);
 
                 this.web3.currentProvider.send({
-                    jsonrpc: '2.0',
-                    method: 'evm_mine',
+                    jsonrpc: "2.0",
+                    method: "evm_mine",
                     id: id + 1,
                 }, (err2, res) => {
                     return err2 ? reject(err2) : resolve(res);

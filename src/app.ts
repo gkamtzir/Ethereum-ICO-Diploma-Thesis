@@ -26,6 +26,7 @@ import "./components/owner-actions/owner-actions.component.scss";
 // Importing contract json files.
 import * as OpenHouseToken from "../build/contracts/OpenHouseToken.json";
 import * as PrivateSale from "../build/contracts/PrivateSale.json";
+import * as PreICOSale from "../build/contracts/PreICOSale.json";
 
 // Components.
 import NavbarComponent from "./components/navbar/navbar.component";
@@ -102,9 +103,11 @@ module.filter("dotSeparatorFilter", DotSeparatorFilter);
 // Wiring up the constants.
 module.constant("OpenHouseToken", OpenHouseToken);
 module.constant("PrivateSale", PrivateSale);
+module.constant("PreICOSale", PreICOSale);
 
-module.constant("OpenHouseTokenContractAddress", "0x4E76F6d1dE892502Ce8d95612D02919ED7d82360");
-module.constant("PrivateSaleContractAddress", "0x40F59D40336a3D298C2039FEFFD64C124A2394C8");
+module.constant("OpenHouseTokenContractAddress", "0x24e6e8257B93185BF4223c7411Cc7BdC9Efb2F55");
+module.constant("PrivateSaleContractAddress", "0xa5cd7d2D66B92D5b44f4f5f5E6CAdC6b3264337E");
+module.constant("PreICOSaleContractAddress", "0x0b4386fDA95c387E2E35FE5A1442dcF114Ff7Ff2");
 
 angular.element(document).ready(() => {
     angular.bootstrap(document, ["OpenHouseAdminPanel"]);
