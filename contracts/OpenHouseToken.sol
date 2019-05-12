@@ -56,11 +56,11 @@ contract OpenHouseToken is IERC20, Status, Commit, Leasing {
         _;
     }
 
-    constructor(uint256 totalSupply) public {
+    constructor(uint256 numberOfTokens) public {
         name = "OpenHouse Token";
         symbol = "OHT";
         decimals = 18;
-        _totalSupply = totalSupply;
+        _totalSupply = numberOfTokens.mul(10 ** decimals);
         _balanceOf[msg.sender] = _totalSupply;
         _owner = msg.sender;
         status = Status.Activated;
@@ -100,10 +100,18 @@ contract OpenHouseToken is IERC20, Status, Commit, Leasing {
 
     /**
       * @notice A getter function for the total supply.
-      * @return The initial total supply of tokens in contract.
+      * @return The initial total supply in contract.
       */
     function totalSupply() public view returns(uint256) {
         return _totalSupply;
+    }
+
+    /**
+      * @notice A getter function for the total supply of tokens.
+      * @return The initial total supply of tokens in contract.
+      */
+    function getTotalNumberOfTokens() public view returns(uint256) {
+        return _totalSupply.div(10 ** decimals);
     }
 
     /**
@@ -150,7 +158,7 @@ contract OpenHouseToken is IERC20, Status, Commit, Leasing {
       * @return The current balance of the given address.
       */
     function balanceOf(address owner) public view returns(uint256) {
-        return _balanceOf[owner];
+        return _balanceOf[owner].div(10 ** decimals);
     }
 
     /**

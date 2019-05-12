@@ -28,8 +28,8 @@ contract("OpenHouseToken -> initialize", accounts => {
             decimals.toNumber().should.be.equal(basicConfiguration.decimals);
         });
 
-        it("Should initialize the contract with the correct total supply", async () => {
-            const totalSupply = await this.token.totalSupply();
+        it("Should initialize the contract with the correct total supply of tokens", async () => {
+            const totalSupply = await this.token.getTotalNumberOfTokens();
             totalSupply.toNumber().should.be.equal(basicConfiguration.totalSupply);
         });
 
