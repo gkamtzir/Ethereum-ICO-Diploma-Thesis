@@ -158,7 +158,7 @@ contract OpenHouseToken is IERC20, Status, Commit, Leasing {
       * @return The current balance of the given address.
       */
     function balanceOf(address owner) public view returns(uint256) {
-        return _balanceOf[owner].div(10 ** decimals);
+        return _balanceOf[owner];
     }
 
     /**
