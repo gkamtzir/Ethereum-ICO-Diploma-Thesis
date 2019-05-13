@@ -1,10 +1,11 @@
 const OpenHouseToken = artifacts.require("./OpenHouseToken.sol");
 const { basicConfiguration } = require("../../config.js");
+const { expect } = require('chai');
 const truffleAssert = require('truffle-assertions');
 
 require('chai')
     .use(require('chai-as-promised'))
-    .should();
+    .should()
 
 contract("OpenHouseToken -> ownership", accounts => {
 
@@ -19,7 +20,7 @@ contract("OpenHouseToken -> ownership", accounts => {
 
         it("Should be owned by admin", async () => {
             const owner = await this.token.getOwner();
-            owner.should.be.equal(this.admin);
+            expect(owner).to.be.equal(this.admin);
         });
 
         it("Should be impossible for a non-admin address to transfer contract's ownership", async () => {
@@ -32,6 +33,7 @@ contract("OpenHouseToken -> ownership", accounts => {
 
         it("Should be possible for admin to transfer contract's ownership", async () => {
             const tx = await this.token.transferOwnership(this.transferToAccount, { from: this.admin }).should.be.fulfilled;
+
             truffleAssert.eventEmitted(tx, "OwnershipTransfered", event => {
                 return event.from === this.admin && event.to === this.transferToAccount;
             });
@@ -39,7 +41,7 @@ contract("OpenHouseToken -> ownership", accounts => {
 
         it("Should have changed the ownership of the contract", async () => {
             const owner = await this.token.getOwner();
-            owner.should.be.equal(this.transferToAccount);
+            expect(owner).to.be.equal(this.transferToAccount);
         });
 
     });
