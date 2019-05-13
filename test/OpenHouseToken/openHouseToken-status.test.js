@@ -31,7 +31,6 @@ contract("OpenHouseToken -> status", accounts => {
         this.offerTokens = this.offerTokens.mul(this.power);
 
         this.offerPrice = new BN(basicConfiguration.offerPrice);
-        this.offerPrice = this.offerPrice.mul(this.power);
     });
 
     describe("Status", () => {
@@ -53,12 +52,12 @@ contract("OpenHouseToken -> status", accounts => {
         });
 
         it("Should be impossible to use the approve function when contract is deactivated", async () => {
-            await this.token.approve(this.spender, this.approvedTokens, 
+            await this.token.approve(this.spender, this.approvedTokens.toString(), 
                 { from: this.admin }).should.be.rejectedWith("revert");
         });
 
         it("Should be impossible to use the transfer function when contract is deactivated", async () => {
-            await this.token.transfer(this.spender, this.transferedTokens, 
+            await this.token.transfer(this.spender, this.transferedTokens.toString(), 
                 { from: this.admin }).should.be.rejectedWith("revert");
         });
 
@@ -89,8 +88,8 @@ contract("OpenHouseToken -> status", accounts => {
 
         it("Should be impossible to use the createOffer function when contract is deactivated", async () => {
             await this.token.createOffer(
-                this.offerTokens,
-                this.offerPrice,
+                this.offerTokens.toString(),
+                this.offerPrice.toString(),
                 basicConfiguration.offerDuration,
                 { from: this.admin }
             ).should.be.rejectedWith("revert");
@@ -101,7 +100,7 @@ contract("OpenHouseToken -> status", accounts => {
         });
 
         it("Should be impossible to use the leaseFrom function when contract is deactivated", async () => {
-            await this.token.leaseFrom(this.admin, { from: this.spender, value: this.offerPrice })
+            await this.token.leaseFrom(this.admin, { from: this.spender, value: this.offerPrice.toString() })
                 .should.be.rejectedWith("revert");
         });
 
