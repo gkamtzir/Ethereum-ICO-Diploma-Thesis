@@ -197,8 +197,8 @@ contract OpenHouseToken is IERC20, Status, Commit, Leasing {
     function transfer(address to, uint256 value) public isActivated() returns(bool) {
         require(_balanceOf[msg.sender] >= value);
 
-        _balanceOf[msg.sender] -= value;
-        _balanceOf[to] += value;
+        _balanceOf[msg.sender] = _balanceOf[msg.sender].sub(value);
+        _balanceOf[to] = _balanceOf[to].add(value);
 
         emit Transfer(msg.sender, to, value);
 
