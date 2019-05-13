@@ -330,7 +330,7 @@ contract OpenHouseToken is IERC20, Status, Commit, Leasing {
         offer[msg.sender].price = 0;
         offer[msg.sender].duration = 0;
 
-        _balanceOf[msg.sender] += numberOfTokens;
+        _balanceOf[msg.sender] = _balanceOf[msg.sender].add(numberOfTokens);
 
         emit OfferRemoved(msg.sender);
 
