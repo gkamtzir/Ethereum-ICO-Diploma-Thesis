@@ -1,9 +1,12 @@
 const OpenHouseToken = artifacts.require("./OpenHouseToken.sol");
 const { basicConfiguration } = require("../../config.js");
+const { expect } = require('chai');
 const truffleAssert = require('truffle-assertions');
+const BN = web3.utils.BN;
 
 require('chai')
     .use(require('chai-as-promised'))
+    .use(require("chai-bn")(BN))
     .should();
 
 contract("OpenHouseToken -> create/remove offer", accounts => {
@@ -13,14 +16,32 @@ contract("OpenHouseToken -> create/remove offer", accounts => {
         this.admin = accounts[basicConfiguration.adminAccount];
         this.commitAccount = accounts[basicConfiguration.commitAccount];
         this.transferToAccount = accounts[basicConfiguration.transferToAccount];
+
+        // Helper variables;
+        this.power = new BN(10);
+        this.power = this.power.pow(new BN(basicConfiguration.decimals));
+
+        this.approvedTokens = new BN(basicConfiguration.approvedTokens);
+        this.approvedTokens = this.approvedTokens.mul(this.power);
+
+        this.transferedTokens = new BN(basicConfiguration.transferedTokens);
+        this.transferedTokens = this.transferedTokens.mul(this.power);
+
+        this.offerTokens = new BN(basicConfiguration.offerTokens);
+        this.offerTokens = this.offerTokens.mul(this.power);
+
+        this.totalSupply = new BN(basicConfiguration.totalSupply);
+        this.totalSupply = this.totalSupply.mul(this.power);
+
+        this.offerPrice = new BN(basicConfiguration.offerPrice);
     });
 
     describe("Create offers", () => {
 
         it("Should throw an exception when sender has insufficient tokens for leasing", async () => {
             await this.token.createOffer(
-                2 * basicConfiguration.totalSupply,
-                basicConfiguration.offerPrice,
+                this.totalSupply.mul(new BN(2)).toString(),
+                this.offerPrice.toString(),
                 basicConfiguration.offerDuration,
                 { from: this.admin }
             ).should.be.rejectedWith("revert");
@@ -29,7 +50,7 @@ contract("OpenHouseToken -> create/remove offer", accounts => {
         it("Should throw an exception when sender sets the number of tokens to be leased to zero", async () => {
             await this.token.createOffer(
                 0,
-                basicConfiguration.offerPrice,
+                this.offerPrice.toString(),
                 basicConfiguration.offerDuration,
                 { from: this.admin}
             ).should.be.rejectedWith("revert");
@@ -37,7 +58,7 @@ contract("OpenHouseToken -> create/remove offer", accounts => {
 
         it("Should throw an exception when sender sets the price to zero", async () => {
             await this.token.createOffer(
-                basicConfiguration.offerTokens,
+                this.offerTokens.toString(),
                 0,
                 basicConfiguration.offerDuration,
                 { from: this.admin }                
@@ -46,8 +67,8 @@ contract("OpenHouseToken -> create/remove offer", accounts => {
 
         it("Should throw an exception when sender sets the duration less than an hour", async () => {
             await this.token.createOffer(
-                basicConfiguration.offerTokens,
-                basicConfiguration.offerPrice,
+                this.offerTokens.toString(),
+                this.offerPrice.toString(),
                 3500,
                 { from: this.admin } 
             ).should.be.rejectedWith("revert");
@@ -55,40 +76,40 @@ contract("OpenHouseToken -> create/remove offer", accounts => {
 
         it("Should be able to create offers", async () => {
             const tx = await this.token.createOffer(
-                basicConfiguration.offerTokens,
-                basicConfiguration.offerPrice,
+                this.offerTokens.toString(),
+                this.offerPrice.toString(),
                 basicConfiguration.offerDuration,
                 { from: this.admin }                
             ).should.be.fulfilled;
 
             truffleAssert.eventEmitted(tx, "OfferCreated", event => {
                 return event.from === this.admin
-                    && event.numberOfTokens.toNumber() === basicConfiguration.offerTokens
-                    && event.price.toNumber() === basicConfiguration.offerPrice
-                    && event.duration.toNumber() === basicConfiguration.offerDuration;
+                    && event.numberOfTokens.eq(this.offerTokens)
+                    && event.price.eq(this.offerPrice)
+                    && event.duration.eq(new BN(basicConfiguration.offerDuration));
             });
         });
 
         it("Should decrease the sender's balance accordingly", async () => {
             const balance = await this.token.balanceOf(this.admin);
-            balance.toNumber().should.be.equal(basicConfiguration.totalSupply - basicConfiguration.offerTokens);
+            expect(balance).to.be.bignumber.equal(this.totalSupply.sub(this.offerTokens));
         });
 
         it("Should be able to populate the offer instance properly", async() => {
             const offerTokens = await this.token.getOfferNumberOfTokens(this.admin);
-            offerTokens.toNumber().should.be.equal(basicConfiguration.offerTokens);
+            expect(offerTokens).to.be.bignumber.equal(this.offerTokens);
 
             const offerPrice = await this.token.getOfferPrice(this.admin);
-            offerPrice.toNumber().should.be.equal(basicConfiguration.offerPrice);
+            expect(offerPrice).to.be.bignumber.equal(this.offerPrice);
 
             const offerDuration = await this.token.getOfferDuration(this.admin);
-            offerDuration.toNumber().should.be.equal(basicConfiguration.offerDuration);
+            expect(offerDuration).to.be.bignumber.equal(new BN(basicConfiguration.offerDuration));
 
             const offerLeasedTo = await this.token.getOfferLeasedTo(this.admin);
-            offerLeasedTo.should.be.equal("0x0000000000000000000000000000000000000000");
+            expect(offerLeasedTo).to.be.equal("0x0000000000000000000000000000000000000000");
 
             const offerLeasedTimestamp = await this.token.getOfferLeasedTimestamp(this.admin);
-            offerLeasedTimestamp.toNumber().should.be.equal(0);
+            expect(offerLeasedTimestamp).to.be.bignumber.equal(new BN(0));
         });
 
     });
@@ -104,13 +125,13 @@ contract("OpenHouseToken -> create/remove offer", accounts => {
 
         it("Should be able to remove the offer instance properly", async () => {
             const offerTokens = await this.token.getOfferNumberOfTokens(this.admin);
-            offerTokens.toNumber().should.be.equal(0);
+            expect(offerTokens).to.be.bignumber.equal(new BN(0));
 
             const offerPrice = await this.token.getOfferPrice(this.admin);
-            offerPrice.toNumber().should.be.equal(0);
+            expect(offerPrice).to.be.bignumber.equal(new BN(0));
 
             const offerDuration = await this.token.getOfferDuration(this.admin);
-            offerDuration.toNumber().should.be.equal(0);
+            expect(offerDuration).to.be.bignumber.equal(new BN(0));
         });
 
     });
