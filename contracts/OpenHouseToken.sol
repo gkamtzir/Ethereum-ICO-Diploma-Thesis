@@ -234,8 +234,8 @@ contract OpenHouseToken is IERC20, Status, Commit, Leasing {
     function commitFromBalance(uint256 numberOfTokens) public isActivated() returns(bool) {
         require(_balanceOf[msg.sender] >= numberOfTokens);
 
-        _balanceOf[msg.sender] -= numberOfTokens;
-        commited[msg.sender].fromBalance += numberOfTokens;
+        _balanceOf[msg.sender] = _balanceOf[msg.sender].sub(numberOfTokens);
+        commited[msg.sender].fromBalance = commited[msg.sender].fromBalance.add(numberOfTokens);
 
         emit CommitedFromBalance(msg.sender, numberOfTokens);
 
@@ -250,8 +250,8 @@ contract OpenHouseToken is IERC20, Status, Commit, Leasing {
     function commitToBalance(uint256 numberOfTokens) public isActivated() returns(bool) {
         require(commited[msg.sender].fromBalance >= numberOfTokens);
 
-        commited[msg.sender].fromBalance -= numberOfTokens;
-        _balanceOf[msg.sender] += numberOfTokens;
+        commited[msg.sender].fromBalance = commited[msg.sender].fromBalance.sub(numberOfTokens);
+        _balanceOf[msg.sender] = _balanceOf[msg.sender].add(numberOfTokens);
 
         emit CommitedToBalance(msg.sender, numberOfTokens);
 
@@ -267,8 +267,8 @@ contract OpenHouseToken is IERC20, Status, Commit, Leasing {
         require(rent[msg.sender].rentedFrom != address(0));
         require(rent[msg.sender].availableNumberOfTokens >= numberOfTokens);
 
-        rent[msg.sender].availableNumberOfTokens -= numberOfTokens;
-        commited[msg.sender].fromRented += numberOfTokens;
+        rent[msg.sender].availableNumberOfTokens = rent[msg.sender].availableNumberOfTokens.sub(numberOfTokens);
+        commited[msg.sender].fromRented = commited[msg.sender].fromRented.add(numberOfTokens);
 
         emit CommitedFromRented(msg.sender, numberOfTokens);
 
@@ -284,8 +284,8 @@ contract OpenHouseToken is IERC20, Status, Commit, Leasing {
         require(rent[msg.sender].rentedFrom != address(0));
         require(commited[msg.sender].fromRented >= numberOfTokens);
 
-        commited[msg.sender].fromRented -= numberOfTokens;
-        rent[msg.sender].availableNumberOfTokens += numberOfTokens;
+        commited[msg.sender].fromRented = commited[msg.sender].fromRented.sub(numberOfTokens);
+        rent[msg.sender].availableNumberOfTokens = rent[msg.sender].availableNumberOfTokens.add(numberOfTokens);
 
         emit CommitedToRented(msg.sender, numberOfTokens);
 
