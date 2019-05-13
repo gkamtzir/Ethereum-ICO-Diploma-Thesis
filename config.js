@@ -13,8 +13,8 @@ module.exports = {
         commitFromBalance: 20000,
         commitToBalance: 10000,
         offerTokens: 100000,
-        // 0.0001 ether.
-        offerPrice: 100000000000000,
+        // Ether price.
+        offerPrice: 0.0001,
         // 2.7 hours approximately.
         offerDuration: 10000,
         buyTokens: 10000,

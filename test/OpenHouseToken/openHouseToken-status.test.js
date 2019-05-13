@@ -1,9 +1,12 @@
 const OpenHouseToken = artifacts.require("./OpenHouseToken.sol");
 const { basicConfiguration } = require("../../config.js");
+const { expect } = require('chai');
 const truffleAssert = require('truffle-assertions');
+const BN = web3.utils.BN;
 
 require('chai')
     .use(require('chai-as-promised'))
+    .use(require("chai-bn")(BN))
     .should();
 
 contract("OpenHouseToken -> status", accounts => {
@@ -13,13 +16,29 @@ contract("OpenHouseToken -> status", accounts => {
         this.admin = accounts[basicConfiguration.adminAccount];
         this.spender = accounts[basicConfiguration.spenderAccount];
         this.transferToAccount = accounts[basicConfiguration.transferToAccount];
+
+        // Helper variables;
+        this.power = new BN(10);
+        this.power = this.power.pow(new BN(basicConfiguration.decimals));
+
+        this.approvedTokens = new BN(basicConfiguration.approvedTokens);
+        this.approvedTokens = this.approvedTokens.mul(this.power);
+
+        this.transferedTokens = new BN(basicConfiguration.transferedTokens);
+        this.transferedTokens = this.transferedTokens.mul(this.power);
+
+        this.offerTokens = new BN(basicConfiguration.offerTokens);
+        this.offerTokens = this.offerTokens.mul(this.power);
+
+        this.offerPrice = new BN(basicConfiguration.offerPrice);
+        this.offerPrice = this.offerPrice.mul(this.power);
     });
 
     describe("Status", () => {
 
         it("Should be activated initially", async () => {
             const status = await this.token.getStatus();
-            status.toNumber().should.be.equal(basicConfiguration.status.activated);
+            expect(status).to.be.bignumber.equal(new BN(basicConfiguration.status.activated));
         });
 
         it("Should not be possible to deactivate it a non-admin address", async () => {
@@ -34,18 +53,18 @@ contract("OpenHouseToken -> status", accounts => {
         });
 
         it("Should be impossible to use the approve function when contract is deactivated", async () => {
-            await this.token.approve(this.spender, basicConfiguration.approvedTokens, 
+            await this.token.approve(this.spender, this.approvedTokens, 
                 { from: this.admin }).should.be.rejectedWith("revert");
         });
 
         it("Should be impossible to use the transfer function when contract is deactivated", async () => {
-            await this.token.transfer(this.spender, basicConfiguration.transferedTokens, 
+            await this.token.transfer(this.spender, this.transferedTokens, 
                 { from: this.admin }).should.be.rejectedWith("revert");
         });
 
         it("Should be impossible to use the transferFrom function when contract is deactivated", async () => {
             await this.token.transferFrom(this.admin, this.transferToAccount, 
-                basicConfiguration.transferedTokens, { from: this.spender }).should.be.rejectedWith("revert");
+                this.transferedTokens, { from: this.spender }).should.be.rejectedWith("revert");
         });
 
         it("Should be impossible for a non-admin address to activate the contract", async () => {
@@ -70,8 +89,8 @@ contract("OpenHouseToken -> status", accounts => {
 
         it("Should be impossible to use the createOffer function when contract is deactivated", async () => {
             await this.token.createOffer(
-                basicConfiguration.offerTokens,
-                basicConfiguration.offerPrice,
+                this.offerTokens,
+                this.offerPrice,
                 basicConfiguration.offerDuration,
                 { from: this.admin }
             ).should.be.rejectedWith("revert");
@@ -82,7 +101,7 @@ contract("OpenHouseToken -> status", accounts => {
         });
 
         it("Should be impossible to use the leaseFrom function when contract is deactivated", async () => {
-            await this.token.leaseFrom(this.admin, { from: this.spender, value: basicConfiguration.offerPrice })
+            await this.token.leaseFrom(this.admin, { from: this.spender, value: this.offerPrice })
                 .should.be.rejectedWith("revert");
         });
 

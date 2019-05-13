@@ -306,7 +306,7 @@ contract OpenHouseToken is IERC20, Status, Commit, Leasing {
         /// is approximately 1 hour (3600 seconds).
         require(price > 0 && duration >= 3600);
 
-        _balanceOf[msg.sender] -= numberOfTokens;
+        _balanceOf[msg.sender] = _balanceOf[msg.sender].sub(numberOfTokens);
 
         offer[msg.sender].numberOfTokens = numberOfTokens;
         offer[msg.sender].price = price;
