@@ -216,10 +216,10 @@ contract OpenHouseToken is IERC20, Status, Commit, Leasing {
         require(_allowance[from][msg.sender] >= value);
         require(_balanceOf[from] >= value);
 
-        _balanceOf[from] -= value;
-        _balanceOf[to] += value;
+        _balanceOf[from] = _balanceOf[from].sub(value);
+        _balanceOf[to] = _balanceOf[to].add(value);
 
-        _allowance[from][msg.sender] -= value;
+        _allowance[from][msg.sender] = _allowance[from][msg.sender].sub(value);
 
         emit Transfer(from, to, value);
 
