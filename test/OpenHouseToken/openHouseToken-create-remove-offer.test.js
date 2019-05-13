@@ -21,12 +21,6 @@ contract("OpenHouseToken -> create/remove offer", accounts => {
         this.power = new BN(10);
         this.power = this.power.pow(new BN(basicConfiguration.decimals));
 
-        this.approvedTokens = new BN(basicConfiguration.approvedTokens);
-        this.approvedTokens = this.approvedTokens.mul(this.power);
-
-        this.transferedTokens = new BN(basicConfiguration.transferedTokens);
-        this.transferedTokens = this.transferedTokens.mul(this.power);
-
         this.offerTokens = new BN(basicConfiguration.offerTokens);
         this.offerTokens = this.offerTokens.mul(this.power);
 
