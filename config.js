@@ -30,8 +30,8 @@ module.exports = {
     privateSale: {
         tokensMinCap: 10000,
         tokensMaxCap: 100000,
-        // Ether price.
-        tokenPrice:  0.00035,
+        // 0.00035 ether.
+        tokenPrice:  "350000000000000",
         // 4 weeks.
         duration: 2419200,
         // 36 weeks approx 8 months.
