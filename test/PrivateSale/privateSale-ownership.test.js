@@ -7,7 +7,6 @@ const BN = web3.utils.BN;
 
 const { duration } = require("../helpers/increaseTime");
 const { latestTime } = require("../helpers/latestTime");
-const { ether } = require("../helpers/ether");
 
 require('chai')
     .use(require('chai-as-promised'))
