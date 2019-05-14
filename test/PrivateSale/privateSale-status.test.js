@@ -1,14 +1,15 @@
 const OpenHouseToken = artifacts.require("./OpenHouseToken.sol");
 const PrivateSale = artifacts.require("./PrivateSale.sol");
 const { basicConfiguration, privateSale } = require("../../config.js");
-const { BigNumber } = require("bignumber.js");
+const { expect } = require('chai');
+const BN = web3.utils.BN;
 
 const { duration } = require("../helpers/increaseTime");
 const { latestTime } = require("../helpers/latestTime");
-const { ether } = require("../helpers/ether");
 
 require('chai')
     .use(require('chai-as-promised'))
+    .use(require("chai-bn")(BN))
     .should();
 
 contract("PrivateSale -> status", accounts => {
@@ -16,7 +17,17 @@ contract("PrivateSale -> status", accounts => {
     before(async () => {
         this.token = await OpenHouseToken.new(basicConfiguration.totalSupply);
         
-        this.tokenPrice = new BigNumber(privateSale.tokenPrice);
+        // Helper variables;
+        this.power = new BN(10);
+        this.power = this.power.pow(new BN(basicConfiguration.decimals));
+
+        this.tokenPrice = new BN(privateSale.tokenPrice);
+
+        this.tokensMinCap = new BN(privateSale.tokensMinCap)
+
+        this.tokensMaxCap = new BN(privateSale.tokensMaxCap)
+
+        this.buyTokens = new BN(basicConfiguration.buyTokens);
 
         this.start = await latestTime();
         this.start += duration.hours(1);
@@ -28,9 +39,10 @@ contract("PrivateSale -> status", accounts => {
         
         this.privateSale = await PrivateSale.new(
             this.token.address,
-            ether(this.tokenPrice),
-            privateSale.tokensMinCap,
-            privateSale.tokensMaxCap,
+            this.tokenPrice.toString(),
+            this.tokensMinCap.toString(),
+            this.tokensMaxCap.toString(),
+            basicConfiguration.decimals,
             this.start,
             this.end,
             this.redeemableAfter
@@ -40,14 +52,14 @@ contract("PrivateSale -> status", accounts => {
         this.spender = accounts[basicConfiguration.spenderAccount];
 
         // Allocate the needed tokens to the Private Sale contract.
-        await this.token.transfer(this.privateSale.address, privateSale.tokensMaxCap, { from: this.admin });
+        await this.token.transfer(this.privateSale.address, this.tokensMaxCap.mul(this.power).toString(), { from: this.admin });
     });
 
     describe("Status", () => {
 
         it("Should be activated initially", async () => {
             const status = await this.privateSale.getStatus();
-            status.toNumber().should.be.equal(basicConfiguration.status.activated);
+            expect(status).to.be.bignumber.equal(new BN(basicConfiguration.status.activated));
         });
 
         it("Should throw an exception when a non-admin address tries to deactivate the contract", async () => {
@@ -59,7 +71,8 @@ contract("PrivateSale -> status", accounts => {
         });
 
         it("Should be impossible to use the buyTokens function when contract is deactivated", async () => {
-            await this.privateSale.buyTokens(basicConfiguration.buyTokens, { from: this.admin })
+            const cost = this.tokenPrice.mul(this.buyTokens);
+            await this.privateSale.buyTokens(this.buyTokens.toString(), { from: this.admin, value: cost.toString() })
                 .should.be.rejectedWith("revert");
         });
 
