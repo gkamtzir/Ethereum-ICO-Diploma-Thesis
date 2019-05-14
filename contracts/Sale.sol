@@ -223,16 +223,13 @@ contract Sale is Status {
       * @return A boolean value indicating if the purchase has completed successfully.
       */
     function buyTokens(uint256 numberOfTokens) public payable isActivated() isLive() returns(bool) {
-        require(tokensMaxCap.sub(tokensSold) >= numberOfTokens.mul(10 ** decimals));
+        require(tokensMaxCap.sub(tokensSold) >= numberOfTokens);
         require(msg.value == numberOfTokens.mul(tokenPrice));
 
-        /// Converting number of tokens to supply.
-        uint256 tokenSupplyBought = numberOfTokens.mul(10 ** decimals);
+        tokensSold = tokensSold.add(numberOfTokens);
+        balanceOf[msg.sender] = balanceOf[msg.sender].add(numberOfTokens);
 
-        tokensSold = tokensSold.add(tokenSupplyBought);
-        balanceOf[msg.sender] = balanceOf[msg.sender].add(tokenSupplyBought);
-
-        emit Sold(msg.sender, tokenSupplyBought);
+        emit Sold(msg.sender, numberOfTokens);
 
         return true;
     }
@@ -285,13 +282,13 @@ contract Sale is Status {
         uint256 numberOfTokens;
 
         if (tokensSold >= tokensMinCap) {
-            numberOfTokens = tokensMaxCap - tokensSold;
-            owner.transfer(tokensSold * tokenPrice);
+            numberOfTokens = tokensMaxCap.sub(tokensSold);
+            owner.transfer(tokensSold.mul(tokenPrice));
         } else {
             numberOfTokens = tokensMaxCap;
         }
 
-        require(tokenInstance.transfer(owner, numberOfTokens));
+        require(tokenInstance.transfer(owner, numberOfTokens.mul(10 ** decimals)));
 
         emit Reallocated(owner, numberOfTokens);
 
