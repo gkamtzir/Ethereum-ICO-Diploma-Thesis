@@ -2,7 +2,8 @@ const OpenHouseToken = artifacts.require("./OpenHouseToken.sol");
 const PrivateSale = artifacts.require("./PrivateSale.sol");
 const truffleAssert = require('truffle-assertions');
 const { basicConfiguration, privateSale } = require("../../config.js");
-const { BigNumber } = require("bignumber.js");
+const { expect } = require('chai');
+const BN = web3.utils.BN;
 
 const { increaseTime, duration } = require("../helpers/increaseTime");
 const { latestTime } = require("../helpers/latestTime");
@@ -10,6 +11,7 @@ const { ether } = require("../helpers/ether");
 
 require('chai')
     .use(require('chai-as-promised'))
+    .use(require("chai-bn")(BN))
     .should();
 
 contract("PrivateSale -> redeem tokens", accounts => {
@@ -17,7 +19,19 @@ contract("PrivateSale -> redeem tokens", accounts => {
     this.initialization = async () => {
         this.token = await OpenHouseToken.new(basicConfiguration.totalSupply);
             
-        this.tokenPrice = new BigNumber(privateSale.tokenPrice);
+        // Helper variables;
+        this.power = new BN(10);
+        this.power = this.power.pow(new BN(basicConfiguration.decimals));
+
+        this.tokenPrice = new BN(privateSale.tokenPrice);
+
+        this.tokensMinCap = new BN(privateSale.tokensMinCap)
+
+        this.tokensMaxCap = new BN(privateSale.tokensMaxCap)
+
+        this.buyTokens = new BN(basicConfiguration.buyTokens);
+
+        this.buyTokensInsufficient = new BN(basicConfiguration.buyTokensInsufficient);
 
         this.start = await latestTime();
         this.start += duration.hours(1);
@@ -29,9 +43,10 @@ contract("PrivateSale -> redeem tokens", accounts => {
         
         this.privateSale = await PrivateSale.new(
             this.token.address,
-            ether(this.tokenPrice),
-            privateSale.tokensMinCap,
-            privateSale.tokensMaxCap,
+            this.tokenPrice.toString(),
+            this.tokensMinCap.toString(),
+            this.tokensMaxCap.toString(),
+            basicConfiguration.decimals,
             this.start,
             this.end,
             this.redeemableAfter
@@ -41,7 +56,7 @@ contract("PrivateSale -> redeem tokens", accounts => {
         this.spender = accounts[basicConfiguration.spenderAccount];
 
         // Allocate the needed tokens to the Private Sale contract.
-        await this.token.transfer(this.privateSale.address, privateSale.tokensMaxCap, { from: this.admin });
+        await this.token.transfer(this.privateSale.address, this.tokensMaxCap.mul(this.power).toString(), { from: this.admin });
 
         // Allow 'spender' to participate in the private sale.
         await this.privateSale.allowAddress(this.spender);
@@ -56,9 +71,9 @@ contract("PrivateSale -> redeem tokens", accounts => {
             await this.initialization();
 
             // Buy tokens.
-            const cost = this.tokenPrice.times(basicConfiguration.buyTokens);
-            await this.privateSale.buyTokens(basicConfiguration.buyTokens,
-                { from: this.spender, value: ether(cost)});
+            const cost = this.tokenPrice.mul(this.buyTokens);
+            await this.privateSale.buyTokens(this.buyTokens.toString(),
+                { from: this.spender, value: cost.toString()});
         });
 
         it("Should be impossible to redeem tokens when the sale is in progress", async () => {       
@@ -90,20 +105,20 @@ contract("PrivateSale -> redeem tokens", accounts => {
 
             truffleAssert.eventEmitted(tx, "Redeemed", event => {
                 return event.from === this.spender
-                    && event.numberOfTokens.toNumber() === balance.toNumber();
+                    && event.numberOfTokens.eq(balance);
             });
 
             // Sender's sale balance should be zero.
             balance = await this.privateSale.getBalanceOf(this.spender);
-            balance.toNumber().should.be.equal(0);
+            expect(balance).to.be.bignumber.equal(new BN(0));
 
             // Sender's token balance should be non-zero.
             balance = await this.token.balanceOf(this.spender);
-            balance.toNumber().should.be.equal(basicConfiguration.buyTokens);
+            expect(balance).to.be.bignumber.equal(this.buyTokens.mul(this.power));
 
             // Private Sale's token balance should decrease.
             balance = await this.token.balanceOf(this.privateSale.address);
-            balance.toNumber().should.be.equal(privateSale.tokensMaxCap - basicConfiguration.buyTokens);
+            expect(balance).to.be.bignumber.equal(this.tokensMaxCap.sub(this.buyTokens).mul(this.power));
         });
 
     });
@@ -114,9 +129,9 @@ contract("PrivateSale -> redeem tokens", accounts => {
             await this.initialization();
 
             // Buy tokens.
-            const cost = this.tokenPrice.times(basicConfiguration.buyTokensInsufficient);
-            await this.privateSale.buyTokens(basicConfiguration.buyTokensInsufficient,
-                { from: this.spender, value: ether(cost)});
+            const cost = this.tokenPrice.mul(this.buyTokensInsufficient);
+            await this.privateSale.buyTokens(this.buyTokensInsufficient.toString(),
+                { from: this.spender, value: cost.toString()});
 
             // End the sale.
             await increaseTime(privateSale.duration);

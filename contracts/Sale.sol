@@ -266,7 +266,7 @@ contract Sale is Status {
 
         balanceOf[msg.sender] = 0;
 
-        require(tokenInstance.transfer(msg.sender, balance));
+        require(tokenInstance.transfer(msg.sender, balance.mul(10 ** decimals)));
 
         emit Redeemed(msg.sender, balance);
 
