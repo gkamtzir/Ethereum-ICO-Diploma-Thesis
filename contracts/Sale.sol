@@ -246,7 +246,7 @@ contract Sale is Status {
 
         balanceOf[msg.sender] = 0;
 
-        msg.sender.transfer(balance * tokenPrice);
+        msg.sender.transfer(balance.mul(tokenPrice));
 
         emit Refunded(msg.sender, balance);
 
