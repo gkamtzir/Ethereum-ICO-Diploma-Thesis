@@ -2,7 +2,8 @@ const OpenHouseToken = artifacts.require("./OpenHouseToken.sol");
 const PrivateSale = artifacts.require("./PrivateSale.sol");
 const truffleAssert = require('truffle-assertions');
 const { basicConfiguration, privateSale } = require("../../config.js");
-const { BigNumber } = require("bignumber.js");
+const { expect } = require('chai');
+const BN = web3.utils.BN;
 
 const { duration } = require("../helpers/increaseTime");
 const { latestTime } = require("../helpers/latestTime");
@@ -10,6 +11,7 @@ const { ether } = require("../helpers/ether");
 
 require('chai')
     .use(require('chai-as-promised'))
+    .use(require("chai-bn")(BN))
     .should();
 
 contract("PrivateSale -> ownership", accounts => {
@@ -17,7 +19,17 @@ contract("PrivateSale -> ownership", accounts => {
     before(async () => {
         this.token = await OpenHouseToken.new(basicConfiguration.totalSupply);
         
-        this.tokenPrice = new BigNumber(privateSale.tokenPrice);
+        // Helper variables;
+        this.power = new BN(10);
+        this.power = this.power.pow(new BN(basicConfiguration.decimals));
+
+        this.tokenPrice = new BN(privateSale.tokenPrice);
+
+        this.tokensMinCap = new BN(privateSale.tokensMinCap)
+        this.tokensMinCap = this.tokensMinCap.mul(this.power);
+
+        this.tokensMaxCap = new BN(privateSale.tokensMaxCap)
+        this.tokensMaxCap = this.tokensMaxCap.mul(this.power);
 
         this.start = await latestTime();
         this.start += duration.hours(1);
@@ -29,9 +41,10 @@ contract("PrivateSale -> ownership", accounts => {
         
         this.privateSale = await PrivateSale.new(
             this.token.address,
-            ether(this.tokenPrice),
-            privateSale.tokensMinCap,
-            privateSale.tokensMaxCap,
+            this.tokenPrice.toString(),
+            this.tokensMinCap.toString(),
+            this.tokensMaxCap.toString(),
+            basicConfiguration.decimals,
             this.start,
             this.end,
             this.redeemableAfter
@@ -51,7 +64,7 @@ contract("PrivateSale -> ownership", accounts => {
 
         it("Should be able to transfered contract's ownership by the owner", async () => {
             const owner = await this.privateSale.getOwner();
-            owner.should.be.equal(this.admin);
+            expect(owner).to.be.equal(this.admin);
 
             const tx = await this.privateSale.transferOwnership(this.transferTo,
                 { from: this.admin }).should.be.fulfilled;
@@ -62,7 +75,7 @@ contract("PrivateSale -> ownership", accounts => {
             });
 
             const newOwner = await this.privateSale.getOwner();
-            newOwner.should.be.equal(this.transferTo);
+            expect(newOwner).to.be.equal(this.transferTo);
         });
 
     });
