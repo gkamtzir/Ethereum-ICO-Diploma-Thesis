@@ -28,6 +28,7 @@ async function deployPrivateSale(openHouseInstance, deployer) {
         ether(configuration.privateSale.tokenPrice),
         configuration.privateSale.tokensMinCap,
         configuration.privateSale.tokensMaxCap,
+        configuration.basicConfiguration.decimals,
         start,
         end,
         redeemableAfter);
@@ -53,6 +54,7 @@ async function deployPreICOSale(openHouseInstance, deployer) {
         ether(configuration.preICOSale.tokenPrice),
         configuration.preICOSale.tokensMinCap,
         configuration.preICOSale.tokensMaxCap,
+        configuration.basicConfiguration.decimals,
         start,
         end,
         redeemableAfter);
@@ -78,6 +80,7 @@ async function deployICOSale(openHouseInstance, deployer) {
         ether(configuration.ICOSale.tokenPrice),
         configuration.ICOSale.tokensMinCap,
         configuration.ICOSale.tokensMaxCap,
+        configuration.basicConfiguration.decimals,
         start,
         end,
         redeemableAfter);

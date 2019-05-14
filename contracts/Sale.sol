@@ -16,6 +16,7 @@ contract Sale is Status {
     uint256 internal tokensMinCap;
     uint256 internal tokensMaxCap;
     uint256 internal tokensSold;
+    uint256 internal decimals;
 
     uint256 internal startTimestamp;
     uint256 internal endTimestamp;
@@ -80,6 +81,7 @@ contract Sale is Status {
         uint256 price,
         uint256 minCap,
         uint256 maxCap,
+        uint256 tokenDecimals,
         uint256 start,
         uint256 end,
         uint256 redeemableAfter) 
@@ -94,6 +96,7 @@ contract Sale is Status {
         tokenPrice = price;
         tokensMinCap = minCap;
         tokensMaxCap = maxCap;
+        decimals = tokenDecimals;
         startTimestamp = start;
         endTimestamp = end;
         redeemableAfterTimestamp = redeemableAfter;
@@ -220,13 +223,16 @@ contract Sale is Status {
       * @return A boolean value indicating if the purchase has completed successfully.
       */
     function buyTokens(uint256 numberOfTokens) public payable isActivated() isLive() returns(bool) {
-        require(tokensMaxCap - tokensSold >= numberOfTokens);
-        require(msg.value == numberOfTokens * tokenPrice);
+        require(tokensMaxCap.sub(tokensSold) >= numberOfTokens.mul(10 ** decimals));
+        require(msg.value == numberOfTokens.mul(tokenPrice));
 
-        tokensSold += numberOfTokens;
-        balanceOf[msg.sender] += numberOfTokens;
+        /// Converting number of tokens to supply.
+        uint256 tokenSupplyBought = numberOfTokens.mul(10 ** decimals);
 
-        emit Sold(msg.sender, numberOfTokens);
+        tokensSold = tokensSold.add(tokenSupplyBought);
+        balanceOf[msg.sender] = balanceOf[msg.sender].add(tokenSupplyBought);
+
+        emit Sold(msg.sender, tokenSupplyBought);
 
         return true;
     }
