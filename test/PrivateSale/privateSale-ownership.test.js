@@ -26,10 +26,8 @@ contract("PrivateSale -> ownership", accounts => {
         this.tokenPrice = new BN(privateSale.tokenPrice);
 
         this.tokensMinCap = new BN(privateSale.tokensMinCap)
-        this.tokensMinCap = this.tokensMinCap.mul(this.power);
 
         this.tokensMaxCap = new BN(privateSale.tokensMaxCap)
-        this.tokensMaxCap = this.tokensMaxCap.mul(this.power);
 
         this.start = await latestTime();
         this.start += duration.hours(1);

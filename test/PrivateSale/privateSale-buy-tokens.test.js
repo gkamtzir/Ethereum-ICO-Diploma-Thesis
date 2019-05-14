@@ -25,10 +25,8 @@ contract("PrivateSale -> buy tokens", accounts => {
         this.tokenPrice = new BN(privateSale.tokenPrice);
 
         this.tokensMinCap = new BN(privateSale.tokensMinCap)
-        this.tokensMinCap = this.tokensMinCap.mul(this.power);
 
         this.tokensMaxCap = new BN(privateSale.tokensMaxCap)
-        this.tokensMaxCap = this.tokensMaxCap.mul(this.power);
 
         this.buyTokens = new BN(basicConfiguration.buyTokens);
 
@@ -55,7 +53,7 @@ contract("PrivateSale -> buy tokens", accounts => {
         this.spender = accounts[basicConfiguration.spenderAccount];
 
         // Allocate the needed tokens to the Private Sale contract.
-        await this.token.transfer(this.privateSale.address, this.tokensMaxCap.toString(), { from: this.admin });
+        await this.token.transfer(this.privateSale.address, this.tokensMaxCap.mul(this.power).toString(), { from: this.admin });
 
         // Allow 'spender' to participate in the private sale.
         await this.privateSale.allowAddress(this.spender);
@@ -67,8 +65,8 @@ contract("PrivateSale -> buy tokens", accounts => {
     describe("Buy tokens", () => {
 
         it("Should be impossible to buy more tokens than available", async() => {
-            const cost = this.tokenPrice.mul(this.tokensMaxCap.div(this.power).add(new BN(1)));
-            await this.privateSale.buyTokens(this.tokensMaxCap.div(this.power).add(new BN(1)).toString(),
+            const cost = this.tokenPrice.mul(this.tokensMaxCap.add(new BN(1)));
+            await this.privateSale.buyTokens(this.tokensMaxCap.add(new BN(1)).toString(),
                 { from: this.spender, value: cost.toString()})
                 .should.be.rejectedWith("revert");
         });
@@ -88,14 +86,14 @@ contract("PrivateSale -> buy tokens", accounts => {
 
             truffleAssert.eventEmitted(tx, "Sold", event => {
                 return event.from === this.spender
-                    && event.numberOfTokens.eq(this.buyTokens.mul(this.power));
+                    && event.numberOfTokens.eq(this.buyTokens);
             });
 
             const tokensSold = await this.privateSale.getTokensSold();
-            expect(tokensSold).to.be.bignumber.equal(this.buyTokens.mul(this.power));
+            expect(tokensSold).to.be.bignumber.equal(this.buyTokens);
 
             const balance = await this.privateSale.getBalanceOf(this.spender);
-            expect(balance).to.be.bignumber.equal(this.buyTokens.mul(this.power));
+            expect(balance).to.be.bignumber.equal(this.buyTokens);
         });
 
     });

@@ -24,10 +24,8 @@ contract("PrivateSale -> initialize", accounts => {
         this.tokenPrice = new BN(privateSale.tokenPrice);
 
         this.tokensMinCap = new BN(privateSale.tokensMinCap)
-        this.tokensMinCap = this.tokensMinCap.mul(this.power);
 
         this.tokensMaxCap = new BN(privateSale.tokensMaxCap)
-        this.tokensMaxCap = this.tokensMaxCap.mul(this.power);
 
         this.start = await latestTime();
         this.start += duration.hours(1);
@@ -51,7 +49,7 @@ contract("PrivateSale -> initialize", accounts => {
         this.admin = accounts[basicConfiguration.adminAccount];
 
         // Allocate the needed tokens to the Private Sale contract.
-        await this.token.transfer(this.privateSale.address, this.tokensMaxCap.toString(), { from: this.admin });
+        await this.token.transfer(this.privateSale.address, this.tokensMaxCap.mul(this.power).toString(), { from: this.admin });
     });
 
     describe("Initialization", () => {
@@ -68,7 +66,7 @@ contract("PrivateSale -> initialize", accounts => {
 
         it("Should initialize the private sale with the correct total supply", async () => {
             const totalSupply = await this.token.balanceOf(this.privateSale.address);
-            expect(totalSupply).to.be.bignumber.equal(this.tokensMaxCap);
+            expect(totalSupply).to.be.bignumber.equal(this.tokensMaxCap.mul(this.power));
         });
 
         it("Should initialize private sale with the correct minimum cap", async () => {

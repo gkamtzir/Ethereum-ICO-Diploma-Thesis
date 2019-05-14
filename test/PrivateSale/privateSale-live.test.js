@@ -25,10 +25,8 @@ contract("PrivateSale -> live", accounts => {
         this.tokenPrice = new BN(privateSale.tokenPrice);
 
         this.tokensMinCap = new BN(privateSale.tokensMinCap)
-        this.tokensMinCap = this.tokensMinCap.mul(this.power);
 
         this.tokensMaxCap = new BN(privateSale.tokensMaxCap)
-        this.tokensMaxCap = this.tokensMaxCap.mul(this.power);
 
         this.buyTokens = new BN(basicConfiguration.buyTokens);
 
@@ -55,7 +53,7 @@ contract("PrivateSale -> live", accounts => {
         this.spender = accounts[basicConfiguration.spenderAccount];
 
         // Allocate the needed tokens to the Private Sale contract.
-        await this.token.transfer(this.privateSale.address, this.tokensMaxCap.toString(), { from: this.admin });
+        await this.token.transfer(this.privateSale.address, this.tokensMaxCap.mul(this.power).toString(), { from: this.admin });
 
         // Allow 'spender' to participate in the private sale.
         await this.privateSale.allowAddress(this.spender);
