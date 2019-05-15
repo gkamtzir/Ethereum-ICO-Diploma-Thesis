@@ -34,8 +34,9 @@ class UserDetailsController implements ng.IComponentController {
 
     async $onChanges(changes: any) {
         // When the address changes we update the allowance field.
-        if (changes.account != null && changes.account.currentValue != null && this.restricted){
-            this.userDetails.allowance = await this.saleContract.methods.getAddressAllowance(changes.account.currentValue).call();
+        if (changes.account != null && changes.account.currentValue != null){
+            if (this.restricted)
+                this.userDetails.allowance = await this.saleContract.methods.getAddressAllowance(changes.account.currentValue).call();
             this.userDetails.tokensBought = await this.saleContract.methods.getBalanceOf(changes.account.currentValue).call();
             this.$scope.$apply();
         }
