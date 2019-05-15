@@ -40,8 +40,8 @@ module.exports = {
     preICOSale: {
         tokensMinCap: 10000,
         tokensMaxCap: 100000,
-        // Ether price.
-        tokenPrice: 0.0007,
+        // 0.0007 ether.
+        tokenPrice: "700000000000000",
         // 4 weeks.
         duration: 2419200,
         // 28 weeks approx 6 months.
@@ -50,8 +50,8 @@ module.exports = {
     ICOSale: {
         tokensMinCap: 10000,
         tokensMaxCap: 100000,
-        // Ether price.
-        tokenPrice: 0.0021,
+        // 0.0021 ether.
+        tokenPrice: "2100000000000000",
         // 4 weeks.
         duration: 2419200,
         // 24 weeks approx 6 months.

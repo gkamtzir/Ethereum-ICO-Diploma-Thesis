@@ -6,7 +6,6 @@ const ICOSale = artifacts.require("ICOSale.sol");
 const configuration = require("../config.js");
 const { duration } = require("../test/helpers/increaseTime");
 const { latestTime } = require("../test/helpers/latestTime");
-const { ether } = require("../test/helpers/ether");
 
 /**
  * Deployes the private sale contract.
@@ -25,7 +24,7 @@ async function deployPrivateSale(openHouseInstance, deployer) {
     await deployer.deploy(
         PrivateSale,
         openHouseInstance.address,
-        ether(configuration.privateSale.tokenPrice),
+        configuration.privateSale.tokenPrice,
         configuration.privateSale.tokensMinCap,
         configuration.privateSale.tokensMaxCap,
         configuration.basicConfiguration.decimals,
@@ -51,7 +50,7 @@ async function deployPreICOSale(openHouseInstance, deployer) {
     await deployer.deploy(
         PreICOSale,
         openHouseInstance.address,
-        ether(configuration.preICOSale.tokenPrice),
+        configuration.preICOSale.tokenPrice,
         configuration.preICOSale.tokensMinCap,
         configuration.preICOSale.tokensMaxCap,
         configuration.basicConfiguration.decimals,
@@ -77,7 +76,7 @@ async function deployICOSale(openHouseInstance, deployer) {
     await deployer.deploy(
         ICOSale,
         openHouseInstance.address,
-        ether(configuration.ICOSale.tokenPrice),
+        configuration.ICOSale.tokenPrice,
         configuration.ICOSale.tokensMinCap,
         configuration.ICOSale.tokensMaxCap,
         configuration.basicConfiguration.decimals,
