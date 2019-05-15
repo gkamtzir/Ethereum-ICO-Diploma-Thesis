@@ -20,6 +20,7 @@ import "./components/ico-sale/ico-sale.component.scss";
 import "./components/time/time.component.scss";
 import "./components/basic-actions/basic-actions.component.scss";
 import "./components/owner-actions/owner-actions.component.scss";
+import "./components/token/token.component.scss";
 
 // Application dependencies.
 
@@ -39,6 +40,7 @@ import ICOSaleComponent from "./components/ico-sale/ico-sale.component";
 import TimeComponent from "./components/time/time.component";
 import BasicActionsComponent from "./components/basic-actions/basic-actions.component";
 import OwnerActionsComponent from "./components/owner-actions/owner-actions.component";
+import TokenComponent from "./components/token/token.component";
 
 // Services.
 import Web3Service from "./services/web3.service";
@@ -55,6 +57,14 @@ module.config(["$routeProvider", "$locationProvider",
     ($routeProvider: angular.route.IRouteProvider, $locationProvider: angular.ILocationProvider) => {
         $locationProvider.hashPrefix("");
         $routeProvider
+            .when("/", {
+                template: "<token-component></token-component>",
+                resolve: {
+                    metamask: () => {
+                        return ethereum.enable();
+                    }
+                }
+            })
             .when("/privateSale", {
                 template: "<private-sale-component></private-sale-component>",
                 resolve: {
@@ -80,7 +90,7 @@ module.config(["$routeProvider", "$locationProvider",
                 }
             })
             .otherwise({
-                redirectTo: "/privateSale"
+                redirectTo: "/"
             });
 }]);
 
@@ -94,6 +104,7 @@ module.component("icoSaleComponent", new ICOSaleComponent());
 module.component("timeComponent", new TimeComponent());
 module.component("basicActionsComponent", new BasicActionsComponent());
 module.component("ownerActionsComponent", new OwnerActionsComponent());
+module.component("tokenComponent", new TokenComponent());
 
 // Wiring up the services.
 module.service("web3Service", Web3Service);
@@ -107,10 +118,10 @@ module.constant("PrivateSale", PrivateSale);
 module.constant("PreICOSale", PreICOSale);
 module.constant("ICOSale", ICOSale);
 
-module.constant("OpenHouseTokenContractAddress", "0x392A546d03b3B5E20E028973f6036675d510b8aB");
-module.constant("PrivateSaleContractAddress", "0x8be46Ad6D8e905F1909ff2E23e99A26a1Ff36826");
-module.constant("PreICOSaleContractAddress", "0xA7AC48a9e16DC1B50a9Ea22501aA655D0B78AE23");
-module.constant("ICOSaleContractAddress", "0x9Fef9Bb995C8924789461F6Ec844d898fF44eF0D");
+module.constant("OpenHouseTokenContractAddress", "0x6ed211574851C1C48605e93ada1b50bf4836171a");
+module.constant("PrivateSaleContractAddress", "0xBC6cD15F4503c9150aC46BBda9e29bd7142C5bc4");
+module.constant("PreICOSaleContractAddress", "0xAe44acd0a52B682c878053165170b7eBe71825f6");
+module.constant("ICOSaleContractAddress", "0xaBA96FaDe5ecCCD7be21dA3bCCD0Fb2140109A64");
 
 angular.element(document).ready(() => {
     angular.bootstrap(document, ["OpenHouseAdminPanel"]);

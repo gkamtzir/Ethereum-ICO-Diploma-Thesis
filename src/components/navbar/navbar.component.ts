@@ -38,6 +38,12 @@ export default class NavbarComponent implements ng.IComponentOptions {
         <div class="navbar-component">
             <ul class="nav nav-tabs">
                 <li class="nav-item">
+                    <a class="nav-link" ng-class="{active: $ctrl.activeTab === '/' || $ctrl.activeTab === ''}"
+                        ng-click="$ctrl.updateActiveTab('/')" href="#/">
+                            OpenHouse Token
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" ng-class="{active: $ctrl.activeTab === '/privateSale' || $ctrl.activeTab === ''}"
                         ng-click="$ctrl.updateActiveTab('/privateSale')" href="#/privateSale">
                             Private Sale
