@@ -7,10 +7,11 @@ const { BigNumber } = require("bignumber.js");
 
 class TokenController implements ng.IComponentController {
 
-    public static $inject = ["$scope", "web3Service"];
+    public static $inject = ["$scope", "$rootScope", "web3Service"];
 
     // Public variables.
     public tokenContract: any;
+    public account: string;
     public status: any;
     public tokenDetails = {
         name: null,
@@ -20,15 +21,33 @@ class TokenController implements ng.IComponentController {
         status: null
     };
 
+    // Event listeners.
+    private accountChangedListener: any;
+    private statusChangedListener: any;
+
     constructor(
         public $scope: ng.IScope,
+        public $rootScope: ng.IRootScopeService,
         public web3Service: IWeb3Service
-    ) {}
+    ) {
+        // Listening for 'accountChanged' events.
+        this.accountChangedListener = this.$rootScope.$on("web3.service.accountChanged", async () => {
+            this.account = await this.web3Service.getMetamaskAccountOrNull();
+            this.$scope.$apply();
+        });
+
+        // Listening for 'statusChanged' events.
+        this.statusChangedListener = this.$rootScope.$on("owner.component.statusChanged", async () => {
+            this.tokenDetails.status = await this.tokenContract.methods.getStatus().call();
+            this.$scope.$apply();
+        });
+    }
 
     async $onInit() {
         this.status = Status;
 
         this.tokenContract = this.web3Service.tokenContract;
+        this.account = await this.web3Service.getMetamaskAccountOrNull();
 
         this.tokenDetails.name = await this.tokenContract.methods.getName().call();
         this.tokenDetails.symbol = await this.tokenContract.methods.getSymbol().call();
@@ -42,6 +61,10 @@ class TokenController implements ng.IComponentController {
         this.tokenDetails.status = await this.tokenContract.methods.getStatus().call();
 
         this.$scope.$apply();
+    }
+
+    $onDestroy(){
+        this.accountChangedListener();
     }
 
 }
@@ -94,6 +117,14 @@ export default class TokenComponent implements ng.IComponentOptions {
                             <span ng-if="$ctrl.tokenDetails.status == $ctrl.status.Deactivated">Deactivated</span>
                         </span>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm">
+
+                </div>
+                <div class="col-sm">
+                    <owner-actions-component sale-contract="$ctrl.tokenContract" account="$ctrl.account" restricted="false" basic="true"></owner-actions-component>
                 </div>
             </div>
         </div>

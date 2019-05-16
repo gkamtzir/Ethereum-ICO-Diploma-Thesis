@@ -9,6 +9,7 @@ class AdminActionsController implements ng.IComponentController, IOwnerActions {
     public saleContract: any;
     public account: string;
     public restricted: boolean;
+    public basic: boolean;
 
     public addressToBeAllowed: string;
     public addressToBeOwner: string;
@@ -18,6 +19,7 @@ class AdminActionsController implements ng.IComponentController, IOwnerActions {
         public $rootScope: ng.IRootScopeService
     ) {
         this.restricted = false;
+        this.basic = false;
     }
 
     /**
@@ -79,6 +81,10 @@ class AdminActionsController implements ng.IComponentController, IOwnerActions {
      * be sent back to the owner as well.
      */
     public async reallocateTokens() {
+
+        if (this.basic)
+            throw "This method is not supported for this kind of usage."
+
         try {
             await this.saleContract.methods.reallocateTokens().send({ from: this.account });
             this.toastr.success("The tokens have been successfully reallocated", "Success");
@@ -99,7 +105,8 @@ export default class AdminActionsComponent implements ng.IComponentOptions {
         this.bindings = {
             saleContract: "<",
             account: "<",
-            restricted: "<"
+            restricted: "<",
+            basic: "<"
         };
         this.controller = AdminActionsController;
         this.controllerAs = "$ctrl";
@@ -117,7 +124,7 @@ export default class AdminActionsComponent implements ng.IComponentOptions {
                 <button type="submit" class="btn btn-success sm-4 action-button no-input-button" ng-click="$ctrl.activate()">Activate</button>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group row" ng-if="!$ctrl.basic">
                 <label for="reallocate" class="col-sm-4 col-form-label">Reallocate Tokens</label>
                 <button type="submit" class="btn btn-primary sm-4 action-button no-input-button" ng-click="$ctrl.reallocateTokens()">Reallocate</button>
             </div>
