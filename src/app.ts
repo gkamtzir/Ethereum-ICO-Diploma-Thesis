@@ -21,6 +21,7 @@ import "./components/time/time.component.scss";
 import "./components/basic-actions/basic-actions.component.scss";
 import "./components/owner-actions/owner-actions.component.scss";
 import "./components/token/token.component.scss";
+import "./components/transfer/transfer.component.scss";
 
 // Application dependencies.
 
@@ -41,12 +42,14 @@ import TimeComponent from "./components/time/time.component";
 import BasicActionsComponent from "./components/basic-actions/basic-actions.component";
 import OwnerActionsComponent from "./components/owner-actions/owner-actions.component";
 import TokenComponent from "./components/token/token.component";
+import TrasnferComponent from "./components/transfer/transfer.component";
 
 // Services.
 import Web3Service from "./services/web3.service";
 
 // Filters.
 import { DotSeparatorFilter } from "./filters/dot-separator.filter";
+import TransferComponent from "./components/transfer/transfer.component";
 
 const module = angular.module("OpenHouseAdminPanel", ["ngRoute", "toastr"]);
 
@@ -105,6 +108,7 @@ module.component("timeComponent", new TimeComponent());
 module.component("basicActionsComponent", new BasicActionsComponent());
 module.component("ownerActionsComponent", new OwnerActionsComponent());
 module.component("tokenComponent", new TokenComponent());
+module.component("transferComponent", new TransferComponent());
 
 // Wiring up the services.
 module.service("web3Service", Web3Service);
@@ -118,10 +122,10 @@ module.constant("PrivateSale", PrivateSale);
 module.constant("PreICOSale", PreICOSale);
 module.constant("ICOSale", ICOSale);
 
-module.constant("OpenHouseTokenContractAddress", "0x6ed211574851C1C48605e93ada1b50bf4836171a");
-module.constant("PrivateSaleContractAddress", "0xBC6cD15F4503c9150aC46BBda9e29bd7142C5bc4");
-module.constant("PreICOSaleContractAddress", "0xAe44acd0a52B682c878053165170b7eBe71825f6");
-module.constant("ICOSaleContractAddress", "0xaBA96FaDe5ecCCD7be21dA3bCCD0Fb2140109A64");
+module.constant("OpenHouseTokenContractAddress", "0xD60F0bA19e6A7f8E99B4102Ca8Cb9FAB7caF31ed");
+module.constant("PrivateSaleContractAddress", "0x6B4076AE0065fe823F1758dD55e713655A871840");
+module.constant("PreICOSaleContractAddress", "0xBEFeBd76e0d69e2D8B4A8eFc52B58462b958d716");
+module.constant("ICOSaleContractAddress", "0xbC9905B17C4b33D2127164Ccd08364445d1D5230");
 
 angular.element(document).ready(() => {
     angular.bootstrap(document, ["OpenHouseAdminPanel"]);
