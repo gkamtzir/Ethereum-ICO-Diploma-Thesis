@@ -124,7 +124,7 @@ export default class TokenComponent implements ng.IComponentOptions {
                     <transfer-component token-contract="$ctrl.tokenContract" account="$ctrl.account"></transfer-component>
                 </div>
                 <div class="col-sm">
-                    <utilities-component token-contract="$ctr.tokenContract" account="$ctrl.account"></utilities-component>
+                    <utilities-component token-contract="$ctrl.tokenContract" account="$ctrl.account"></utilities-component>
                 </div>
             </div>
             

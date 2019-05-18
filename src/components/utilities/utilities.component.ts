@@ -5,7 +5,7 @@ const { BigNumber } = require("bignumber.js");
 class UtilitiesController implements ng.IComponentController {
 
     // Controller's injectables.
-    public static $inject = ["web3Service", "$rootScope", "toastr"];
+    public static $inject = ["web3Service", "$rootScope", "$scope", "toastr"];
 
     // Public variables.
     public tokenContract: any;
@@ -29,6 +29,7 @@ class UtilitiesController implements ng.IComponentController {
     constructor(
         public web3Service: IWeb3Service,
         public $rootScope: ng.IRootScopeService,
+        public $scope: ng.IScope,
         public toastr: ng.toastr.IToastrService
     ) {
     }
@@ -37,6 +38,11 @@ class UtilitiesController implements ng.IComponentController {
         let decimals = await this.tokenContract.methods.getDecimals().call();
         this.power = new BigNumber(10);
         this.power = this.power.pow(decimals);
+
+        this.commitTokensRadio = "balance";
+        this.withdrawTokensRadio = "balance";
+
+        this.$scope.$apply();
     }
 
 }
@@ -73,13 +79,13 @@ export default class UtilitiesComponent implements ng.IComponentOptions {
 
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="type" id="balance" value="balance" ng-model="$ctrl.commitTokensRadio" checked>
+                        <input class="form-check-input" type="radio" name="commit" id="balance" value="balance" ng-model="$ctrl.commitTokensRadio" checked>
                         <label class="form-check-label" for="balance">
                             From Balance
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="type" id="rented" value="rented" ng-model="$ctrl.commitTokensRadio">
+                        <input class="form-check-input" type="radio" name="commit" id="rented" value="rented" ng-model="$ctrl.commitTokensRadio">
                         <label class="form-check-label" for="rented">
                             From Rented
                         </label>
@@ -105,13 +111,13 @@ export default class UtilitiesComponent implements ng.IComponentOptions {
 
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="type" id="balance" value="balance" ng-model="$ctrl.withdrawTokensRadio" checked>
+                        <input class="form-check-input" type="radio" name="withdraw" id="balance" value="balance" ng-model="$ctrl.withdrawTokensRadio" checked>
                         <label class="form-check-label" for="balance">
                             From Balance
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="type" id="rented" value="rented" ng-model="$ctrl.withdrawTokensRadio">
+                        <input class="form-check-input" type="radio" name="withdraw" id="rented" value="rented" ng-model="$ctrl.withdrawTokensRadio">
                         <label class="form-check-label" for="rented">
                             From Rented
                         </label>
