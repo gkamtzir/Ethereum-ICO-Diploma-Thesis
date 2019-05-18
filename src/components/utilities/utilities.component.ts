@@ -89,6 +89,28 @@ class UtilitiesController implements ng.IComponentController {
         }
     }
 
+    /**
+     * Creates a token offer.
+     */
+    public async createOffer() {
+        try {
+            let supply = new BigNumber(this.createOfferTokens);
+            supply = supply.times(this.power);
+
+            let price = new BigNumber(this.createOfferPrice);
+            price = price.times(this.power);
+
+            await this.tokenContract.methods.createOffer(supply.toString(), price.toString(), this.createOfferDuration).send({ from: this.account });
+
+            this.toastr.success("Offer has been successfully created", "Created");
+
+        } catch (exception) {
+            this.toastr.error(`Please make sure of the following: 1) The contract is activated, 2) Inputs are valid,
+                3) You have available tokens, 4) There is not any other offer in progress, 5) The duration is set to
+                at least 1 hour (3600 blocks)`, "Error");
+        }
+    }
+
 }
 
 export default class UtilitiesComponent implements ng.IComponentOptions {
