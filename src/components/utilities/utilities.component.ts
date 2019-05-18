@@ -46,7 +46,7 @@ class UtilitiesController implements ng.IComponentController {
     }
 
     /**
-     * Commits tokens either from balance or from rented.
+     * Commits an certain amount of tokens either from balance or from rented.
      */
     public async commit() {
         try {
@@ -64,6 +64,28 @@ class UtilitiesController implements ng.IComponentController {
             }
         } catch (exception) {
             this.toastr.error("Please make sure of the following: 1) The contract is activated, 2) You have available tokens", "Error");
+        }
+    }
+
+    /**
+     * Withdraws an certain amount of tokens back to rented or balance.
+     */
+    public async withdraw() {
+        try {
+            let supply = new BigNumber(this.withdrawTokens);
+            supply = supply.times(this.power);
+
+            if (this.withdrawTokensRadio === "balance") {
+                await this.tokenContract.methods.commitToBalance(supply.toString()).send({ from: this.account });
+                this.toastr.success("Tokens withdrawn successfully from balance", "Withdrawn");
+            } else if (this.withdrawTokensRadio === "rented") {
+                await this.tokenContract.methods.commitToRented(supply.toString()).send({ from: this.account });
+                this.toastr.success("Tokens withdrawn successfully from rented", "Withdrawn");
+            } else {
+                this.toastr.error("You must either choose 'From Balance' or 'From Rented'", "Error");
+            }
+        } catch (exception) {
+            this.toastr.error("Please make sure of the following: 1) The contract is activated, 2) You have commited some tokens", "Error");
         }
     }
 
