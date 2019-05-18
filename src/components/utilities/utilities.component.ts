@@ -45,6 +45,28 @@ class UtilitiesController implements ng.IComponentController {
         this.$scope.$apply();
     }
 
+    /**
+     * Commits tokens either from balance or from rented.
+     */
+    public async commit() {
+        try {
+            let supply = new BigNumber(this.commitTokens);
+            supply = supply.times(this.power);
+
+            if (this.commitTokensRadio === "balance") {
+                await this.tokenContract.methods.commitFromBalance(supply.toString()).send({ from: this.account });
+                this.toastr.success("Tokens commited successfully from balance", "Commited");
+            } else if (this.commitTokensRadio === "rented") {
+                await this.tokenContract.methods.commitFromRented(supply.toString()).send({ from: this.account });
+                this.toastr.success("Tokens commited successfully from rented", "Commited");
+            } else {
+                this.toastr.error("You must either choose 'From Balance' or 'From Rented'", "Error");
+            }
+        } catch (exception) {
+            this.toastr.error("Please make sure of the following: 1) The contract is activated, 2) You have available tokens", "Error");
+        }
+    }
+
 }
 
 export default class UtilitiesComponent implements ng.IComponentOptions {
