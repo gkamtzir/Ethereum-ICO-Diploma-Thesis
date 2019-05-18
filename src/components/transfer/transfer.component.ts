@@ -104,7 +104,7 @@ export default class TransferComponent implements ng.IComponentOptions {
         this.controller = TransferController;
         this.controllerAs = "$ctrl";
         this.template = `
-        <div class="transfer-component">
+        <div class="transfer-component details-card">
             <h4>Transfer actions</h4>
 
             <hr />

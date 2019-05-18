@@ -87,7 +87,7 @@ export default class BasicActionsComponent implements ng.IComponentOptions {
         this.controller = BasicActionsController;
         this.controllerAs = "$ctrl";
         this.template = `
-        <div class="basic-actions-component">
+        <div class="basic-actions-component details-card">
             <h4>Basic actions</h4>
 
             <div class="form-group row">

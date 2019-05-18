@@ -1,23 +1,6 @@
 .token-component {
     margin-top: 20px;
-
-    .details-card {
-        background-color: #ffffff;
-        padding: 10px;
-        border-radius: 5px;
-
-        -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-        -moz-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-
-        .row {
-            margin-bottom: 20px;
-        }
-
-        .row:last-child {
-            margin-bottom: 0px;
-        }
-    }
+    margin-bottom: 20px;
 
     .details-value {
         font-weight: 500;

@@ -55,7 +55,7 @@ export default class UtilitiesComponent implements ng.IComponentOptions {
         this.controller = UtilitiesController;
         this.controllerAs = "$ctrl";
         this.template = `
-        <div class="utilities-component">
+        <div class="utilities-component details-card">
             <h4>Utilities</h4>
 
             <hr />

@@ -111,7 +111,7 @@ export default class AdminActionsComponent implements ng.IComponentOptions {
         this.controller = AdminActionsController;
         this.controllerAs = "$ctrl";
         this.template = `
-        <div class="admin-actions-component">
+        <div class="admin-actions-component details-card">
             <h4>Onwer actions</h4>
 
             <div class="form-group row">
