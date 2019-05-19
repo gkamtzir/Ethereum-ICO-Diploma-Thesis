@@ -111,6 +111,35 @@ class UtilitiesController implements ng.IComponentController {
         }
     }
 
+    /**
+     * Removes an existing non-activated offer.
+     */
+    public async removeOffer() {
+        try {
+            await this.tokenContract.methods.removeOffer().send({ from: this.account });
+
+            this.toastr.success("The offer has been successfully removed", "Removed");
+        } catch (exception) {
+            this.toastr.error(`Please make sure of the following: 1) The contract is activated, 2) The offer is not activated`, "Error");
+        }
+    }
+
+    /**
+     * Leases an existing offer.
+     */
+    public async leaseFrom() {
+        try {
+            let cost = await this.tokenContract.methods.getOfferPrice(this.leaseFromAddress).call({ from: this.account });
+
+            await this.tokenContract.methods.leaseFrom(this.leaseFromAddress).send({ from: this.account, value: cost });
+
+            this.toastr.success("You have successfully leased from " + this.leaseFromAddress, "Leased");
+        } catch (exception) {
+            this.toastr.error(`Please make sure of the following: 1) The contract is activated, 2) The offer is not activated,
+                3) You are not already leasing from someone else, 4) You have sufficient funds`, "Error");
+        }
+    }
+
 }
 
 export default class UtilitiesComponent implements ng.IComponentOptions {
