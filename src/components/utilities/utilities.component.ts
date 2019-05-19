@@ -54,10 +54,10 @@ class UtilitiesController implements ng.IComponentController {
             supply = supply.times(this.power);
 
             if (this.commitTokensRadio === "balance") {
-                await this.tokenContract.methods.commitFromBalance(supply.toString()).send({ from: this.account });
+                await this.tokenContract.methods.commitFromBalance(supply.toFixed()).send({ from: this.account });
                 this.toastr.success("Tokens commited successfully from balance", "Commited");
             } else if (this.commitTokensRadio === "rented") {
-                await this.tokenContract.methods.commitFromRented(supply.toString()).send({ from: this.account });
+                await this.tokenContract.methods.commitFromRented(supply.toFixed()).send({ from: this.account });
                 this.toastr.success("Tokens commited successfully from rented", "Commited");
             } else {
                 this.toastr.error("You must either choose 'From Balance' or 'From Rented'", "Error");
@@ -76,10 +76,10 @@ class UtilitiesController implements ng.IComponentController {
             supply = supply.times(this.power);
 
             if (this.withdrawTokensRadio === "balance") {
-                await this.tokenContract.methods.commitToBalance(supply.toString()).send({ from: this.account });
+                await this.tokenContract.methods.commitToBalance(supply.toFixed()).send({ from: this.account });
                 this.toastr.success("Tokens withdrawn successfully from balance", "Withdrawn");
             } else if (this.withdrawTokensRadio === "rented") {
-                await this.tokenContract.methods.commitToRented(supply.toString()).send({ from: this.account });
+                await this.tokenContract.methods.commitToRented(supply.toFixed()).send({ from: this.account });
                 this.toastr.success("Tokens withdrawn successfully from rented", "Withdrawn");
             } else {
                 this.toastr.error("You must either choose 'From Balance' or 'From Rented'", "Error");
@@ -100,7 +100,7 @@ class UtilitiesController implements ng.IComponentController {
             let price = new BigNumber(this.createOfferPrice);
             price = price.times(this.power);
 
-            await this.tokenContract.methods.createOffer(supply.toString(), price.toString(), this.createOfferDuration).send({ from: this.account });
+            await this.tokenContract.methods.createOffer(supply.toFixed(), price.toFixed(), this.createOfferDuration).send({ from: this.account });
 
             this.toastr.success("Offer has been successfully created", "Created");
 

@@ -46,7 +46,7 @@ class TransferController implements ng.IComponentController {
             let tokenSupply = new BigNumber(this.transferTokens);
             tokenSupply = tokenSupply.times(this.power);
 
-            await this.tokenContract.methods.transfer(this.transferTokensAddress, tokenSupply.toString()).send({ from: this.account });
+            await this.tokenContract.methods.transfer(this.transferTokensAddress, tokenSupply.toFixed()).send({ from: this.account });
 
             this.toastr.success("You have successfully transfered tokens", "Transfered");
         } catch (exception) {
@@ -62,7 +62,7 @@ class TransferController implements ng.IComponentController {
             let tokenSupply = new BigNumber(this.transferTokensFrom);
             tokenSupply = tokenSupply.times(this.power);
 
-            await this.tokenContract.methods.transferFrom(this.transferTokensAddressFrom, this.trasnferTokensAddressTo, tokenSupply.toString())
+            await this.tokenContract.methods.transferFrom(this.transferTokensAddressFrom, this.trasnferTokensAddressTo, tokenSupply.toFixed())
                 .send({ from: this.account });
 
             this.toastr.success("You have successfully transfered tokens", "Transfered");
@@ -80,7 +80,7 @@ class TransferController implements ng.IComponentController {
             let tokenSupply = new BigNumber(this.approveTokens);
             tokenSupply = tokenSupply.times(this.power);
 
-            await this.tokenContract.methods.approve(this.approveTokensAddress, tokenSupply.toString()).send({ from: this.account });
+            await this.tokenContract.methods.approve(this.approveTokensAddress, tokenSupply.toFixed()).send({ from: this.account });
             
             this.toastr.success("You have successfully approved tokens", "Approve");
         } catch (exception) {
