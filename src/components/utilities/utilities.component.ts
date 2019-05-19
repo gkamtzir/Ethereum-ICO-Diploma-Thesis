@@ -140,6 +140,20 @@ class UtilitiesController implements ng.IComponentController {
         }
     }
 
+    /**
+     * Terminates the leasing process.
+     */
+    public async terminateLeasing() {
+        try {
+            await this.tokenContract.methods.terminateLeasing().send({ from: this.account });
+
+            this.toastr.success("You have successfully terminated the leasing", "Terminated");
+        } catch (exception) {
+            this.toastr.error(`Please make sure of the following: 1) The contract is activated, 2) The offer is activated,
+                3) The offer has ended`, "Error");
+        }
+    }
+
 }
 
 export default class UtilitiesComponent implements ng.IComponentOptions {
