@@ -28,8 +28,8 @@ module.exports = {
         rentAccount: 6
     },
     privateSale: {
-        tokensMinCap: 10000,
-        tokensMaxCap: 100000,
+        tokensMinCap: 100000,
+        tokensMaxCap: 20000000,
         // 0.00035 ether.
         tokenPrice:  "350000000000000",
         // 4 weeks.
@@ -38,8 +38,8 @@ module.exports = {
         redeemableAfter: 21772800
     },
     preICOSale: {
-        tokensMinCap: 10000,
-        tokensMaxCap: 100000,
+        tokensMinCap: 100000,
+        tokensMaxCap: 20000000,
         // 0.0007 ether.
         tokenPrice: "700000000000000",
         // 4 weeks.
@@ -48,8 +48,8 @@ module.exports = {
         redeemableAfter: 16934400
     },
     ICOSale: {
-        tokensMinCap: 10000,
-        tokensMaxCap: 100000,
+        tokensMinCap: 100000,
+        tokensMaxCap: 100000000,
         // 0.0021 ether.
         tokenPrice: "2100000000000000",
         // 4 weeks.
