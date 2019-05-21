@@ -65,6 +65,7 @@ class TokenController implements ng.IComponentController {
 
     $onDestroy(){
         this.accountChangedListener();
+        this.statusChangedListener();
     }
 
 }

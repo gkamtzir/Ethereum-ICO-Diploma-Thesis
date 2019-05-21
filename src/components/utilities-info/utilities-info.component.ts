@@ -155,6 +155,7 @@ class UtilitiesInfoController implements ng.IComponentController {
         this.accountChangedListener();
         this.offerChangedListener();
         this.rentChangedListener();
+        this.commitChangedListener();
     }
 
 }
