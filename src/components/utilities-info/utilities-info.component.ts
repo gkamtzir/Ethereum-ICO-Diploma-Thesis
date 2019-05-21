@@ -26,6 +26,10 @@ class UtilitiesInfoController implements ng.IComponentController {
         leasedFrom: null,
         endTimestamp: null
     };
+    public commitDetails = {
+        fromBalance: null,
+        fromRented: null
+    };
 
     // Private variables.
     private power: any;
@@ -34,6 +38,7 @@ class UtilitiesInfoController implements ng.IComponentController {
     private accountChangedListener: any;
     private offerChangedListener: any;
     private rentChangedListener: any;
+    private commitChangedListener: any;
 
     constructor(
         public $scope: ng.IScope,
@@ -44,9 +49,14 @@ class UtilitiesInfoController implements ng.IComponentController {
 
         // Listening for 'accountChanged' events.
         this.accountChangedListener = this.$rootScope.$on("web3.service.accountChanged", async () => {
+            this.hideLoader = false;
+            
             this.account = await this.web3Service.getMetamaskAccountOrNull();
             await this.getOfferDetails();
             await this.getRentDetails();
+            await this.getCommitDetails();
+            
+            this.hideLoader = true;
             this.$scope.$apply();
         });
 
@@ -61,6 +71,12 @@ class UtilitiesInfoController implements ng.IComponentController {
             await this.getRentDetails();
             this.$scope.$apply();
         });
+
+        // Listening for 'commitChanged' events.
+        this.commitChangedListener = this.$rootScope.$on("utilities.component.commitChanged", async () => {
+            await this.getCommitDetails();
+            this.$scope.$apply();
+        });
     }
 
     async $onInit() {
@@ -73,6 +89,7 @@ class UtilitiesInfoController implements ng.IComponentController {
 
         await this.getOfferDetails();
         await this.getRentDetails();
+        await this.getCommitDetails();
 
         this.hideLoader = true;
         this.$scope.$apply();
@@ -121,6 +138,17 @@ class UtilitiesInfoController implements ng.IComponentController {
             this.rentedDetails.endTimestamp = new Date(parseInt(leasedTimestamp) * 1000 + parseInt(duration) * 1000);
         else
             this.rentedDetails.endTimestamp = null;
+    }
+
+    /**
+     * Retrieves the commit details.
+     */
+    private async getCommitDetails() {
+        let commitedFromBalance = new BigNumber(await this.tokenContract.methods.getCommitedFromBalance().call({ from: this.account }));
+        let commitedFromRented = new BigNumber(await this.tokenContract.methods.getCommitedFromRented().call({ from: this.account }));
+
+        this.commitDetails.fromBalance = commitedFromBalance.div(this.power).toFixed();
+        this.commitDetails.fromRented = commitedFromRented.div(this.power).toFixed();
     }
 
     $onDestroy(){
@@ -228,14 +256,6 @@ export default class UtilitiesInfoComponent implements ng.IComponentOptions {
                         </div>
                         <div class="row">
                             <div class="col-sm">
-                                Available Tokens:
-                                <span class="details-value">
-                                    {{ $ctrl.rentedDetails.availableTokens != null ?  $ctrl.rentedDetails.availableTokens : '-' }}
-                                </span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm">
                                 Leased From:
                                 <span class="details-value">
                                     {{ $ctrl.rentedDetails.leasedFrom != null ?  $ctrl.rentedDetails.leasedFrom : '-' }}
@@ -247,6 +267,32 @@ export default class UtilitiesInfoComponent implements ng.IComponentOptions {
                                 Leasing ends at:
                                 <span class="details-value">
                                     {{ $ctrl.rentedDetails.endTimestamp != null ? ($ctrl.rentedDetails.endTimestamp  | date: 'medium') : '-'  }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="row row-title">
+                            <div class="col-sm">
+                                Commit Info
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm">
+                                Committed from balance:
+                                <span class="details-value">
+                                    {{ $ctrl.commitDetails.fromBalance }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm">
+                                Committed from rented:
+                                <span class="details-value">
+                                    {{ $ctrl.commitDetails.fromRented }}
                                 </span>
                             </div>
                         </div>

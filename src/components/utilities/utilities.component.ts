@@ -55,10 +55,16 @@ class UtilitiesController implements ng.IComponentController {
 
             if (this.commitTokensRadio === "balance") {
                 await this.tokenContract.methods.commitFromBalance(supply.toFixed()).send({ from: this.account });
+                
+                this.$rootScope.$emit("utilities.component.commitChanged");
+
                 this.toastr.success("Tokens commited successfully from balance", "Commited");
             } else if (this.commitTokensRadio === "rented") {
                 await this.tokenContract.methods.commitFromRented(supply.toFixed()).send({ from: this.account });
+                
                 this.$rootScope.$emit("utilities.component.rentChanged");
+                this.$rootScope.$emit("utilities.component.commitChanged");
+
                 this.toastr.success("Tokens commited successfully from rented", "Commited");
             } else {
                 this.toastr.error("You must either choose 'From Balance' or 'From Rented'", "Error");
@@ -78,10 +84,16 @@ class UtilitiesController implements ng.IComponentController {
 
             if (this.withdrawTokensRadio === "balance") {
                 await this.tokenContract.methods.commitToBalance(supply.toFixed()).send({ from: this.account });
+                
+                this.$rootScope.$emit("utilities.component.commitChanged");
+                
                 this.toastr.success("Tokens withdrawn successfully from balance", "Withdrawn");
             } else if (this.withdrawTokensRadio === "rented") {
                 await this.tokenContract.methods.commitToRented(supply.toFixed()).send({ from: this.account });
+                
                 this.$rootScope.$emit("utilities.component.rentChanged");
+                this.$rootScope.$emit("utilities.component.commitChanged");
+                
                 this.toastr.success("Tokens withdrawn successfully from rented", "Withdrawn");
             } else {
                 this.toastr.error("You must either choose 'From Balance' or 'From Rented'", "Error");
@@ -153,6 +165,8 @@ class UtilitiesController implements ng.IComponentController {
             await this.tokenContract.methods.terminateLeasing().send({ from: this.account });
 
             this.$rootScope.$emit("utilities.component.offerChanged");
+            this.$rootScope.$emit("utilities.component.commitChanged");
+
             this.toastr.success("You have successfully terminated the leasing", "Terminated");
         } catch (exception) {
             this.toastr.error(`Please make sure of the following: 1) The contract is activated, 2) The offer is activated,
