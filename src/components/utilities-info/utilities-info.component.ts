@@ -23,7 +23,8 @@ class UtilitiesInfoController implements ng.IComponentController {
     public rentedDetails: IRentDetails = {
         numberOfTokens: null,
         availableTokens: null,
-        leasedFrom: null
+        leasedFrom: null,
+        endTimestamp: null
     };
 
     // Private variables.
@@ -112,6 +113,14 @@ class UtilitiesInfoController implements ng.IComponentController {
         this.rentedDetails.availableTokens = this.rentedDetails.availableTokens.div(this.power).toFixed();
     
         this.rentedDetails.leasedFrom = await this.tokenContract.methods.getRentedFrom(this.account).call({ from: this.account });
+
+        let duration = await this.tokenContract.methods.getOfferDuration(this.rentedDetails.leasedFrom).call({ from: this.account });
+        let leasedTimestamp = await this.tokenContract.methods.getOfferLeasedTimestamp(this.rentedDetails.leasedFrom).call({ from: this.account });
+
+        if (leasedTimestamp.toString() !== '0')
+            this.rentedDetails.endTimestamp = new Date(parseInt(leasedTimestamp) * 1000 + parseInt(duration) * 1000);
+        else
+            this.rentedDetails.endTimestamp = null;
     }
 
     $onDestroy(){
@@ -230,6 +239,14 @@ export default class UtilitiesInfoComponent implements ng.IComponentOptions {
                                 Leased From:
                                 <span class="details-value">
                                     {{ $ctrl.rentedDetails.leasedFrom != null ?  $ctrl.rentedDetails.leasedFrom : '-' }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm">
+                                Leasing ends at:
+                                <span class="details-value">
+                                    {{ $ctrl.rentedDetails.endTimestamp != null ? ($ctrl.rentedDetails.endTimestamp  | date: 'medium') : '-'  }}
                                 </span>
                             </div>
                         </div>
