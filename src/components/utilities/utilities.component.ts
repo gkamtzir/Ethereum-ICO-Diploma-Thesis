@@ -102,6 +102,7 @@ class UtilitiesController implements ng.IComponentController {
 
             await this.tokenContract.methods.createOffer(supply.toFixed(), price.toFixed(), this.createOfferDuration).send({ from: this.account });
 
+            this.$rootScope.$emit("utilities.component.offerChanged");
             this.toastr.success("Offer has been successfully created", "Created");
 
         } catch (exception) {
@@ -118,6 +119,7 @@ class UtilitiesController implements ng.IComponentController {
         try {
             await this.tokenContract.methods.removeOffer().send({ from: this.account });
 
+            this.$rootScope.$emit("utilities.component.offerChanged");
             this.toastr.success("The offer has been successfully removed", "Removed");
         } catch (exception) {
             this.toastr.error(`Please make sure of the following: 1) The contract is activated, 2) The offer is not activated`, "Error");
@@ -147,6 +149,7 @@ class UtilitiesController implements ng.IComponentController {
         try {
             await this.tokenContract.methods.terminateLeasing().send({ from: this.account });
 
+            this.$rootScope.$emit("utilities.component.offerChanged");
             this.toastr.success("You have successfully terminated the leasing", "Terminated");
         } catch (exception) {
             this.toastr.error(`Please make sure of the following: 1) The contract is activated, 2) The offer is activated,
