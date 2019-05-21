@@ -17,6 +17,11 @@ class UtilitiesInfoController implements ng.IComponentController {
         duration: null,
         leasedTo: null
     };
+    public rentedDetails = {
+        numberOfTokens: null,
+        availableTokens: null,
+        leasedFrom: null
+    };
 
     // Private variables.
     private power: any;
@@ -24,6 +29,7 @@ class UtilitiesInfoController implements ng.IComponentController {
     // Event listeners.
     private accountChangedListener: any;
     private offerChangedListener: any;
+    private rentChangedListener: any;
 
     constructor(
         public $scope: ng.IScope,
@@ -36,12 +42,19 @@ class UtilitiesInfoController implements ng.IComponentController {
         this.accountChangedListener = this.$rootScope.$on("web3.service.accountChanged", async () => {
             this.account = await this.web3Service.getMetamaskAccountOrNull();
             await this.getOfferDetails();
+            await this.getRentDetails();
             this.$scope.$apply();
         });
 
         // Listening for 'offerChanged' events.
         this.offerChangedListener = this.$rootScope.$on("utilities.component.offerChanged", async () => {
             await this.getOfferDetails();
+            this.$scope.$apply();
+        });
+
+        // Listening for 'rentChanged' events.
+        this.rentChangedListener = this.$rootScope.$on("utilities.component.rentChanged", async () => {
+            await this.getRentDetails();
             this.$scope.$apply();
         });
     }
@@ -55,6 +68,7 @@ class UtilitiesInfoController implements ng.IComponentController {
         this.power = this.power.pow(decimals);
 
         await this.getOfferDetails();
+        await this.getRentDetails();
 
         this.hideLoader = true;
         this.$scope.$apply();
@@ -75,9 +89,23 @@ class UtilitiesInfoController implements ng.IComponentController {
         this.offerDetails.leasedTo = await this.tokenContract.methods.getOfferLeasedTo(this.account).call({ from: this.account });
     }
 
+    /**
+     * Retrieves connected user's rent details.
+     */
+    private async getRentDetails() {
+        this.rentedDetails.numberOfTokens = new BigNumber(await this.tokenContract.methods.getRentedNumberOfTokens(this.account).call({ from: this.account }));
+        this.rentedDetails.numberOfTokens = this.rentedDetails.numberOfTokens.div(this.power).toFixed();
+
+        this.rentedDetails.availableTokens = new BigNumber(await this.tokenContract.methods.getRentedAvailableTokens(this.account).call({ from: this.account }));
+        this.rentedDetails.availableTokens = this.rentedDetails.availableTokens.div(this.power).toFixed();
+    
+        this.rentedDetails.leasedFrom = await this.tokenContract.methods.getRentedFrom(this.account).call({ from: this.account });
+    }
+
     $onDestroy(){
         this.accountChangedListener();
         this.offerChangedListener();
+        this.rentChangedListener();
     }
 
 }
@@ -99,7 +127,7 @@ export default class UtilitiesInfoComponent implements ng.IComponentOptions {
             </div>
             <h4>Utilities Info</h4>
             <div class="details-card">
-                <div class="row>
+                <div class="row">
                     <div class="col-sm">
                         <div class="row row-title">
                             <div class="col-sm">
@@ -135,6 +163,45 @@ export default class UtilitiesInfoComponent implements ng.IComponentOptions {
                                 Leased To:
                                 <span class="details-value">
                                     {{ $ctrl.offerDetails.leasedTo != null ?  $ctrl.offerDetails.leasedTo : '-' }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="row row-title">
+                            <div class="col-sm">
+                                Rented Offer
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm">
+                                Number of Tokens:
+                                <span class="details-value">
+                                    {{ $ctrl.rentedDetails.numberOfTokens != null ?  $ctrl.rentedDetails.numberOfTokens : '-' }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm">
+                                Available Tokens:
+                                <span class="details-value">
+                                    {{ $ctrl.rentedDetails.availableTokens != null ?  $ctrl.rentedDetails.availableTokens : '-' }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm">
+                                Available Tokens:
+                                <span class="details-value">
+                                    {{ $ctrl.rentedDetails.availableTokens != null ?  $ctrl.rentedDetails.availableTokens : '-' }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm">
+                                Leased From:
+                                <span class="details-value">
+                                    {{ $ctrl.rentedDetails.leasedFrom != null ?  $ctrl.rentedDetails.leasedFrom : '-' }}
                                 </span>
                             </div>
                         </div>
