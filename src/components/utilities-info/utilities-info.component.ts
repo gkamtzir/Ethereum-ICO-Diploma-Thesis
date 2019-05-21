@@ -1,4 +1,5 @@
 import IWeb3Service from "../../interfaces/services/web3.interface";
+import IOfferDetails from "../../interfaces/components/utilities-info/offer-details.interface";
 
 const { BigNumber } = require("bignumber.js");
 
@@ -10,7 +11,7 @@ class UtilitiesInfoController implements ng.IComponentController {
     public tokenContract: any;
     public account: string;
     public hideLoader: boolean;
-    public offerDetails = {
+    public offerDetails: IOfferDetails = {
         numberOfTokens: null,
         price: null,
         duration: null,
@@ -76,6 +77,7 @@ class UtilitiesInfoController implements ng.IComponentController {
 
     $onDestroy(){
         this.accountChangedListener();
+        this.offerChangedListener();
     }
 
 }
