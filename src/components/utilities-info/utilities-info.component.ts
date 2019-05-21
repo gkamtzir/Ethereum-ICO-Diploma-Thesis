@@ -1,5 +1,6 @@
 import IWeb3Service from "../../interfaces/services/web3.interface";
 import IOfferDetails from "../../interfaces/components/utilities-info/offer-details.interface";
+import IRentDetails from "../../interfaces/components/utilities-info/rent-details.interface";
 
 const { BigNumber } = require("bignumber.js");
 
@@ -17,7 +18,7 @@ class UtilitiesInfoController implements ng.IComponentController {
         duration: null,
         leasedTo: null
     };
-    public rentedDetails = {
+    public rentedDetails: IRentDetails = {
         numberOfTokens: null,
         availableTokens: null,
         leasedFrom: null
