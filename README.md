@@ -99,6 +99,38 @@ truffle test
 
 *Important note: sudo privileges may be required.*
 
+#### Web Application
+
+To run the web application, first you need to install all the required npm dependencies. To do so, run the following command:
+
+```
+npm install
+```
+
+*Important note: sudo privileges may be required.*
+
+Now, you need to deploy the contracts, exactly as described before. Then, you have to copy contracts' addresses and paste them in the */src/app.ts* main file. The contracts are the following:
+
+- OpenHouseToken
+- PrivateSale
+- PreICOSale
+- ICOSale
+
+```
+module.constant("OpenHouseTokenContractAddress", "0xc65aA31c9400E20EA6965f6461fd0DDAB0a6Fc80");
+module.constant("PrivateSaleContractAddress", "0x8c76d227C6A4f5cD8699456B5b9166f784A0d76d");
+module.constant("PreICOSaleContractAddress", "0x9707960e52Aa129b20fe1121665F75e411EA52A3");
+module.constant("ICOSaleContractAddress", "0x6142BB9cCDf5eb2d4e4440a658739c4a8dA0075B");
+```
+
+Lastly, start the local webserver by running:
+
+```
+npm run start
+```
+
+You can now use the web application to interact with the smart contracts.
+
 #### Authors
 
 **George Kamtziridis, gkamtzir@auth.gr**
