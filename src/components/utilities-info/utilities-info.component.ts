@@ -16,7 +16,9 @@ class UtilitiesInfoController implements ng.IComponentController {
         numberOfTokens: null,
         price: null,
         duration: null,
-        leasedTo: null
+        leasedTo: null,
+        leasedTimestamp: null,
+        endTimestamp: null
     };
     public rentedDetails: IRentDetails = {
         numberOfTokens: null,
@@ -88,6 +90,15 @@ class UtilitiesInfoController implements ng.IComponentController {
         this.offerDetails.duration = await this.tokenContract.methods.getOfferDuration(this.account).call({ from: this.account });
         
         this.offerDetails.leasedTo = await this.tokenContract.methods.getOfferLeasedTo(this.account).call({ from: this.account });
+
+        let leasedTimestamp = await this.tokenContract.methods.getOfferLeasedTimestamp(this.account).call({ from: this.account });
+        if (leasedTimestamp.toString() !== '0') {
+            this.offerDetails.leasedTimestamp = new Date(parseInt(leasedTimestamp) * 1000);
+            this.offerDetails.endTimestamp = new Date(parseInt(leasedTimestamp) * 1000 + parseInt(this.offerDetails.duration) * 1000);
+        } else {
+            this.offerDetails.leasedTimestamp = null;
+            this.offerDetails.endTimestamp = null;
+        }
     }
 
     /**
@@ -153,7 +164,7 @@ export default class UtilitiesInfoComponent implements ng.IComponentOptions {
                         </div>
                         <div class="row">
                             <div class="col-sm">
-                                Duration:
+                                Duration (in seconds):
                                 <span class="details-value">
                                     {{ $ctrl.offerDetails.duration != null ?  $ctrl.offerDetails.duration : '-' }}
                                 </span>
@@ -164,6 +175,22 @@ export default class UtilitiesInfoComponent implements ng.IComponentOptions {
                                 Leased To:
                                 <span class="details-value">
                                     {{ $ctrl.offerDetails.leasedTo != null ?  $ctrl.offerDetails.leasedTo : '-' }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm">
+                                Leased Timestamp:
+                                <span class="details-value">
+                                    {{ $ctrl.offerDetails.leasedTimestamp != null ? ($ctrl.offerDetails.leasedTimestamp  | date: 'medium') : '-'  }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm">
+                                Offer ends at:
+                                <span class="details-value">
+                                    {{ $ctrl.offerDetails.endTimestamp != null ? ($ctrl.offerDetails.endTimestamp  | date: 'medium') : '-'  }}
                                 </span>
                             </div>
                         </div>

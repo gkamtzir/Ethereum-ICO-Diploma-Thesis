@@ -3,4 +3,6 @@ export default interface IOfferDetails {
     price: any;
     duration: any;
     leasedTo: string;
+    leasedTimestamp: Date;
+    endTimestamp: Date;
 }
