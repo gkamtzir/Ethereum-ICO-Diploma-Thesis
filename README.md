@@ -4,20 +4,29 @@ This is the codebase of my diploma thesis in Electrical Engineering and Computer
 
 ## Project Structure
 
+- *./contracts/*<br />
+The actual smart contracts (solidity code) of the project.
+
 - *./diagrams/*<br />
 All the supported use cases of the project as flowcharts.
 
-- *./uml/*<br />
-The uml class diagrams that describe the inner structure of the project.
+- *./interfaces/*<br />
+The interfaces that smart contracts implement.
 
-- *./contracts/*<br />
-The actual smart contracts (solidity code) of the project.
+- */libraries/*<br />
+This needed libraries for the smart contracts.
 
 - *./migrations/*<br />
 The migration scripts that compile and deploy the project through the [Truffle Suit](https://github.com/trufflesuite/truffle).
 
+- */src/*<br />
+The web application code written in AngularJS.
+
 - *./test/*<br />
 The unit tests of each individual smart contract.
+
+- *./uml/*<br />
+The uml class diagrams that describe the inner structure of the project.
 
 ## Installation Guide
 
