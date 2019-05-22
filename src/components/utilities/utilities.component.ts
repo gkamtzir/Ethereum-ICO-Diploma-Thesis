@@ -279,7 +279,7 @@ export default class UtilitiesComponent implements ng.IComponentOptions {
 
                 <div class="form-group">
                     <label for="createOfferDuration">
-                        Duration (in blocks)
+                        Duration (in seconds)
                     </label>
                     <input type="number" class="form-control" id="createOfferDuration" ng-model="$ctrl.createOfferDuration" placeholder="Enter Duration">
                 </div>
