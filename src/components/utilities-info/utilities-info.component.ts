@@ -188,7 +188,7 @@ export default class UtilitiesInfoComponent implements ng.IComponentOptions {
                             <div class="col-sm">
                                 Number of Tokens:
                                 <span class="details-value">
-                                    {{ $ctrl.offerDetails.numberOfTokens != null ?  $ctrl.offerDetails.numberOfTokens : '-' }}
+                                    {{ $ctrl.offerDetails.numberOfTokens != null ?  ($ctrl.offerDetails.numberOfTokens | dotSeparatorFilter ) : '-' }}
                                 </span>
                             </div>
                         </div>
@@ -196,7 +196,7 @@ export default class UtilitiesInfoComponent implements ng.IComponentOptions {
                             <div class="col-sm">
                                 Price (in ether):
                                 <span class="details-value">
-                                    {{ $ctrl.offerDetails.price != null ?  $ctrl.offerDetails.price : '-' }}
+                                    {{ $ctrl.offerDetails.price != null ?  ($ctrl.offerDetails.price | dotSeparatorFilter) : '-' }}
                                 </span>
                             </div>
                         </div>
@@ -204,7 +204,7 @@ export default class UtilitiesInfoComponent implements ng.IComponentOptions {
                             <div class="col-sm">
                                 Duration (in seconds):
                                 <span class="details-value">
-                                    {{ $ctrl.offerDetails.duration != null ?  $ctrl.offerDetails.duration : '-' }}
+                                    {{ $ctrl.offerDetails.duration != null ?  ($ctrl.offerDetails.duration | dotSeparatorFilter) : '-' }}
                                 </span>
                             </div>
                         </div>
@@ -243,7 +243,7 @@ export default class UtilitiesInfoComponent implements ng.IComponentOptions {
                             <div class="col-sm">
                                 Number of Tokens:
                                 <span class="details-value">
-                                    {{ $ctrl.rentedDetails.numberOfTokens != null ?  $ctrl.rentedDetails.numberOfTokens : '-' }}
+                                    {{ $ctrl.rentedDetails.numberOfTokens != null ?  ($ctrl.rentedDetails.numberOfTokens | dotSeparatorFilter) : '-' }}
                                 </span>
                             </div>
                         </div>
@@ -251,7 +251,7 @@ export default class UtilitiesInfoComponent implements ng.IComponentOptions {
                             <div class="col-sm">
                                 Available Tokens:
                                 <span class="details-value">
-                                    {{ $ctrl.rentedDetails.availableTokens != null ?  $ctrl.rentedDetails.availableTokens : '-' }}
+                                    {{ $ctrl.rentedDetails.availableTokens != null ?  ($ctrl.rentedDetails.availableTokens | dotSeparatorFilter) : '-' }}
                                 </span>
                             </div>
                         </div>
@@ -285,7 +285,7 @@ export default class UtilitiesInfoComponent implements ng.IComponentOptions {
                             <div class="col-sm">
                                 Committed from balance:
                                 <span class="details-value">
-                                    {{ $ctrl.commitDetails.fromBalance }}
+                                    {{ $ctrl.commitDetails.fromBalance | dotSeparatorFilter}}
                                 </span>
                             </div>
                         </div>
@@ -293,7 +293,7 @@ export default class UtilitiesInfoComponent implements ng.IComponentOptions {
                             <div class="col-sm">
                                 Committed from rented:
                                 <span class="details-value">
-                                    {{ $ctrl.commitDetails.fromRented }}
+                                    {{ $ctrl.commitDetails.fromRented | dotSeparatorFilter}}
                                 </span>
                             </div>
                         </div>
