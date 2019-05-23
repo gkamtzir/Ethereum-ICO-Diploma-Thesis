@@ -3,6 +3,11 @@ pragma solidity ^0.5.7;
 /// Contracts.
 import "./Sale.sol";
 
+/**
+  * @title PrivateSale
+  * @author George Kamtziridis, gkamtzir@auth.gr
+  * @notice This is the contract that implements the private sale.
+  */
 contract PrivateSale is Sale {
 
     mapping(address => bool) private allowedAddresses;

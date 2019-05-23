@@ -4,6 +4,11 @@ pragma solidity ^0.5.7;
 import "../interfaces/ILeasingEvents.sol";
 import "../interfaces/ILeasing.sol";
 
+/**
+  * @title Leasing
+  * @author George Kamtziridis, gkamtzir@auth.gr
+  * @notice This is the contract that implements the basic leasing utilities.
+  */
 contract Leasing is ILeasingEvents, ILeasing {
     /// Structs.
     struct LeasingLog {

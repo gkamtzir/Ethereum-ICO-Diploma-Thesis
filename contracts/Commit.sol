@@ -3,6 +3,11 @@ pragma solidity ^0.5.7;
 /// Interfaces.
 import "../interfaces/ICommit.sol";
 
+/**
+  * @title Commit
+  * @author George Kamtziridis, gkamtzir@auth.gr
+  * @notice This is the contract that implements the basic commit utilities.
+  */
 contract Commit is ICommit {
     /// Structs.
     struct CommitStatus {

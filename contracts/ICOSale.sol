@@ -3,6 +3,11 @@ pragma solidity ^0.5.7;
 /// Contracts.
 import "./Sale.sol";
 
+/**
+  * @title ICOSale
+  * @author George Kamtziridis, gkamtzir@auth.gr
+  * @notice This is the contract that implements the ICO sale.
+  */
 contract ICOSale is Sale {
 
     constructor(

@@ -7,6 +7,11 @@ import "./Status.sol";
 /// Libraries.
 import "../libraries/SafeMath.sol";
 
+/**
+  * @title Sale
+  * @author George Kamtziridis, gkamtzir@auth.gr
+  * @notice This is the contract that implements the sale.
+  */
 contract Sale is Status {
     using SafeMath for uint256;
 
