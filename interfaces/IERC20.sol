@@ -2,6 +2,7 @@ pragma solidity ^0.5.7;
 
 /**
  * @title ERC20 interface
+ * @author George Kamtziridis, gkamtzir@auth.gr
  * @dev See https://eips.ethereum.org/EIPS/eip-20
  */
 interface IERC20 {

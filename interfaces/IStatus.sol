@@ -2,6 +2,7 @@ pragma solidity ^0.5.7;
 
 /**
   * @title IStatus interface
+  * @author George Kamtziridis, gkamtzir@auth.gr* @author George Kamtziridis, gkamtzir@auth.gr
   * @notice Provides the basic activate/deactivate functions
   * and the Status enumeration.
   */

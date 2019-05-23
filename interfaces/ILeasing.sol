@@ -2,6 +2,7 @@ pragma solidity ^0.5.7;
 
 /**
   * @title ILeasing interface
+  * @author George Kamtziridis, gkamtzir@auth.gr
   * @notice Provides the basic functionality of the Leasing
   * contract.
   */

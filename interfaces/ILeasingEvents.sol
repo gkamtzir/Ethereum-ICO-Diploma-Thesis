@@ -2,6 +2,7 @@ pragma solidity ^0.5.7;
 
 /**
   * @title ILeasingEvents interface
+  * @author George Kamtziridis, gkamtzir@auth.gr
   * @notice Provides the needed events for the Leasing contract.
   */
 interface ILeasingEvents {
