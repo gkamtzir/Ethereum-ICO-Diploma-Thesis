@@ -24,11 +24,13 @@ contract("PrivateSale -> buy tokens", accounts => {
 
         this.tokenPrice = new BN(privateSale.tokenPrice);
 
-        this.tokensMinCap = new BN(privateSale.tokensMinCap)
+        // This is just to test that is not capable for someone to
+        // buy tokens that does not exist.
+        this.tokensMinCap = new BN('10000');
 
-        this.tokensMaxCap = new BN(privateSale.tokensMaxCap)
+        this.tokensMaxCap = new BN('20000');
 
-        this.buyTokens = new BN(basicConfiguration.buyTokens);
+        this.buyTokens = new BN('10000');
 
         this.start = await latestTime();
         this.start += duration.hours(1);
