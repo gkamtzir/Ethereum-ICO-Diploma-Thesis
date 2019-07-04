@@ -6,10 +6,10 @@ import "./Leasing.sol";
 import "./Status.sol";
 
 /// Interfaces.
-import "../interfaces/IERC20.sol";
+import "./interfaces/IERC20.sol";
 
 /// Libraries.
-import "../libraries/SafeMath.sol";
+import "./libraries/SafeMath.sol";
 
 /**
   * @title OpenHouseToken

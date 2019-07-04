@@ -5,7 +5,7 @@ import "./OpenHouseToken.sol";
 import "./Status.sol";
 
 /// Libraries.
-import "../libraries/SafeMath.sol";
+import "./libraries/SafeMath.sol";
 
 /**
   * @title Sale
