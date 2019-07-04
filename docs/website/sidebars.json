@@ -1,0 +1,43 @@
+{
+  "docs": {
+    "Docusaurus": [
+      "doc1"
+    ],
+    "First Category": [
+      "doc2"
+    ],
+    "Second Category": [
+      "doc3"
+    ]
+  },
+  "docs-other": {
+    "First Category": [
+      "doc4",
+      "doc5"
+    ]
+  },
+  "docs-api": {
+    "INTERFACES": [
+      "interfaces_ICommit",
+      "interfaces_IERC20",
+      "interfaces_ILeasing",
+      "interfaces_ILeasingEvents",
+      "interfaces_IStatus"
+    ],
+    "LIBRARIES": [
+      "libraries_SafeMath"
+    ],
+    "UNCATEGORIZED": [
+      "Commit",
+      "ICOSale",
+      "IERC20",
+      "Leasing",
+      "Migrations",
+      "OpenHouseToken",
+      "PreICOSale",
+      "PrivateSale",
+      "Sale",
+      "Status"
+    ]
+  }
+}
