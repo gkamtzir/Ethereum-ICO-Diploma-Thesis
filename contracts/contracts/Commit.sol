@@ -1,7 +1,7 @@
 pragma solidity 0.5.7;
 
 /// Interfaces.
-import "./interfaces/ICommit.sol";
+import "../interfaces/ICommit.sol";
 
 /**
   * @title Commit

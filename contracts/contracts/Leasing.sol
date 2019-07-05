@@ -1,8 +1,8 @@
 pragma solidity 0.5.7;
 
 /// Interfaces.
-import "./interfaces/ILeasingEvents.sol";
-import "./interfaces/ILeasing.sol";
+import "../interfaces/ILeasingEvents.sol";
+import "../interfaces/ILeasing.sol";
 
 /**
   * @title Leasing

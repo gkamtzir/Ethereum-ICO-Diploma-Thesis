@@ -1,7 +1,7 @@
 pragma solidity 0.5.7;
 
 /// Interfaces.
-import "./interfaces/IStatus.sol";
+import "../interfaces/IStatus.sol";
 
 /**
   * @title Status
