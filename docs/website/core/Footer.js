@@ -36,15 +36,15 @@ class Footer extends React.Component {
             )}
           </a>
           <div>
-            <h5>Docs</h5>
-            <a href={this.docUrl('doc1.html', this.props.language)}>
-              Getting Started (or other categories)
+            <h5>ICO Stages</h5>
+            <a href={this.docUrl('contracts_PrivateSale.html', this.props.language)}>
+              Private Sale Contract
             </a>
-            <a href={this.docUrl('doc2.html', this.props.language)}>
-              Guides (or other categories)
+            <a href={this.docUrl('contracts_PreICOSale.html', this.props.language)}>
+              Pre-ICO Sale Contract
             </a>
-            <a href={this.docUrl('doc3.html', this.props.language)}>
-              API Reference (or other categories)
+            <a href={this.docUrl('contracts_ICOSale.html', this.props.language)}>
+              ICO Sale Contract
             </a>
           </div>
           <div>
