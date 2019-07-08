@@ -135,7 +135,7 @@ npm run start
 You can now use the web application to interact with the smart contracts.
 
 #### Documentation
-A details documentation of the smart contracts can be found at [here](83.212.115.201).
+A details documentation of the smart contracts can be found at [here](83.212.115.201). The documentation is created automatically by the [solidity-docgen](https://www.npmjs.com/package/solidity-docgen) package.
 
 #### Authors
 
