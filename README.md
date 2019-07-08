@@ -134,6 +134,9 @@ npm run start
 
 You can now use the web application to interact with the smart contracts.
 
+#### Documentation
+A details documentation of the smart contracts can be found at [here](83.212.115.201).
+
 #### Authors
 
 **George Kamtziridis, gkamtzir@auth.gr**
