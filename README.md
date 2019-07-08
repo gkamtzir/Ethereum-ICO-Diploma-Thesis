@@ -5,15 +5,18 @@ This is the codebase of my diploma thesis in Electrical Engineering and Computer
 ## Project Structure
 
 - *./contracts/*<br />
+The actual "smart contract" codebase.
+
+- *./contracts/contracts/*<br />
 The actual smart contracts (solidity code) of the project.
 
-- *./diagrams/*<br />
+- *./contracts/diagrams/*<br />
 All the supported use cases of the project as flowcharts.
 
-- *./interfaces/*<br />
+- *./contracts/interfaces/*<br />
 The interfaces that smart contracts implement.
 
-- */libraries/*<br />
+- */contracts/libraries/*<br />
 This needed libraries for the smart contracts.
 
 - *./migrations/*<br />
