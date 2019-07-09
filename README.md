@@ -31,6 +31,12 @@ The unit tests of each individual smart contract.
 - *./uml/*<br />
 The uml class diagrams that describe the inner structure of the project.
 
+- *./coverage/*<br />
+The static webpage that hosts the unit-test coverage report.
+
+- *./docs/*<br />
+The codebase for the webpage that hosts the documentation.
+
 ## Installation Guide
 
 #### Clone the repo
@@ -134,8 +140,19 @@ npm run start
 
 You can now use the web application to interact with the smart contracts.
 
+#### Unit-Test Coverage
+The unit-test coverage report is created by [solidity-coverage](https://www.npmjs.com/package/solidity-coverage) package. To create the report you need to run the following command:
+
+```
+./node_modules/.bin/solidity-coverage
+```
+
+*Important note: before running the coverage tool you need to manually replace the contents of node-modules/solidity-parser-sc/build/parser.js with this [one](https://raw.githubusercontent.com/maxsam4/solidity-parser/solidity-0.5/build/parser.js). This replacement is mandatory due to a bug in the coverage tool in which the **payable** keyword is interpreted incorrectly. More information can be found [here](https://github.com/sc-forks/solidity-coverage/issues/316) and [here](https://github.com/sc-forks/solidity-parser/pull/18).*
+
+The full coverage can be found [here](http://83.212.115.201/ethereum-thesis/coverage).
+
 #### Documentation
-A details documentation of the smart contracts can be found at [here](83.212.115.201). The documentation is created automatically by the [solidity-docgen](https://www.npmjs.com/package/solidity-docgen) package.
+A details documentation of the smart contracts can be found at [here](http://83.212.115.201/ethereum-thesis/documentation). The documentation is created automatically by the [solidity-docgen](https://www.npmjs.com/package/solidity-docgen) package.
 
 #### Authors
 
