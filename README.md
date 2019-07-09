@@ -31,6 +31,12 @@ The unit tests of each individual smart contract.
 - *./uml/*<br />
 The uml class diagrams that describe the inner structure of the project.
 
+- *./coverage/*<br />
+The static webpage that hosts the unit-test coverage report.
+
+- *./docs/*<br />
+The codebase for the webpage that hosts the documentation.
+
 ## Installation Guide
 
 #### Clone the repo
