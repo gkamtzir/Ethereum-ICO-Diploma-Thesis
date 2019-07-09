@@ -143,8 +143,10 @@ The unit-test coverage report is created by [solidity-coverage](https://www.npmj
 
 *Important note: before running the coverage tool you need to manually replace the contents of node-modules/solidity-parser-sc/build/parser.js with this [one](https://raw.githubusercontent.com/maxsam4/solidity-parser/solidity-0.5/build/parser.js). This replacement is mandatory due to a bug in the coverage tool in which the **payable** keyword is interpreted incorrectly. More information can be found [here](https://github.com/sc-forks/solidity-coverage/issues/316) and [here](https://github.com/sc-forks/solidity-parser/pull/18).*
 
+The full coverage can be found [here](http://83.212.115.201/ethereum-thesis/coverage).
+
 #### Documentation
-A details documentation of the smart contracts can be found at [here](83.212.115.201). The documentation is created automatically by the [solidity-docgen](https://www.npmjs.com/package/solidity-docgen) package.
+A details documentation of the smart contracts can be found at [here](http://83.212.115.201/ethereum-thesis/documentation). The documentation is created automatically by the [solidity-docgen](https://www.npmjs.com/package/solidity-docgen) package.
 
 #### Authors
 
