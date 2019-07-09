@@ -2,8 +2,8 @@ module.exports = {
     accounts: 10,
     port: 8545,
     testrpcOptions: "-p 8545",
-    testCommand: "truffle test",
-    norpc: true,
+    testCommand: "truffle test --network coverage",
+    norpc: false,
     copyPackages: [],
-    skipFiles: ["Migrations.sol", "SafeMath.sol"]
+    skipFiles: ["contracts/Migrations.sol", "libraries/SafeMath.sol"]
 };
