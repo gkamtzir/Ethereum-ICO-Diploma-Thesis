@@ -108,6 +108,13 @@ contract("OpenHouseToken -> status", accounts => {
             await this.token.terminateLeasing({ from: this.admin }).should.be.rejectedWith("revert");
         });
 
+        it("Should be activated by admin", async () => {
+            const tx = await this.token.activate({ from: this.admin }).should.be.fulfilled;
+            truffleAssert.eventEmitted(tx, "Activated", event => {
+                return true;
+            });
+        });
+
     });
 
 });

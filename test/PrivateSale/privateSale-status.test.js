@@ -2,6 +2,7 @@ const OpenHouseToken = artifacts.require("./OpenHouseToken.sol");
 const PrivateSale = artifacts.require("./PrivateSale.sol");
 const { basicConfiguration, privateSale } = require("../../config.js");
 const { expect } = require('chai');
+const truffleAssert = require('truffle-assertions');
 const BN = web3.utils.BN;
 
 const { duration } = require("../helpers/increaseTime");
@@ -67,7 +68,10 @@ contract("PrivateSale -> status", accounts => {
         });
 
         it("Should be able to deactivated by the owner", async () => {
-            await this.privateSale.deactivate({ from: this.admin }).should.be.fulfilled;
+            const tx = await this.privateSale.deactivate({ from: this.admin }).should.be.fulfilled;
+            truffleAssert.eventEmitted(tx, "Deactivated", event => {
+                return true;
+            });
         });
 
         it("Should be impossible to use the buyTokens function when contract is deactivated", async () => {
@@ -89,6 +93,13 @@ contract("PrivateSale -> status", accounts => {
         it("Should be impossible to use the allowAddress function when contract is deactivated", async () => {
             await this.privateSale.allowAddress(this.spender, { from: this.admin })
                 .should.be.rejectedWith("revert");
+        });
+
+        it("Should be activated by admin", async () => {
+            const tx = await this.privateSale.activate({ from: this.admin }).should.be.fulfilled;
+            truffleAssert.eventEmitted(tx, "Activated", event => {
+                return true;
+            });
         });
 
     });

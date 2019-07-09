@@ -35,6 +35,14 @@ contract("OpenHouseToken -> initialize", accounts => {
             expect(decimals).to.be.bignumber.equal(new BN(basicConfiguration.decimals));
         });
 
+        it("Should initialize the contract with the correct total supply", async () => {
+            const totalSupply = await this.token.totalSupply();
+
+            let totalSupplyBN = new BN(basicConfiguration.totalSupply);
+            
+            expect(totalSupply).to.be.bignumber.equal(totalSupplyBN.mul(this.power));
+        });
+
         it("Should initialize the contract with the correct total supply of tokens", async () => {
             const totalSupply = await this.token.getTotalNumberOfTokens();
             expect(totalSupply).to.be.bignumber.equal(new BN(basicConfiguration.totalSupply));
