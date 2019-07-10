@@ -52,7 +52,7 @@
     "solidity-coverage": "^0.5.11",
     "solium": "^1.1.7",
     "style-loader": "^0.23.1",
-    "truffle": "4.1.11",
+    "truffle": "5.0.6",
     "truffle-assertions": "^0.8.2",
     "truffle-hdwallet-provider": "0.0.5",
     "ts-loader": "^4.1.0",
