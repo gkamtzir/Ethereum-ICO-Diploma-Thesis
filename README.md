@@ -48,27 +48,29 @@ cd Ethereum-ICO-Diploma-Thesis
 
 #### Prerequisites
 
-In order to run and deploy the project you need to have locally installed the [Truffle Suit](https://github.com/trufflesuite/truffle). You can download it via npm by running:
+In order to run and deploy the project you need to have locally installed all the needed packages. To do so, run the following command:
 
 ```
-npm install -g truffle
+npm install
 ```
+
 *Important note: sudo privileges may be required.*
 
-To deploy the smart contracts you will also need an Ethereum blockchain. You can deploy it on Ropsten, Rinkeby or even the Main Net. However, the last option is not recommended for development purposes due to the high costs of deployment and interaction with the project. It is highly recommended to use an Ethereum blockhain that runs locally on your machine. You can achive that with [Ganache](https://github.com/trufflesuite/ganache). With Ganache you can create your own local blockchain to test your project. You can install it via npm by running:
+The most important packages are:
+- [Truffle Suit](https://github.com/trufflesuite/truffle)
+- [Ganache](https://github.com/trufflesuite/ganache)
+- [Web3.js](https://github.com/ethereum/web3.js/)
+
+The truffle suit is used to compile, test and deploy the smart contracts. However, to deploy the smart contracts you will also need an Ethereum blockchain. You can deploy it on Ropsten, Rinkeby or even the Main Net. However, the last option is not recommended for development purposes due to the high costs of deployment and interaction with the project. It is highly recommended to use an Ethereum blockhain that runs locally on your machine. This is where the Ganache comes into play. With Ganache you can create your own local blockchain to test your project. You can install it via npm by running:
 
 ```
-npm install -g ganache
+./node_modules/.bin/ganache-cli
 ```
+
 *Important note: sudo privileges may be required.*<br />
 *You can also use the GUI version of Ganache. To do so, visit the [Ganache](https://truffleframework.com/ganache) official website.*
 
-To interact with project's smart contracts you will need [Web3.js](https://github.com/ethereum/web3.js/). Web3.js basically lets you interact with the blockchain via HTTP calls. To install it via npm run:
-
-```
-npm install -g web3
-```
-*Important note: sudo privileges may be required.*
+To interact with project's smart contracts you will need the Web3 package. Web3.js basically lets you interact with the blockchain via HTTP calls.
 
 #### Compile and Deploy
 
@@ -87,13 +89,13 @@ development: {
 To deploy run:
 
 ```
-truffle migrate
+./node_modules/.bin/truffle migrate
 ```
 
 To interact with the project on the blockchain run the following:
 
 ```
-truffle console
+./node_modules/.bin/truffle console
 ```
 
 From here you can interact with the smart contracts through the Web3.js [API](https://web3js.readthedocs.io/en/1.0/). Check out the API documentation for more information on that.
@@ -103,22 +105,14 @@ From here you can interact with the smart contracts through the Web3.js [API](ht
 To run the unit test scripts located in the *./test/ folder just run the following:
 
 ```
-truffle test
+./node_modules/.bin/truffle test
 ```
 
 *Important note: sudo privileges may be required.*
 
 #### Web Application
 
-To run the web application, first you need to install all the required npm dependencies. To do so, run the following command:
-
-```
-npm install
-```
-
-*Important note: sudo privileges may be required.*
-
-Now, you need to deploy the contracts, exactly as described before. Then, you have to copy contracts' addresses and paste them in the */src/app.ts* main file. The contracts are the following:
+To run the web application, first you need to deploy the contracts, exactly as described before. Then, you have to copy contracts' addresses and paste them in the */src/app.ts* main file. The contracts are the following:
 
 - OpenHouseToken
 - PrivateSale
