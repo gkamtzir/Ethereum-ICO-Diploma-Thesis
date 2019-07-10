@@ -7,6 +7,8 @@ const configuration = require("../config.js");
 const { duration } = require("../test/helpers/increaseTime");
 const { latestTime } = require("../test/helpers/latestTime");
 
+const BN = web3.utils.BN;
+
 /**
  * Deployes the private sale contract.
  * @param openHouseInstance The token instance
@@ -21,7 +23,7 @@ async function deployPrivateSale(openHouseInstance, deployer) {
     let redeemableAfter = await latestTime();
     redeemableAfter += configuration.privateSale.redeemableAfter;
 
-    await deployer.deploy(
+    const privateSaleInstance = await deployer.deploy(
         PrivateSale,
         openHouseInstance.address,
         configuration.privateSale.tokenPrice,
@@ -31,6 +33,8 @@ async function deployPrivateSale(openHouseInstance, deployer) {
         start,
         end,
         redeemableAfter);
+
+    return privateSaleInstance;
 }
 
 /**
@@ -47,7 +51,7 @@ async function deployPreICOSale(openHouseInstance, deployer) {
     let redeemableAfter = await latestTime();
     redeemableAfter += configuration.preICOSale.redeemableAfter;
 
-    await deployer.deploy(
+    const preICOSaleInstance = await deployer.deploy(
         PreICOSale,
         openHouseInstance.address,
         configuration.preICOSale.tokenPrice,
@@ -57,6 +61,8 @@ async function deployPreICOSale(openHouseInstance, deployer) {
         start,
         end,
         redeemableAfter);
+
+    return preICOSaleInstance;
 }
 
 /**
@@ -73,7 +79,7 @@ async function deployICOSale(openHouseInstance, deployer) {
     let redeemableAfter = await latestTime();
     redeemableAfter += configuration.ICOSale.redeemableAfter;
 
-    await deployer.deploy(
+    const ICOSaleInstance = await deployer.deploy(
         ICOSale,
         openHouseInstance.address,
         configuration.ICOSale.tokenPrice,
@@ -83,13 +89,40 @@ async function deployICOSale(openHouseInstance, deployer) {
         start,
         end,
         redeemableAfter);
+
+    return ICOSaleInstance;
+}
+
+/**
+ * Transfer the needed funds from OpenHouseToken contract to
+ * the corresponding sale contract.
+ * @param openHouseInstance The token instance
+ * @param contractAddress Sale's contract address.
+ * @param funds The number of tokens to be transfered. 
+ */
+async function transferFunds(openHouseInstance, contractAddress, funds) {
+    let power = new BN(10);
+    power = power.pow(new BN(configuration.basicConfiguration.decimals));
+
+    await openHouseInstance.transfer(contractAddress, funds.mul(power).toString());
 }
 
 module.exports = async (deployer) => {
     deployer.deploy(OpenHouseToken, configuration.basicConfiguration.totalSupply)
         .then(async (openHouseInstance) => {
-            await deployPrivateSale(openHouseInstance, deployer);
-            await deployPreICOSale(openHouseInstance, deployer);
-            await deployICOSale(openHouseInstance, deployer);
+            // Deploying private sale contract and transfering the corresponding funds.
+            const privateSaleInstance = await deployPrivateSale(openHouseInstance, deployer);
+            const privateSaleTokens = new BN(configuration.privateSale.tokensMaxCap);
+            await transferFunds(openHouseInstance, privateSaleInstance.address, privateSaleTokens);
+
+            // Deploying pre-ICO sale contract and transfering the corresponding funds.
+            const preICOSaleInstance = await deployPreICOSale(openHouseInstance, deployer);
+            const preICOSaleTokens = new BN(configuration.preICOSale.tokensMaxCap);
+            await transferFunds(openHouseInstance, preICOSaleInstance.address, preICOSaleTokens);
+
+            // Deploying ICO sale contract and transfering the corresponding funds.
+            const ICOSaleInstance = await deployICOSale(openHouseInstance, deployer);
+            const ICOSaleTokens = new BN(configuration.ICOSale.tokensMaxCap);
+            await transferFunds(openHouseInstance, ICOSaleInstance.address, ICOSaleTokens);
         });
 };
