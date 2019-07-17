@@ -23,7 +23,7 @@ contract Status is IStatus {
 
     /// Verifies that contract is active.
     modifier isActivated() {
-        require(status == Status.Activated);
+        require(status == Status.Activated, "Contract is not activated.");
         _;
     }
 

@@ -61,7 +61,7 @@ contract Leasing is ILeasingEvents, ILeasing {
     }
 
     /**
-      * @notice A getter function for the price of the specified 
+      * @notice A getter function for the price of the specified
       * address's offer.
       * @param from The address that created the offer.
       * @return The price of the offer.
@@ -71,7 +71,7 @@ contract Leasing is ILeasingEvents, ILeasing {
     }
 
     /**
-      * @notice A getter function for the duration of the specified 
+      * @notice A getter function for the duration of the specified
       * address's offer.
       * @param from The address that created the offer.
       * @return The duration of the offer.
@@ -81,7 +81,7 @@ contract Leasing is ILeasingEvents, ILeasing {
     }
 
     /**
-      * @notice A getter function for the address that accepted the specified 
+      * @notice A getter function for the address that accepted the specified
       * address's offer.
       * @param from The address that created the offer.
       * @return The address that currently rented from the specified address.

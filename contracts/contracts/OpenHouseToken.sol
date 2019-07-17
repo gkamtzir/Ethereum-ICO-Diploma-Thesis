@@ -25,12 +25,11 @@ contract OpenHouseToken is IERC20, Status, Commit, Leasing {
     uint256 private _totalSupply;
 
     address private _owner;
-    
+
     mapping(address => uint256) private _balanceOf;
     mapping(address => mapping(address => uint256)) private _allowance;
 
     /// Events.
-
     event Approval(
         address indexed from,
         address indexed to,
@@ -52,7 +51,7 @@ contract OpenHouseToken is IERC20, Status, Commit, Leasing {
 
     /// Verifies that sender is the owner of the contract.
     modifier onlyOwner() {
-        require(msg.sender == _owner);
+        require(msg.sender == _owner, "This action is restricted to owner only.");
         _;
     }
 
@@ -74,7 +73,7 @@ contract OpenHouseToken is IERC20, Status, Commit, Leasing {
         return name;
     }
 
-    /** 
+    /**
       * @notice A getter function for the symbol variable.
       * @return The symbol of the token.
       */
@@ -166,7 +165,7 @@ contract OpenHouseToken is IERC20, Status, Commit, Leasing {
       * the msg.sender to the given spender.
       * @param spender The account which is approved to spend the tokens.
       * @param value The number of tokens that are approved to be spent.
-      * @return A boolean indicating if the approval has completed successfully. 
+      * @return A boolean indicating if the approval has completed successfully.
       */
     function approve(address spender, uint256 value) public isActivated() returns(bool) {
         _allowance[msg.sender][spender] = value;
@@ -195,7 +194,7 @@ contract OpenHouseToken is IERC20, Status, Commit, Leasing {
 	  * @return A boolean indicating if the transfer has completed successfully.
 	  */
     function transfer(address to, uint256 value) public isActivated() returns(bool) {
-        require(_balanceOf[msg.sender] >= value);
+        require(_balanceOf[msg.sender] >= value, "Insufficient funds.");
 
         _balanceOf[msg.sender] = _balanceOf[msg.sender].sub(value);
         _balanceOf[to] = _balanceOf[to].add(value);
@@ -213,8 +212,8 @@ contract OpenHouseToken is IERC20, Status, Commit, Leasing {
       * @return A boolean indicating if the transfer has completed successfully.
       */
     function transferFrom(address from, address to, uint256 value) public isActivated() returns(bool) {
-        require(_allowance[from][msg.sender] >= value);
-        require(_balanceOf[from] >= value);
+        require(_allowance[from][msg.sender] >= value, "Insufficient allowed funds.");
+        require(_balanceOf[from] >= value, "Insufficient funds.");
 
         _balanceOf[from] = _balanceOf[from].sub(value);
         _balanceOf[to] = _balanceOf[to].add(value);
@@ -232,7 +231,7 @@ contract OpenHouseToken is IERC20, Status, Commit, Leasing {
       * @return A boolean indicating if the commit has completed successfully.
       */
     function commitFromBalance(uint256 numberOfTokens) public isActivated() returns(bool) {
-        require(_balanceOf[msg.sender] >= numberOfTokens);
+        require(_balanceOf[msg.sender] >= numberOfTokens, "Insufficient funds.");
 
         _balanceOf[msg.sender] = _balanceOf[msg.sender].sub(numberOfTokens);
         commited[msg.sender].fromBalance = commited[msg.sender].fromBalance.add(numberOfTokens);
@@ -248,7 +247,7 @@ contract OpenHouseToken is IERC20, Status, Commit, Leasing {
       * @return A boolean indicating if the withdrawal has completed successfully.
       */
     function commitToBalance(uint256 numberOfTokens) public isActivated() returns(bool) {
-        require(commited[msg.sender].fromBalance >= numberOfTokens);
+        require(commited[msg.sender].fromBalance >= numberOfTokens, "Insufficient commited funds.");
 
         commited[msg.sender].fromBalance = commited[msg.sender].fromBalance.sub(numberOfTokens);
         _balanceOf[msg.sender] = _balanceOf[msg.sender].add(numberOfTokens);
@@ -264,8 +263,8 @@ contract OpenHouseToken is IERC20, Status, Commit, Leasing {
       * @return A boolean indicating if the commit has completed successfully.
       */
     function commitFromRented(uint256 numberOfTokens) public isActivated() returns(bool) {
-        require(rent[msg.sender].rentedFrom != address(0));
-        require(rent[msg.sender].availableNumberOfTokens >= numberOfTokens);
+        require(rent[msg.sender].rentedFrom != address(0), "Sender hasn't any rented funds.");
+        require(rent[msg.sender].availableNumberOfTokens >= numberOfTokens, "Insufficient rented funds.");
 
         rent[msg.sender].availableNumberOfTokens = rent[msg.sender].availableNumberOfTokens.sub(numberOfTokens);
         commited[msg.sender].fromRented = commited[msg.sender].fromRented.add(numberOfTokens);
@@ -281,8 +280,8 @@ contract OpenHouseToken is IERC20, Status, Commit, Leasing {
       * @return A boolean indicating if the withdrawal has completed successfully.
       */
     function commitToRented(uint256 numberOfTokens) public isActivated() returns(bool) {
-        require(rent[msg.sender].rentedFrom != address(0));
-        require(commited[msg.sender].fromRented >= numberOfTokens);
+		require(rent[msg.sender].rentedFrom != address(0), "Sender hasn't any rented funds.");
+        require(commited[msg.sender].fromRented >= numberOfTokens, "Insufficient rented funds.");
 
         commited[msg.sender].fromRented = commited[msg.sender].fromRented.sub(numberOfTokens);
         rent[msg.sender].availableNumberOfTokens = rent[msg.sender].availableNumberOfTokens.add(numberOfTokens);
@@ -300,11 +299,12 @@ contract OpenHouseToken is IERC20, Status, Commit, Leasing {
       * @return A boolean indicating if the offer was created successfully.
       */
     function createOffer(uint256 numberOfTokens, uint256 price, uint256 duration) public isActivated() returns(bool) {
-        require(_balanceOf[msg.sender] >= numberOfTokens && numberOfTokens > 0);
-        require(offer[msg.sender].leasedTo == address(0) && offer[msg.sender].numberOfTokens == 0);
+        require(_balanceOf[msg.sender] >= numberOfTokens && numberOfTokens > 0, "Insufficient or invalid number of funds.");
+        require(offer[msg.sender].leasedTo == address(0) && offer[msg.sender].numberOfTokens == 0,
+			"There is another offer in progress.");
         /// Making sure that the price has a non-zero value and the minimum duration
         /// is approximately 1 hour (3600 seconds).
-        require(price > 0 && duration >= 3600);
+        require(price > 0 && duration >= 3600, "Price must be positive and duration greater than 1 hour.");
 
         _balanceOf[msg.sender] = _balanceOf[msg.sender].sub(numberOfTokens);
 
@@ -322,7 +322,7 @@ contract OpenHouseToken is IERC20, Status, Commit, Leasing {
       * @return A boolean indicating if the removal has completed successfully.
       */
     function removeOffer() public isActivated() returns(bool) {
-        require(offer[msg.sender].leasedTo == address(0));
+        require(offer[msg.sender].leasedTo == address(0), "Renting is still in progress.");
 
         uint256 numberOfTokens = offer[msg.sender].numberOfTokens;
 
@@ -343,9 +343,9 @@ contract OpenHouseToken is IERC20, Status, Commit, Leasing {
       * @return A boolean indicating if the rent has completed successfully.
       */
     function leaseFrom(address payable from) public isActivated() payable returns(bool) {
-        require(rent[msg.sender].rentedFrom == address(0));
-        require(offer[from].leasedTo == address(0));
-        require(msg.value == offer[from].price);
+        require(rent[msg.sender].rentedFrom == address(0), "Sender is already renting.");
+        require(offer[from].leasedTo == address(0), "Offer has already been takens.");
+        require(msg.value == offer[from].price, "Insufficient funds.");
 
         uint256 numberOfTokens = offer[from].numberOfTokens;
 
@@ -370,8 +370,9 @@ contract OpenHouseToken is IERC20, Status, Commit, Leasing {
       * @return A boolean indicating if the termination has completed successfully.
       */
     function terminateLeasing() public isActivated() returns(bool) {
-        require(offer[msg.sender].leasedTo != address(0));
-        require(block.timestamp >= offer[msg.sender].leasedTimestamp + offer[msg.sender].duration);
+        require(offer[msg.sender].leasedTo != address(0), "Sender's offer has not been taken yet.");
+        require(block.timestamp >= offer[msg.sender].leasedTimestamp + offer[msg.sender].duration,
+			"Renting is still in progress.");
 
         address to = offer[msg.sender].leasedTo;
         uint256 numberOfTokens = rent[to].numberOfTokens;

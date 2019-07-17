@@ -35,25 +35,26 @@ contract Sale is Status {
 
     /// Verifies that sender is the owner of the contract.
     modifier onlyOwner() {
-        require(msg.sender == owner);
+        require(msg.sender == owner, "This action is restricted to owner only.");
         _;
     }
 
     /// Verifies that the sale is in progress.
     modifier isLive() {
-        require(block.timestamp >= startTimestamp && block.timestamp <= endTimestamp);
+        require(block.timestamp >= startTimestamp && block.timestamp <= endTimestamp,
+			"The sale is not live.");
         _;
     }
 
     /// Verifies that the sale has ended.
     modifier hasEnded() {
-        require(block.timestamp > endTimestamp);
+        require(block.timestamp > endTimestamp, "The sale has not ended yet.");
         _;
     }
 
     /// Verifies that tokens are redeemable.
     modifier areRedeemable() {
-        require(block.timestamp > redeemableAfterTimestamp);
+        require(block.timestamp > redeemableAfterTimestamp, "Tokens are not redeemable yet");
         _;
     }
 
@@ -94,9 +95,9 @@ contract Sale is Status {
         uint256 redeemableAfter)
         public
     {
-        require(token != address(0));
-        require(price > 0 && minCap > 0 && maxCap > 0);
-        require(maxCap > minCap);
+        require(token != address(0), "Tokens must be a positive number.");
+        require(price > 0 && minCap > 0 && maxCap > 0, "Price and token caps must be positive numbers.");
+        require(maxCap > minCap, "Token max cap must be greater than min cap.");
 
         owner = msg.sender;
         tokenInstance = OpenHouseToken(token);
@@ -230,8 +231,8 @@ contract Sale is Status {
       * @return A boolean value indicating if the purchase has completed successfully.
       */
     function buyTokens(uint256 numberOfTokens) public payable isActivated() isLive() returns(bool) {
-        require(tokensMaxCap.sub(tokensSold) >= numberOfTokens);
-        require(msg.value == numberOfTokens.mul(tokenPrice));
+        require(tokensMaxCap.sub(tokensSold) >= numberOfTokens, "Insufficient tokens available.");
+        require(msg.value == numberOfTokens.mul(tokenPrice), "Insufficient funds available.");
 
         tokensSold = tokensSold.add(numberOfTokens);
         balanceOf[msg.sender] = balanceOf[msg.sender].add(numberOfTokens);
@@ -246,8 +247,8 @@ contract Sale is Status {
       * @return A boolean value indicating if the refund has completed successfully.
       */
     function refundTokens() public isActivated() hasEnded() returns(bool) {
-        require(tokensSold < tokensMinCap);
-        require(balanceOf[msg.sender] > 0);
+        require(tokensSold < tokensMinCap, "Sale was not unsuccessful.");
+        require(balanceOf[msg.sender] > 0, "Sender did not participate in the sale.");
 
         uint256 balance = balanceOf[msg.sender];
 
@@ -266,14 +267,15 @@ contract Sale is Status {
       * the tokens has completed successfully.
       */
     function redeemTokens() public isActivated() hasEnded() areRedeemable() returns(bool) {
-        require(tokensSold >= tokensMinCap);
-        require(balanceOf[msg.sender] > 0);
+        require(tokensSold >= tokensMinCap, "Sale was not successful.");
+        require(balanceOf[msg.sender] > 0, "Sender did not participate in the sale.");
 
         uint256 balance = balanceOf[msg.sender];
 
         balanceOf[msg.sender] = 0;
 
-        require(tokenInstance.transfer(msg.sender, balance.mul(10 ** decimals)));
+        require(tokenInstance.transfer(msg.sender, balance.mul(10 ** decimals)),
+			"Could not send funds to sender.");
 
         emit Redeemed(msg.sender, balance);
 
@@ -295,7 +297,8 @@ contract Sale is Status {
             numberOfTokens = tokensMaxCap;
         }
 
-        require(tokenInstance.transfer(owner, numberOfTokens.mul(10 ** decimals)));
+        require(tokenInstance.transfer(owner, numberOfTokens.mul(10 ** decimals)),
+			"Could not send funds to sender.");
 
         emit Reallocated(owner, numberOfTokens);
 

@@ -17,7 +17,7 @@ contract PrivateSale is Sale {
     /// Verifies that the sender is allowed to
     /// participate in the private sale.
     modifier isAllowed() {
-        require(allowedAddresses[msg.sender]);
+        require(allowedAddresses[msg.sender], "Sender is not allowed to participate in the sale.");
         _;
     }
 
