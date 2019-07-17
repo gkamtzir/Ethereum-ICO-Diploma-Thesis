@@ -13,7 +13,7 @@ require('chai')
     .use(require("chai-bn")(BN))
     .should();
 
-contract("PrivateSale -> status", accounts => {
+contract("Sale -> status", accounts => {
 
     before(async () => {
         this.token = await OpenHouseToken.new(basicConfiguration.totalSupply);

@@ -13,7 +13,7 @@ require('chai')
     .use(require("chai-bn")(BN))
     .should();
 
-contract("PrivateSale -> redeem tokens", accounts => {
+contract("Sale -> reallocate tokens", accounts => {
 
     this.initialization = async () => {
         this.token = await OpenHouseToken.new(basicConfiguration.totalSupply);
@@ -29,6 +29,9 @@ contract("PrivateSale -> redeem tokens", accounts => {
         this.tokensMaxCap = new BN(privateSale.tokensMaxCap)
 
         this.buyTokens = new BN(basicConfiguration.buyTokens);
+
+        this.totalSupply = new BN(basicConfiguration.totalSupply);
+        this.totalSupply = this.totalSupply.mul(this.power);
 
         this.buyTokensInsufficient = new BN(basicConfiguration.buyTokensInsufficient);
 
@@ -54,17 +57,17 @@ contract("PrivateSale -> redeem tokens", accounts => {
         this.admin = accounts[basicConfiguration.adminAccount];
         this.spender = accounts[basicConfiguration.spenderAccount];
 
-        // Allocate the needed tokens to the Private Sale contract.
+        // Allocate the needed tokens to the Sale contract.
         await this.token.transfer(this.privateSale.address, this.tokensMaxCap.mul(this.power).toString(), { from: this.admin });
 
-        // Allow 'spender' to participate in the private sale.
+        // Allow 'spender' to participate in the sale.
         await this.privateSale.allowAddress(this.spender);
 
         // Start the sale.
         await increaseTime(duration.hours(1));
-    }
+    };
 
-    describe("Redeem (successful sale)", () => {
+    describe("Reallocate (successful sale)", () => {
 
         before(async () => {
             await this.initialization();
@@ -75,59 +78,45 @@ contract("PrivateSale -> redeem tokens", accounts => {
                 { from: this.spender, value: cost.toString()});
         });
 
-        it("Should be impossible to redeem tokens when the sale is in progress", async () => {       
-            await this.privateSale.redeemTokens({ from: this.spender })
+        it("Should be impossible to reallocate tokens when the sale is in progress", async () => {       
+            await this.privateSale.reallocateTokens({ from: this.admin })
                 .should.be.rejectedWith("revert");
 
             // End the sale.
             await increaseTime(privateSale.duration);
         });
 
-        it("Should be impossible to redeem tokens when sender hasn't bought any during the sale", async () => {
-            await this.privateSale.redeemTokens({ from: this.admin })
+        it("Should be impossible to reallocate tokens a non-admin address", async () => {
+            await this.privateSale.reallocateTokens({ from: this.spender })
                 .should.be.rejectedWith("revert");
         });
 
-        it("Should be impossible to redeem tokens when tokens are not redeemable yet", async () => {
-            await this.privateSale.redeemTokens({ from: this.spender })
-                .should.be.rejectedWith("revert");
-
-            // Make tokens redeemable.
-            await increaseTime(this.redeemableAfter);
-        });
-
-        it("Should be able to redeem the tokens", async () => {
-            let balance = await this.privateSale.getBalanceOf(this.spender);
-            
-            const tx = await this.privateSale.redeemTokens({ from: this.spender })
+        it("Should be able to reallocate the tokens back to admin", async () => {
+            const tx = await this.privateSale.reallocateTokens({ from: this.admin })
                 .should.be.fulfilled;
 
-            truffleAssert.eventEmitted(tx, "Redeemed", event => {
-                return event.from === this.spender
-                    && event.numberOfTokens.eq(balance);
+            etherBalance = await web3.eth.getBalance(this.admin);
+
+            truffleAssert.eventEmitted(tx, "Reallocated", event => {
+                return event.from === this.admin
+                    && event.numberOfTokens.eq(this.tokensMaxCap.sub(this.buyTokens));
             });
 
-            // Sender's sale balance should be zero.
-            balance = await this.privateSale.getBalanceOf(this.spender);
-            expect(balance).to.be.bignumber.equal(new BN(0));
+            const saleBalance = await this.token.balanceOf(this.privateSale.address);
+            expect(saleBalance).to.be.bignumber.equal(this.buyTokens.mul(this.power));
 
-            // Sender's token balance should be non-zero.
-            balance = await this.token.balanceOf(this.spender);
-            expect(balance).to.be.bignumber.equal(this.buyTokens.mul(this.power));
-
-            // Private Sale's token balance should decrease.
-            balance = await this.token.balanceOf(this.privateSale.address);
-            expect(balance).to.be.bignumber.equal(this.tokensMaxCap.sub(this.buyTokens).mul(this.power));
+            const balance = await this.token.balanceOf(this.admin);
+            expect(balance).to.be.bignumber.equal(this.totalSupply.sub(this.buyTokens.mul(this.power)));
         });
 
     });
 
-    describe("Redeem (unsuccessful sale)", () => {
+    describe("Reallocate (unsuccessful sale)", () => {
 
         before(async () => {
             await this.initialization();
 
-            // Buy tokens.
+            // Buy insufficent tokens.
             const cost = this.tokenPrice.mul(this.buyTokensInsufficient);
             await this.privateSale.buyTokens(this.buyTokensInsufficient.toString(),
                 { from: this.spender, value: cost.toString()});
@@ -136,9 +125,20 @@ contract("PrivateSale -> redeem tokens", accounts => {
             await increaseTime(privateSale.duration);
         });
 
-        it("Should be impossible to redeem tokens when the sale has failed", async () => {       
-            await this.privateSale.redeemTokens({ from: this.spender })
-                .should.be.rejectedWith("revert");
+        it("Should be able to reallocate the tokens back to admin", async () => {
+            const tx = await this.privateSale.reallocateTokens({ from: this.admin })
+                .should.be.fulfilled;
+
+            truffleAssert.eventEmitted(tx, "Reallocated", event => {
+                return event.from === this.admin
+                    && event.numberOfTokens.eq(this.tokensMaxCap);
+            });
+
+            const saleBalance = await this.token.balanceOf(this.privateSale.address);
+            expect(saleBalance).to.be.bignumber.equal(new BN(0));
+
+            const balance = await this.token.balanceOf(this.admin);
+            expect(balance).to.be.bignumber.equal(this.totalSupply);
         });
 
     });

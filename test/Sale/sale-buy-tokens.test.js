@@ -13,7 +13,7 @@ require('chai')
     .use(require("chai-bn")(BN))
     .should();
 
-contract("PrivateSale -> buy tokens", accounts => {
+contract("Sale -> buy tokens", accounts => {
 
     before(async () => {
         this.token = await OpenHouseToken.new(basicConfiguration.totalSupply);
@@ -54,10 +54,10 @@ contract("PrivateSale -> buy tokens", accounts => {
         this.admin = accounts[basicConfiguration.adminAccount];
         this.spender = accounts[basicConfiguration.spenderAccount];
 
-        // Allocate the needed tokens to the Private Sale contract.
+        // Allocate the needed tokens to the Sale contract.
         await this.token.transfer(this.privateSale.address, this.tokensMaxCap.mul(this.power).toString(), { from: this.admin });
 
-        // Allow 'spender' to participate in the private sale.
+        // Allow 'spender' to participate in the sale.
         await this.privateSale.allowAddress(this.spender);
 
         // Start the sale.

@@ -1,8 +1,6 @@
 const OpenHouseToken = artifacts.require("./OpenHouseToken.sol");
 const PrivateSale = artifacts.require("./PrivateSale.sol");
-const truffleAssert = require('truffle-assertions');
 const { basicConfiguration, privateSale } = require("../../config.js");
-const { expect } = require('chai');
 const BN = web3.utils.BN;
 
 const { duration } = require("../helpers/increaseTime");
@@ -13,7 +11,7 @@ require('chai')
     .use(require("chai-bn")(BN))
     .should();
 
-contract("PrivateSale -> ownership", accounts => {
+contract("Sale -> live", accounts => {
 
     before(async () => {
         this.token = await OpenHouseToken.new(basicConfiguration.totalSupply);
@@ -27,6 +25,8 @@ contract("PrivateSale -> ownership", accounts => {
         this.tokensMinCap = new BN(privateSale.tokensMinCap)
 
         this.tokensMaxCap = new BN(privateSale.tokensMaxCap)
+
+        this.buyTokens = new BN(basicConfiguration.buyTokens);
 
         this.start = await latestTime();
         this.start += duration.hours(1);
@@ -49,30 +49,21 @@ contract("PrivateSale -> ownership", accounts => {
 
         this.admin = accounts[basicConfiguration.adminAccount];
         this.spender = accounts[basicConfiguration.spenderAccount];
-        this.transferTo = accounts[basicConfiguration.transferToAccount];
+
+        // Allocate the needed tokens to the Sale contract.
+        await this.token.transfer(this.privateSale.address, this.tokensMaxCap.mul(this.power).toString(), { from: this.admin });
+
+        // Allow 'spender' to participate in the sale.
+        await this.privateSale.allowAddress(this.spender);
     });
 
-    describe("Ownership", () => {
+    describe("Live", () => {
 
-        it("Should be impossible for a non-admin account to transfer contract's ownership", async () => {
-            await this.privateSale.transferOwnership(this.transferTo,
-                { from: this.spender}).should.be.rejectedWith("revert");
-        });
-
-        it("Should be able to transfered contract's ownership by the owner", async () => {
-            const owner = await this.privateSale.getOwner();
-            expect(owner).to.be.equal(this.admin);
-
-            const tx = await this.privateSale.transferOwnership(this.transferTo,
-                { from: this.admin }).should.be.fulfilled;
-
-            truffleAssert.eventEmitted(tx, "OwnershipTransfered", event => {
-                return event.from === this.admin
-                    && event.to === this.transferTo
-            });
-
-            const newOwner = await this.privateSale.getOwner();
-            expect(newOwner).to.be.equal(this.transferTo);
+        it("Should be impossible to buy tokens while the sale is not live", async () => {
+            const cost = this.tokenPrice.mul(this.buyTokens);
+            await this.privateSale.buyTokens(this.buyTokens.toString(),
+                { from: this.spender, value: cost.toString()})
+                .should.be.rejectedWith("revert");
         });
 
     });
