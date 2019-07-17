@@ -110,6 +110,8 @@ To run the unit test scripts located in the *./test/ folder just run the followi
 
 *Important note: sudo privileges may be required.*
 
+Since the *Sale* contract is abstract one, to unit test its core functionalities we use the *Private Sale* contract. However, note that all *\*Sale* contracts could play that particular role.
+
 #### Web Application
 
 To run the web application, first you need to deploy the contracts, exactly as described before. Then, you have to copy contracts' addresses and paste them in the */src/app.ts* main file. The contracts are the following:
