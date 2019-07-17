@@ -78,11 +78,6 @@ contract("PrivateSale -> initialize", accounts => {
             expect(maxCap).to.be.bignumber.equal(this.tokensMaxCap);
         });
 
-        it("Should initialize private sale with the zero sold tokens", async () => {
-            const soldTokens = await this.privateSale.getTokensSold();
-            expect(soldTokens).to.be.bignumber.equal(new BN(0));
-        });
-
         it("Should initialize private sale with the correct start date", async () => {
             const start = await this.privateSale.getStartTimestamp();
             expect(start).to.be.bignumber.equal(new BN(this.start));
@@ -93,9 +88,14 @@ contract("PrivateSale -> initialize", accounts => {
             expect(end).to.be.bignumber.equal(new BN(this.end));
         });
 
-        it("Should initialize the private sale with the correct redeemableAfter timestamp", async () => {
+        it("Should initialize private sale with the correct redeemableAfter timestamp", async () => {
             const redeemableAfter = await this.privateSale.getRedeemableAfterTimestamp();
             expect(redeemableAfter).to.be.bignumber.equal(new BN(this.redeemableAfter));
+        });
+
+        it("Should initialize private sale with the zero sold tokens", async () => {
+            const soldTokens = await this.privateSale.getTokensSold();
+            expect(soldTokens).to.be.bignumber.equal(new BN(0));
         });
 
     });

@@ -20,12 +20,14 @@ contract Sale is Status {
     uint256 internal tokenPrice;
     uint256 internal tokensMinCap;
     uint256 internal tokensMaxCap;
-    uint256 internal tokensSold;
     uint256 internal decimals;
 
     uint256 internal startTimestamp;
     uint256 internal endTimestamp;
     uint256 internal redeemableAfterTimestamp;
+
+	/// Statistics.
+	uint256 internal tokensSold;
 
     mapping(address => uint256) internal balanceOf;
 
@@ -82,14 +84,14 @@ contract Sale is Status {
     );
 
     constructor(
-        address token, 
+        address token,
         uint256 price,
         uint256 minCap,
         uint256 maxCap,
         uint256 tokenDecimals,
         uint256 start,
         uint256 end,
-        uint256 redeemableAfter) 
+        uint256 redeemableAfter)
         public
     {
         require(token != address(0));
@@ -143,15 +145,6 @@ contract Sale is Status {
     }
 
     /**
-      * @notice A getter function for the number of tokens
-      * sold.
-      * @return The number of tokens sold.
-      */
-    function getTokensSold() public view returns(uint256){
-        return tokensSold;
-    }
-
-    /**
       * @notice A getter function for sale's starting timestamp.
       * @return The timestamp when the sale will begin.
       */
@@ -174,6 +167,15 @@ contract Sale is Status {
       */
     function getRedeemableAfterTimestamp() public view returns(uint256) {
         return redeemableAfterTimestamp;
+    }
+
+	/**
+      * @notice A getter function for the number of tokens
+      * sold.
+      * @return The number of tokens sold.
+      */
+    function getTokensSold() public view returns(uint256) {
+        return tokensSold;
     }
 
     /**
