@@ -15,6 +15,44 @@ privateSaleContract = new web3.eth.Contract(PrivateSale.abi, "0x13f4417BbA1731b0
 preICOSaleContract = new web3.eth.Contract(PreICOSale.abi, "0x0975D77D2cEF039692bb1c138d4e14914561F9C1");
 ICOSaleContract = new web3.eth.Contract(ICOSale.abi, "0x96CA45E3967cf4Fc83BD2572819D228f4876b271");
 
+// Token events.
+
+// 'OfferCreated' event.
+tokenContract.events.OfferCreated((error, events) => {
+    console.log(error);
+    console.log(events);
+});
+
+// 'OfferRemoved' event.
+tokenContract.events.OfferRemoved((error, events) => {
+    console.log(error);
+    console.log(events);
+});
+
+// 'Leased' event.
+tokenContract.events.Leased((error, events) => {
+    console.log(error);
+    console.log(events);
+});
+
+// 'LeasingTerminated' event.
+tokenContract.events.LeasingTerminated((error, events) => {
+    console.log(error);
+    console.log(events);
+});
+
+// 'CommitedFromBalance' event.
+tokenContract.events.CommitedFromBalance((error, events) => {
+    console.log(error);
+    console.log(events);
+});
+
+// 'CommitedFromRented' event.
+tokenContract.events.CommitedFromRented((error, events) => {
+    console.log(error);
+    console.log(events);
+});
+
 // Private sale events.
 
 // 'Sold' event.
@@ -75,4 +113,4 @@ ICOSaleContract.events.Redeemed((error, events) => {
     console.log(events);
 });
 
-console.log("RUNNING");
+console.log("Watcher is up and running...");
