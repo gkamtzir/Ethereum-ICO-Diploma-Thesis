@@ -14,3 +14,25 @@ tokenContract = new web3.eth.Contract(OpenHouseToken.abi, "0x25312750426b8939a9d
 privateSaleContract = new web3.eth.Contract(PrivateSale.abi, "0x13f4417BbA1731b0d3ae493Ea754c12b375713a7");
 preICOSaleContract = new web3.eth.Contract(PreICOSale.abi, "0x0975D77D2cEF039692bb1c138d4e14914561F9C1");
 ICOSaleContract = new web3.eth.Contract(ICOSale.abi, "0x96CA45E3967cf4Fc83BD2572819D228f4876b271");
+
+// Private sale events.
+
+// 'Sold' event.
+privateSaleContract.events.Sold((error, events) => {
+    console.log(error);
+    console.log(events);
+});
+
+// 'Refunded' event.
+privateSaleContract.events.Refunded((error, events) => {
+    console.log(error);
+    console.log(events);
+})
+
+// 'Redeemed' event.
+privateSaleContract.events.Redeemed((error, events) => {
+    console.log(error);
+    console.log(events);
+});
+
+console.log("RUNNING");
