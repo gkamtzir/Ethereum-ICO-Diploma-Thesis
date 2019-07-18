@@ -6,7 +6,7 @@ export function DotSeparatorFilter($filter: ng.IFilterService) {
             input = ""
 
         input = input.toString();
-        if (input.length < 4) return input;
+        if (input.length < 4 || input.indexOf(".") !== -1) return input;
 
         let separator = ".";
 
