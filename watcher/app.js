@@ -35,4 +35,44 @@ privateSaleContract.events.Redeemed((error, events) => {
     console.log(events);
 });
 
+// Pre-ICO sale events.
+
+// 'Sold' event.
+preICOSaleContract.events.Sold((error, events) => {
+    console.log(error);
+    console.log(events);
+});
+
+// 'Refunded' event.
+preICOSaleContract.events.Refunded((error, events) => {
+    console.log(error);
+    console.log(events);
+})
+
+// 'Redeemed' event.
+preICOSaleContract.events.Redeemed((error, events) => {
+    console.log(error);
+    console.log(events);
+});
+
+// ICO sale events.
+
+// 'Sold' event.
+ICOSaleContract.events.Sold((error, events) => {
+    console.log(error);
+    console.log(events);
+});
+
+// 'Refunded' event.
+ICOSaleContract.events.Refunded((error, events) => {
+    console.log(error);
+    console.log(events);
+})
+
+// 'Redeemed' event.
+ICOSaleContract.events.Redeemed((error, events) => {
+    console.log(error);
+    console.log(events);
+});
+
 console.log("RUNNING");
