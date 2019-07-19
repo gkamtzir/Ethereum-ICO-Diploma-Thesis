@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const rent = mongoose.Schema({
     from: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     numberOfTokens: {
         type: Number,
@@ -14,7 +15,7 @@ const rent = mongoose.Schema({
         required: true
     },
     duration: {
-        type: Date,
+        type: Number,
         required: true
     },
     offerCreatedTimestamp: {

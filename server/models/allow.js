@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const allow = mongoose.Schema({
     allowed: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     timestamp: {
         type: Date,
