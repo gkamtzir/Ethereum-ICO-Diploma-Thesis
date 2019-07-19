@@ -1,13 +1,36 @@
 const Web3 = require("web3");
+const mongoose = require("mongoose");
 
-// Contracts.
-const OpenHouseToken = require("../build/contracts/OpenHouseToken.json");
-const PrivateSale = require("../build/contracts/PrivateSale.json");
-const PreICOSale = require("../build/contracts/PreICOSale.json");
-const ICOSale = require("../build/contracts/ICOSale.json");
+// Importing contracts.
+const OpenHouseToken = require("../../build/contracts/OpenHouseToken.json");
+const PrivateSale = require("../../build/contracts/PrivateSale.json");
+const PreICOSale = require("../../build/contracts/PreICOSale.json");
+const ICOSale = require("../../build/contracts/ICOSale.json");
+
+// Importing models.
+const Sale = require("../models/receipt").Sale;
+const Refund = require("../models/receipt").Refund;
+const Redeem = require("../models/receipt").Redeem;
+const Rent = require("../models/rent");
+const Allow = require("../models/allow");
 
 // Establishing a connection with the blockchain via websockets.
 let web3 = new Web3(new Web3.providers.WebsocketProvider("ws://83.212.115.201:5555"));
+
+// Establishing a connection with the MongoDB.
+mongoose.connect("mongodb://localhost:27017/data", { useNewUrlParser: true });
+mongoose.set('useCreateIndex', true);
+
+const db = mongoose.connection;
+
+db.on("error", console.error.bind(console, "connection error: "));
+
+// Establishing a conncetion with MongoDB.
+db.once("open", function() {
+
+    console.log("Connected");
+
+});
 
 // Instantiating contracts.
 tokenContract = new web3.eth.Contract(OpenHouseToken.abi, "0xb030CC59d57f871F097C86783034c658EB23a444");
@@ -25,6 +48,23 @@ tokenContract.events.OfferCreated((error, event) => {
     const data = event.returnValues;
     console.log(`${data.from} created an offer for ${data.numberOfTokens} tokens for ${data.duration}`
         + ` at a price of ${data.price} wei.`);
+    
+    // Creating the rent instance.
+    let rent = new Rent({
+        from: data.from,
+        numberOfTokens: data.numberOfTokens,
+        price: data.price,
+        duration: data.duration,
+        offerCreatedTimestamp: Date.now(),
+        leasedTo: null,
+        leasedTimestamp: null
+    });
+
+    // Saving the instance to DB.
+    rent.save((error) => {
+        if (error)
+            console.log(error);
+    });
 });
 
 // 'OfferRemoved' event.
@@ -34,6 +74,12 @@ tokenContract.events.OfferRemoved((error, event) => {
     
     const data = event.returnValues;
     console.log(`${data.from} removed his offer.`);
+
+    // Deleting the offer from DB.
+    Rent.deleteOne({from: data.from}, (error) => {
+        if (error)
+            console.log(error);
+    });
 });
 
 // 'Leased' event.
@@ -43,6 +89,12 @@ tokenContract.events.Leased((error, event) => {
     
     const data = event.returnValues;
     console.log(`${data.from} leased from ${data.to}.`);
+
+    Rent.updateOne({from: data.from}, {leasedTo: data.to, leasedTimestamp: Date.now()},
+        (error) => {
+            if (error)
+                console.log(error);
+        });
 });
 
 // 'LeasingTerminated' event.
@@ -52,6 +104,12 @@ tokenContract.events.LeasingTerminated((error, event) => {
     
     const data = event.returnValues;
     console.log(`${data.from} terminated the leasing to ${data.to}.`);
+
+    Rent.updateOne({from: data.from}, {leasedTo: null, leasedTimestamp: null},
+        (error) => {
+            if (error)
+                console.log(error);
+        });
 });
 
 // 'CommitedFromBalance' event.

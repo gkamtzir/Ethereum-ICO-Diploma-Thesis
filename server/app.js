@@ -10,6 +10,7 @@ const app = express();
 const port = 8080;
 
 mongoose.connect("mongodb://localhost:27017/data", { useNewUrlParser: true });
+mongoose.set('useCreateIndex', true);
 
 const db = mongoose.connection;
 
