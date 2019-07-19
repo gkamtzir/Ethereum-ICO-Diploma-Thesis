@@ -15,8 +15,8 @@ const receipt = mongoose.Schema({
     }
 });
 
-const Sale = mongoose.model('sale', receipt);
-const Refund = mongoose.model('refund', receipt);
-const Redeem = mongoose.model('redeem', receipt);
+const Sale = mongoose.model("sale", receipt);
+const Refund = mongoose.model("refund", receipt);
+const Redeem = mongoose.model("redeem", receipt);
 
 module.exports = {Sale, Refund, Redeem};

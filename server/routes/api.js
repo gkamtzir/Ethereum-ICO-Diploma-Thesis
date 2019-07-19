@@ -1,7 +1,8 @@
-const express = require('express');
+const express = require("express");
 
 // Importing the needed models.
-const sale = require('../models/receipt.js').Sale;
+const sale = require("../models/receipt.js").Sale;
+const refund = require("../models/receipt.js").Refund;
 
 // Initializing the router.
 const apiRouter = express.Router();

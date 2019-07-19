@@ -31,6 +31,6 @@ const rent = mongoose.Schema({
     }
 });
 
-const Rent = mongoose.model('rent', rent);
+const Rent = mongoose.model("rent", rent);
 
 module.exports = Rent;
