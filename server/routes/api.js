@@ -1,18 +1,18 @@
 const express = require("express");
 
 // Importing the needed models.
-const sale = require("../models/receipt").Sale;
-const refund = require("../models/receipt").Refund;
-const redeem = require("../models/receipt").Redeem;
-const rent = require("../models/rent");
-const allow = require("../models/allow");
+const Sale = require("../models/receipt").Sale;
+const Refund = require("../models/receipt").Refund;
+const Redeem = require("../models/receipt").Redeem;
+const Rent = require("../models/rent");
+const Allow = require("../models/allow");
 
 // Initializing the router.
 const apiRouter = express.Router();
 
 apiRouter.route("/sale")
     .get((req, res, next) => {
-        sale.find({}, (error, sales) => {
+        Sale.find({}, (error, sales) => {
             if (error)
                 throw error;
 
@@ -22,7 +22,7 @@ apiRouter.route("/sale")
 
 apiRouter.route("/refund")
     .get((req, res, next) => {
-        refund.find({}, (error, refunds) => {
+        Refund.find({}, (error, refunds) => {
             if (error)
                 throw error;
 
@@ -32,7 +32,7 @@ apiRouter.route("/refund")
 
 apiRouter.route("/redeem")
     .get((req, res, next) => {
-        redeem.find({}, (error, redeems) => {
+        Redeem.find({}, (error, redeems) => {
             if (error)
                 throw error;
 
@@ -42,7 +42,7 @@ apiRouter.route("/redeem")
 
 apiRouter.route("/rent")
     .get((req, res, next) => {
-        rent.find({}, (error, rents) => {
+        Rent.find({}, (error, rents) => {
             if (error)
                 throw error;
 
@@ -52,7 +52,7 @@ apiRouter.route("/rent")
 
 apiRouter.route("/allow")
     .get((req, res, next) => {
-        allow.find({}, (error, allows) => {
+        Allow.find({}, (error, allows) => {
             if (error)
                 throw error;
 
