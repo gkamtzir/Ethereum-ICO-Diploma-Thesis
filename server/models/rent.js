@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-var rent = mongoose.Schema({
+const rent = mongoose.Schema({
     from: {
         type: String,
         required: true
@@ -31,6 +31,6 @@ var rent = mongoose.Schema({
     }
 });
 
-var Rent = mongoose.model('rent', rent);
+const Rent = mongoose.model('rent', rent);
 
 module.exports = Rent;

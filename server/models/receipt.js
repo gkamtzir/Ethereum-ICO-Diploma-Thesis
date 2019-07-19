@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-var receipt = mongoose.Schema({
+const receipt = mongoose.Schema({
     from: {
         type: String,
         required: true
@@ -15,6 +15,8 @@ var receipt = mongoose.Schema({
     }
 });
 
-var Receipt = mongoose.model('receipt', receipt);
+const Sale = mongoose.model('sale', receipt);
+const Refund = mongoose.model('refund', receipt);
+const Redeem = mongoose.model('redeem', receipt);
 
-module.exports = Receipt;
+module.exports = {Sale, Refund, Redeem};
