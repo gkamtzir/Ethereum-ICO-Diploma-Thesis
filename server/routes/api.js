@@ -1,8 +1,10 @@
 const express = require("express");
 
 // Importing the needed models.
-const sale = require("../models/receipt.js").Sale;
-const refund = require("../models/receipt.js").Refund;
+const sale = require("../models/receipt").Sale;
+const refund = require("../models/receipt").Refund;
+const redeem = require("../models/receipt").Redeem;
+const rent = require("../models/rent");
 
 // Initializing the router.
 const apiRouter = express.Router();
@@ -14,7 +16,36 @@ apiRouter.route("/sale")
                 throw error;
 
             res.json(sales);
+        });
+    });
 
+apiRouter.route("/refund")
+    .get((req, res, next) => {
+        refund.find({}, (error, refunds) => {
+            if (error)
+                throw error;
+
+            res.json(refunds);
+        });
+    });
+
+apiRouter.route("/redeem")
+    .get((req, res, next) => {
+        redeem.find({}, (error, redeems) => {
+            if (error)
+                throw error;
+
+            res.json(redeems);
+        });
+    });
+
+apiRouter.route("/rent")
+    .get((req, res, next) => {
+        rent.find({}, (error, rents) => {
+            if (error)
+                throw error;
+
+            res.json(rents);
         });
     });
 
