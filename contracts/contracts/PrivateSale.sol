@@ -12,6 +12,12 @@ contract PrivateSale is Sale {
 
     mapping(address => bool) private allowedAddresses;
 
+    /// Events.
+
+    event AddressAllowed (
+		address indexed allowed
+    );
+
     /// Modifiers.
 
     /// Verifies that the sender is allowed to
@@ -62,6 +68,8 @@ contract PrivateSale is Sale {
       */
     function allowAddress(address buyer) public isActivated() onlyOwner() {
         allowedAddresses[buyer] = true;
+
+		emit AddressAllowed(buyer);
     }
 
     /**

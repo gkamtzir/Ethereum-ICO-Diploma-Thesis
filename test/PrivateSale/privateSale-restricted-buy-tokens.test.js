@@ -72,7 +72,11 @@ contract("PrivateSale -> buy tokens (restricted)", accounts => {
         });
 
         it("Should be able to allow a given address to participate to the private sale", async () => {
-           await this.privateSale.allowAddress(this.spender).should.be.fulfilled;
+            const tx = await this.privateSale.allowAddress(this.spender).should.be.fulfilled;
+
+            truffleAssert.eventEmitted(tx, "AddressAllowed", event => {
+                return event.allowed === this.spender;
+            });
 
            const allowed = await this.privateSale.getAddressAllowance(this.spender);
            expect(allowed).to.be.true;
@@ -85,8 +89,8 @@ contract("PrivateSale -> buy tokens (restricted)", accounts => {
                 .should.be.fulfilled;
 
             truffleAssert.eventEmitted(tx, "Sold", event => {
-            return event.from === this.spender
-                && event.numberOfTokens.eq(this.buyTokens);
+                return event.from === this.spender
+                    && event.numberOfTokens.eq(this.buyTokens);
             });
         });
 
