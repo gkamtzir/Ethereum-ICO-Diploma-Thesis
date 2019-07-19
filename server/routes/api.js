@@ -5,6 +5,7 @@ const sale = require("../models/receipt").Sale;
 const refund = require("../models/receipt").Refund;
 const redeem = require("../models/receipt").Redeem;
 const rent = require("../models/rent");
+const allow = require("../models/allow");
 
 // Initializing the router.
 const apiRouter = express.Router();
@@ -46,6 +47,16 @@ apiRouter.route("/rent")
                 throw error;
 
             res.json(rents);
+        });
+    });
+
+apiRouter.route("/allow")
+    .get((req, res, next) => {
+        allow.find({}, (error, allows) => {
+            if (error)
+                throw error;
+
+            res.json(allows);
         });
     });
 
