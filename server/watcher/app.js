@@ -13,6 +13,8 @@ const Refund = require("../models/receipt").Refund;
 const Redeem = require("../models/receipt").Redeem;
 const Rent = require("../models/rent");
 const Allow = require("../models/allow");
+const CommitBalance = require("../models/receipt").CommitBalance;
+const CommitRented = require("../models/receipt").CommitRented;
 
 // Establishing a connection with the blockchain via websockets.
 let web3 = new Web3(new Web3.providers.WebsocketProvider("ws://83.212.115.201:5555"));
@@ -90,6 +92,7 @@ tokenContract.events.Leased((error, event) => {
     const data = event.returnValues;
     console.log(`${data.from} leased from ${data.to}.`);
 
+    // Updating the offer (adding the renter).
     Rent.updateOne({from: data.from}, {leasedTo: data.to, leasedTimestamp: Date.now()},
         (error) => {
             if (error)
@@ -105,6 +108,7 @@ tokenContract.events.LeasingTerminated((error, event) => {
     const data = event.returnValues;
     console.log(`${data.from} terminated the leasing to ${data.to}.`);
 
+    // Updating the offer (removing the renter).
     Rent.updateOne({from: data.from}, {leasedTo: null, leasedTimestamp: null},
         (error) => {
             if (error)

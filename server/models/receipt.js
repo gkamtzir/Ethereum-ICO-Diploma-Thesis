@@ -18,5 +18,7 @@ const receipt = mongoose.Schema({
 const Sale = mongoose.model("sale", receipt);
 const Refund = mongoose.model("refund", receipt);
 const Redeem = mongoose.model("redeem", receipt);
+const CommitBalance = mongoose.model("commitBalance", receipt);
+const CommitRented = mongoose.model("commitRented", receipt);
 
-module.exports = {Sale, Refund, Redeem};
+module.exports = {Sale, Refund, Redeem, CommitBalance, CommitRented};
