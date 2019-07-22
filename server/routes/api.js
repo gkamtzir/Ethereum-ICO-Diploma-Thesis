@@ -20,9 +20,45 @@ apiRouter.route("/sale")
         });
     });
 
+apiRouter.route("/sale/:address")
+    .get((req, res, next) => {
+        let options = {
+            from: req.params.address
+        };
+
+        // Checking for optional query parameters.
+        if (req.query.stage != null)
+            options.stage = req.query.stage;
+
+        Sale.find(options, (error, sales) => {
+            if (error)
+                throw error;
+
+            res.json(sales);
+        });
+    });
+
 apiRouter.route("/refund")
     .get((req, res, next) => {
         Refund.find({}, (error, refunds) => {
+            if (error)
+                throw error;
+
+            res.json(refunds);
+        });
+    });
+
+apiRouter.route("/refund/:address")
+    .get((req, res, next) => {
+        let options = {
+            from: req.params.address
+        };
+
+        // Checking for optional query parameters.
+        if (req.query.stage != null)
+            options.stage = req.query.stage;
+
+        Refund.find(options, (error, refunds) => {
             if (error)
                 throw error;
 
@@ -40,9 +76,36 @@ apiRouter.route("/redeem")
         });
     });
 
+apiRouter.route("/redeem/:address")
+    .get((req, res, next) => {
+        let options = {
+            from: req.params.address
+        };
+
+        // Checking for optional query parameters.
+        if (req.query.stage != null)
+            options.stage = req.query.stage;
+
+        Redeem.find(options, (error, redeems) => {
+            if (error)
+                throw error;
+
+            res.json(redeems);
+        });
+    });
+
 apiRouter.route("/rent")
     .get((req, res, next) => {
-        Rent.find({}, (error, rents) => {
+        let options = {};
+
+        // Checking for optional query parameters.
+        if (req.query.from != null)
+            options.from = req.query.from;
+
+        if (req.query.to != null)
+            options.leasedTo = req.query.to;
+
+        Rent.find(options, (error, rents) => {
             if (error)
                 throw error;
 
