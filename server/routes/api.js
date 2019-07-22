@@ -1,9 +1,9 @@
 const express = require("express");
 
 // Importing the needed models.
-const Sale = require("../models/receipt").Sale;
-const Refund = require("../models/receipt").Refund;
-const Redeem = require("../models/receipt").Redeem;
+const Sale = require("../models/receiptSale").Sale;
+const Refund = require("../models/receiptSale").Refund;
+const Redeem = require("../models/receiptSale").Redeem;
 const Rent = require("../models/rent");
 const Allow = require("../models/allow");
 

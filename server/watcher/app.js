@@ -8,9 +8,9 @@ const PreICOSale = require("../../build/contracts/PreICOSale.json");
 const ICOSale = require("../../build/contracts/ICOSale.json");
 
 // Importing models.
-const Sale = require("../models/receipt").Sale;
-const Refund = require("../models/receipt").Refund;
-const Redeem = require("../models/receipt").Redeem;
+const Sale = require("../models/receiptSale").Sale;
+const Refund = require("../models/receiptSale").Refund;
+const Redeem = require("../models/receiptSale").Redeem;
 const Rent = require("../models/rent");
 const Allow = require("../models/allow");
 const CommitBalance = require("../models/receipt").CommitBalance;
@@ -35,10 +35,10 @@ db.once("open", function() {
 });
 
 // Instantiating contracts.
-tokenContract = new web3.eth.Contract(OpenHouseToken.abi, "0xb030CC59d57f871F097C86783034c658EB23a444");
-privateSaleContract = new web3.eth.Contract(PrivateSale.abi, "0x7D294909EA7fB3bd015F1C083AF0445aCFd43c31");
-preICOSaleContract = new web3.eth.Contract(PreICOSale.abi, "0xC8B73D244A62D0857C962F54BFd5955320BCB25a");
-ICOSaleContract = new web3.eth.Contract(ICOSale.abi, "0xe1dDeA8606A1f761d34938C110b9609590785668");
+tokenContract = new web3.eth.Contract(OpenHouseToken.abi, "0xdE89C8da05A4D02604Bec483C86A282C74406842");
+privateSaleContract = new web3.eth.Contract(PrivateSale.abi, "0xeFf0CE0e1a0D3626ddA294011507D4dC0c06c15C");
+preICOSaleContract = new web3.eth.Contract(PreICOSale.abi, "0x4DDACb426C32D92745066D9b5857788C7739667d");
+ICOSaleContract = new web3.eth.Contract(ICOSale.abi, "0xe925Ae3E8F32870664Ad674D38eb60941432dB52");
 
 // Token events.
 
@@ -63,7 +63,7 @@ tokenContract.events.OfferCreated((error, event) => {
     });
 
     // Saving the instance to DB.
-    rent.save((error) => {
+    rent.save(error => {
         if (error)
             console.log(error);
     });
@@ -78,7 +78,7 @@ tokenContract.events.OfferRemoved((error, event) => {
     console.log(`${data.from} removed his offer.`);
 
     // Deleting the offer from DB.
-    Rent.deleteOne({from: data.from}, (error) => {
+    Rent.deleteOne({from: data.from}, error => {
         if (error)
             console.log(error);
     });
@@ -94,7 +94,7 @@ tokenContract.events.Leased((error, event) => {
 
     // Updating the offer (adding the renter).
     Rent.updateOne({from: data.from}, {leasedTo: data.to, leasedTimestamp: Date.now()},
-        (error) => {
+        error => {
             if (error)
                 console.log(error);
         });
@@ -110,7 +110,7 @@ tokenContract.events.LeasingTerminated((error, event) => {
 
     // Updating the offer (removing the renter).
     Rent.updateOne({from: data.from}, {leasedTo: null, leasedTimestamp: null},
-        (error) => {
+        error => {
             if (error)
                 console.log(error);
         });
@@ -123,6 +123,18 @@ tokenContract.events.CommitedFromBalance((error, event) => {
 
     const data = event.returnValues;
     console.log(`${data.from} commited ${data.numberOfTokens} tokens from balance.`);
+
+    const commitBalance = new CommitBalance({
+        from: data.from,
+        amount: data.numberOfTokens,
+        timestamp: Date.now()
+    });
+
+    // Saving the instance to DB.
+    commitBalance.save(error => {
+        if (error)
+            console.log(error);
+    });
 });
 
 // 'CommitedFromRented' event.
@@ -132,6 +144,18 @@ tokenContract.events.CommitedFromRented((error, event) => {
 
     const data = event.returnValues;
     console.log(`${data.from} commited ${data.numberOfTokens} tokens from rented.`);
+
+    const commitRented = new CommitRented({
+        from: data.from,
+        amount: data.numberOfTokens,
+        timestamp: Date.now()
+    });
+
+    // Saving the instance to DB.
+    commitRented.save(error => {
+        if (error)
+            console.log(error);
+    });
 });
 
 // Private sale events.
@@ -143,6 +167,9 @@ privateSaleContract.events.Sold((error, event) => {
     
     const data = event.returnValues;
     console.log(`${data.from} bought ${data.numberOfTokens} tokens during the private sale.`);
+
+    // Saving the instance to DB.
+    saveSale(data, "private");
 });
 
 // 'Refunded' event.
@@ -152,6 +179,9 @@ privateSaleContract.events.Refunded((error, event) => {
     
     const data = event.returnValues;    
     console.log(`${data.from} refunded ${data.numberOfTokens} tokens during the private sale.`);
+
+    // Saving the instance to DB.
+    saveRefund(data, "private");
 })
 
 // 'Redeemed' event.
@@ -161,6 +191,9 @@ privateSaleContract.events.Redeemed((error, event) => {
     
     const data = event.returnValues;
     console.log(`${data.from} redeemed ${data.numberOfTokens} tokens from the private sale.`);
+    
+    // Saving the instance to DB.
+    saveRedeem(data, "private");
 });
 
 privateSaleContract.events.AddressAllowed((error, event) => {
@@ -169,6 +202,17 @@ privateSaleContract.events.AddressAllowed((error, event) => {
 
     const data = event.returnValues;
     console.log(`${data.allowed} has been allowed to participate in the private sale.`);
+
+    const allow = new Allow({
+        allowed: data.allowed,
+        timestamp: Date.now()
+    });
+
+    // Saving the instance to DB.
+    allow.save(error => {
+        if (error)
+            console.log(error);
+    });
 });
 
 // Pre-ICO sale events.
@@ -180,6 +224,9 @@ preICOSaleContract.events.Sold((error, event) => {
     
     const data = event.returnValues;
     console.log(`${data.from} bought ${data.numberOfTokens} tokens during the pre-ICO sale.`);
+
+    // Saving the instance to DB.
+    saveSale(data, "pre");
 });
 
 // 'Refunded' event.
@@ -189,6 +236,9 @@ preICOSaleContract.events.Refunded((error, event) => {
     
     const data = event.returnValues;
     console.log(`${data.from} refunded ${data.numberOfTokens} tokens during the pre-ICO sale.`);
+
+    // Saving the instance to DB.
+    saveRefund(data, "pre");
 })
 
 // 'Redeemed' event.
@@ -198,6 +248,9 @@ preICOSaleContract.events.Redeemed((error, event) => {
     
     const data = event.returnValues;
     console.log(`${data.from} redeemed ${data.numberOfTokens} tokens from the pre-ICO sale.`);
+
+    // Saving the instance to DB.
+    saveRedeem(data, "pre");
 });
 
 // ICO sale events.
@@ -209,6 +262,9 @@ ICOSaleContract.events.Sold((error, event) => {
     
     const data = event.returnValues;
     console.log(`${data.from} bought ${data.numberOfTokens} tokens during the ICO sale.`);
+
+    // Saving the instance to DB.
+    saveSale(data, "ico");
 });
 
 // 'Refunded' event.
@@ -218,6 +274,9 @@ ICOSaleContract.events.Refunded((error, event) => {
     
     const data = event.returnValues;
     console.log(`${data.from} refunded ${data.numberOfTokens} tokens during the ICO sale.`);
+
+    // Saving the instance to DB.
+    saveRefund(data, "ico");
 })
 
 // 'Redeemed' event.
@@ -227,6 +286,54 @@ ICOSaleContract.events.Redeemed((error, event) => {
     
     const data = event.returnValues;
     console.log(`${data.from} redeemed ${data.numberOfTokens} tokens from the ICO sale.`);
+
+    // Saving the instance to DB.
+    saveRedeem(data, "ico");
 });
+
+function saveSale(data, stage) {
+    const sale = new Sale({
+        from: data.from,
+        amount: data.numberOfTokens,
+        stage,
+        timestamp: Date.now()
+    });
+
+    // Saving the instance to DB.
+    sale.save(error => {
+        if (error)
+            console.log(error);
+    });
+}
+
+function saveRefund(data, stage) {
+    const refund = new Refund({
+        from: data.from,
+        amount: data.numberOfTokens,
+        stage,
+        timestamp: Date.now()
+    });
+
+    // Saving the instance to DB.
+    refund.save(error => {
+        if (error)
+            console.log(error);
+    });
+}
+
+function saveRedeem(data, stage) {
+    const redeem = new Redeem({
+        from: data.from,
+        amount: data.numberOfTokens,
+        stage,
+        timestamp: Date.now()
+    });
+
+    // Saving the instance to DB.
+    redeem.save(error => {
+        if (error)
+            console.log(error);
+    });
+}
 
 console.log("Watcher is up and running...");
