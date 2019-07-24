@@ -61,6 +61,12 @@ export default class NavbarComponent implements ng.IComponentOptions {
                             ICO Sale
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" ng-class="{active: $ctrl.activeTab === '/analytics'}"
+                        ng-click="$ctrl.updateActiveTab('/analytics')" href="#/analytics">
+                            Analytics
+                    </a>
+                </li>
             </ul>
         </div>
     `;
