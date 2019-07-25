@@ -3,6 +3,7 @@ const path = require("path");
 const mongoose = require("mongoose");
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const  cors = require('cors')
 
 const api = require("./routes/api");
 
@@ -27,6 +28,7 @@ db.once("open", function() {
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
