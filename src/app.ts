@@ -4,6 +4,7 @@ import "angular-route/angular-route.min.js";
 import "angular-toastr/dist/angular-toastr.tpls.min.js";
 
 import "bignumber.js/bignumber.min.js";
+//import "chart.js/dist/Chart.bundle.min.js";
 
 // Styling dependencies.
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -98,7 +99,12 @@ module.config(["$routeProvider", "$locationProvider",
                 }
             })
             .when("/analytics", {
-                template: "<analytics-component></analytics-component>"
+                template: "<analytics-component></analytics-component>",
+                resolve: {
+                    metamask: () => {
+                        return ethereum.enable();
+                    }
+                }
             })
             .otherwise({
                 redirectTo: "/"
@@ -133,10 +139,10 @@ module.constant("PrivateSale", PrivateSale);
 module.constant("PreICOSale", PreICOSale);
 module.constant("ICOSale", ICOSale);
 
-module.constant("OpenHouseTokenContractAddress", "0x23169182B27aBf6b263F553dff8f8D1a98355B2A");
-module.constant("PrivateSaleContractAddress", "0x3dd4DfEc3F0A3126FA3b13924aE06b0534D9e363");
-module.constant("PreICOSaleContractAddress", "0x32c2AC0eC8CFdaC465293c63d34EB79aD69d296b");
-module.constant("ICOSaleContractAddress", "0xa215B1C24046128fB1258Ef63279822dF7b30cA3");
+module.constant("OpenHouseTokenContractAddress", "0xd054CF8a0066fA9Fe2D04611EE825999B6C2Ec49");
+module.constant("PrivateSaleContractAddress", "0xd2463be06358FfAE45F4DD7101d7E8feEc19020c");
+module.constant("PreICOSaleContractAddress", "0x4882dA930Ac3fED5A1e6c37e29038ab0Ada1BdE5");
+module.constant("ICOSaleContractAddress", "0xFa958508CbB42E9a688AB2823BBbdaFc0Ae1458A");
 
 angular.element(document).ready(() => {
     angular.bootstrap(document, ["OpenHouseAdminPanel"]);
