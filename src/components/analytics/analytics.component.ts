@@ -7,12 +7,14 @@ class AnalyticsController implements ng.IComponentController {
     // Controller's injectables.
     public static $inject = ["web3Service"];
 
+    // Public variables.
+    public selectedStage: string;
+
     // Private variables.
     private salesChart: any;
     private privateSaleContract: any;
     private preICOSaleContract: any;
     private ICOSaleContract: any;
-    private account: string;
     private privateSaleStart: any;
     private privateSaleEnd: any;
     private preICOSaleStart: any;
@@ -56,17 +58,77 @@ class AnalyticsController implements ng.IComponentController {
         "leasedTo": "0x47549A5A617c5918b2816d7bf0b3e7b8A63552D2",
         "leasedTimestamp": "2019-07-22T07:56:12.667Z",
         "__v": 0
-        }
+        },
+        {
+            "_id": "5d356c0485ba7a7ab66e417b",
+            "from": "0x3C0F19C72dE749F5fd9860de0C64D6051B9Be8b3",
+            "numberOfTokens": 2,
+            "price": 12000000000000000000,
+            "duration": 3600,
+            "stage": "pre",
+            "offerCreatedTimestamp": "2019-10-18T07:55:48.641Z",
+            "leasedTo": "0x47549A5A617c5918b2816d7bf0b3e7b8A63552D2",
+            "leasedTimestamp": "2019-07-22T07:56:12.667Z",
+            "__v": 0
+            },
+            {
+                "_id": "5d356c0485ba7a7ab66e417b",
+                "from": "0x3C0F19C72dE749F5fd9860de0C64D6051B9Be8b3",
+                "numberOfTokens": 28,
+                "price": 12000000000000000000,
+                "duration": 3600,
+                "stage": "pre",
+                "offerCreatedTimestamp": "2019-10-29T07:55:48.641Z",
+                "leasedTo": "0x47549A5A617c5918b2816d7bf0b3e7b8A63552D2",
+                "leasedTimestamp": "2019-07-22T07:56:12.667Z",
+                "__v": 0
+                },
+                {
+                    "_id": "5d356c0485ba7a7ab66e417b",
+                    "from": "0x3C0F19C72dE749F5fd9860de0C64D6051B9Be8b3",
+                    "numberOfTokens": 38,
+                    "price": 12000000000000000000,
+                    "duration": 3600,
+                    "stage": "pre",
+                    "offerCreatedTimestamp": "2019-11-14T07:55:48.641Z",
+                    "leasedTo": "0x47549A5A617c5918b2816d7bf0b3e7b8A63552D2",
+                    "leasedTimestamp": "2019-07-22T07:56:12.667Z",
+                    "__v": 0
+                    },
+                    {
+                        "_id": "5d356c0485ba7a7ab66e417b",
+                        "from": "0x3C0F19C72dE749F5fd9860de0C64D6051B9Be8b3",
+                        "numberOfTokens": 132,
+                        "price": 12000000000000000000,
+                        "duration": 3600,
+                        "stage": "ico",
+                        "offerCreatedTimestamp": "2019-12-25T07:55:48.641Z",
+                        "leasedTo": "0x47549A5A617c5918b2816d7bf0b3e7b8A63552D2",
+                        "leasedTimestamp": "2019-07-22T07:56:12.667Z",
+                        "__v": 0
+                        },
+                        {
+                            "_id": "5d356c0485ba7a7ab66e417b",
+                            "from": "0x3C0F19C72dE749F5fd9860de0C64D6051B9Be8b3",
+                            "numberOfTokens": 123,
+                            "price": 12000000000000000000,
+                            "duration": 3600,
+                            "stage": "ico",
+                            "offerCreatedTimestamp": "2020-01-09T07:55:48.641Z",
+                            "leasedTo": "0x47549A5A617c5918b2816d7bf0b3e7b8A63552D2",
+                            "leasedTimestamp": "2019-07-22T07:56:12.667Z",
+                            "__v": 0
+                            }
         ];
 
     constructor(public web3Service: IWeb3Service) {
+        this.selectedStage = "private";
     }
 
     async $onInit() {
         this.privateSaleContract = this.web3Service.privateSaleContract;
         this.preICOSaleContract = this.web3Service.preICOSaleContract;
         this.ICOSaleContract = this.web3Service.ICOSaleContract;
-        this.account = await this.web3Service.getMetamaskAccountOrNull();
 
         // Fetching the start-end marks.
         let privateSaleStart = await this.privateSaleContract.methods.getStartTimestamp.call().call();
@@ -87,6 +149,14 @@ class AnalyticsController implements ng.IComponentController {
         let ICOSaleEnd = await this.ICOSaleContract.methods.getEndTimestamp.call().call();
         this.ICOSaleEnd = moment(new Date(ICOSaleEnd * 1000));
 
+        // Creating the 3 sale charts.
+        this.createSaleCharts();
+    }
+
+    /**
+     * Creates the sale charts.
+     */
+    private createSaleCharts(): void {
         let {
             privateSaleData,
             privateSaleDates,
@@ -97,14 +167,21 @@ class AnalyticsController implements ng.IComponentController {
             ICOSaleData,
             ICOSaleDates,
             ICOSaleMaxY
-        } = this.prepareData();
+        } = this.prepareSaleData();
 
-        this.createSalesChart("saleChart", "Private Sale", privateSaleDates, privateSaleData, privateSaleMaxY);
-        // this.createRedeemChart();
-        // this.createRefundChart();
+        // Creating the sale's charts.
+        this.createChart("privateSaleChart", "Private Sale", "rgba(65, 105, 225, 0.7)", "Tokens bought",
+            privateSaleDates, privateSaleData, privateSaleMaxY);
+        this.createChart("preICOSaleChart", "Pre-ICO Sale", "rgba(65, 105, 225, 0.7)", "Tokens bought",
+            preICOSaleDates, preICOSaleData, preICOSaleMaxY);
+        this.createChart("ICOSaleChart", "ICO Sale", "rgba(65, 105, 225, 0.7)", "Tokens bought",
+            ICOSaleDates, ICOSaleData, ICOSaleMaxY);
     }
 
-    private prepareData(): any {
+    /**
+     * Preprocessing sale's data.
+     */
+    private prepareSaleData(): any {
         let structure = {
             "private": {},
             "pre": {},
@@ -129,9 +206,6 @@ class AnalyticsController implements ng.IComponentController {
 
         this.data.forEach(sale => {
             let date = moment(sale.offerCreatedTimestamp).format("YYYY-MM-DD");
-            console.log(date);
-            console.log(sale.numberOfTokens);
-            console.log(structure[sale.stage][date]);
             structure[sale.stage][date] += sale.numberOfTokens;
         });
 
@@ -156,16 +230,16 @@ class AnalyticsController implements ng.IComponentController {
         }
         
         for (let key in structure.pre) {
-            preICOSaleData.push(structure.private[key]);
-            if (structure.private[key] > preICOSaleMaxY)
-                preICOSaleMaxY = structure.private[key];
+            preICOSaleData.push(structure.pre[key]);
+            if (structure.pre[key] > preICOSaleMaxY)
+                preICOSaleMaxY = structure.pre[key];
             preICOSaleDates.push(moment(key).format("DD-MM"));
         }
 
         for (let key in structure.ico) {
-            ICOSaleData.push(structure.private[key]);
-            if (structure.private[key] > ICOSaleMaxY)
-            ICOSaleMaxY = structure.private[key];
+            ICOSaleData.push(structure.ico[key]);
+            if (structure.ico[key] > ICOSaleMaxY)
+                ICOSaleMaxY = structure.ico[key];
             ICOSaleDates.push(moment(key).format("DD-MM"));
         }
 
@@ -187,9 +261,10 @@ class AnalyticsController implements ng.IComponentController {
     }
 
     /**
-     * Creates the sales' chart diagram.
+     * Creates the chart diagram.
      */
-    public createSalesChart(elementId: string, title: string, dates: string[], data: number[], yUpperBound: number): void {
+    public createChart(elementId: string, title: string, color: string, yAxisText: string, dates: string[], 
+        data: number[], yUpperBound: number): void {
         var ctx = (document.getElementById(elementId) as HTMLCanvasElement).getContext("2d");
         this.salesChart = new Chart(ctx, {
             type: "bar",
@@ -198,7 +273,7 @@ class AnalyticsController implements ng.IComponentController {
                 datasets: [
                     {
                         data: data,
-                        backgroundColor: "rgba(2, 105, 40, 0.7)"
+                        backgroundColor: color
                     }
                 ]},
                 options: {
@@ -224,7 +299,7 @@ class AnalyticsController implements ng.IComponentController {
                             },
                             scaleLabel: {
                                 display: true,
-                                labelString: "Tokens bought"
+                                labelString: yAxisText
                               }
                         }]
                     }
@@ -246,11 +321,40 @@ export default class AnalyticsComponent implements ng.IComponentOptions {
         this.template = `
         <div class="analytics-component">
             <h4>Analytics</h4>
-            <div>
-                <canvas id="saleChart" class="chart-size" height="400"></canvas>
+            <div class="details-card">
+                <b>Choose a stage</b>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="stage" id="private" value="private" ng-model="$ctrl.selectedStage" checked>
+                        <label class="form-check-label" for="private">
+                            Private Sale
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="stage" id="pre" value="pre" ng-model="$ctrl.selectedStage">
+                        <label class="form-check-label" for="pre">
+                            Pre-ICO Sale
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="stage" id="ico" value="ico" ng-model="$ctrl.selectedStage">
+                        <label class="form-check-label" for="ico">
+                            ICO Sale
+                        </label>
+                    </div>
+                </div>
             </div>
-            <canvas id="redeemChart" class="chart-size" height="400"></canvas>
-            <canvas id="refundChart" class="chart-size" height="400"></canvas>
+            <div class="details-card sale-chart">
+                <canvas id="privateSaleChart" class="chart-size" height="400" ng-show="$ctrl.selectedStage === 'private'"></canvas>
+                <canvas id="preICOSaleChart" class="chart-size" height="400" ng-show="$ctrl.selectedStage === 'pre'"></canvas>
+                <canvas id="ICOSaleChart" class="chart-size" height="400" ng-show="$ctrl.selectedStage === 'ico'"></canvas>
+            </div>
+            <div>
+                <canvas id="redeemChart" class="chart-size" height="400"></canvas>
+            </div>
+            <div>
+                <canvas id="refundChart" class="chart-size" height="400"></canvas>
+            </div>
         </div>
     `;
     }
