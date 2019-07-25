@@ -87,12 +87,24 @@ class AnalyticsController implements ng.IComponentController {
         let ICOSaleEnd = await this.ICOSaleContract.methods.getEndTimestamp.call().call();
         this.ICOSaleEnd = moment(new Date(ICOSaleEnd * 1000));
 
-        this.createSalesChart();
+        let {
+            privateSaleData,
+            privateSaleDates,
+            privateSaleMaxY,
+            preICOSaleData,
+            preICOSaleDates,
+            preICOSaleMaxY,
+            ICOSaleData,
+            ICOSaleDates,
+            ICOSaleMaxY
+        } = this.prepareData();
+
+        this.createSalesChart("saleChart", "Private Sale", privateSaleDates, privateSaleData, privateSaleMaxY);
         // this.createRedeemChart();
         // this.createRefundChart();
     }
 
-    private prepareSalesData(): any {
+    private prepareData(): any {
         let structure = {
             "private": {},
             "pre": {},
@@ -132,80 +144,87 @@ class AnalyticsController implements ng.IComponentController {
         let ICOSaleData = [];
         let ICOSaleDates = [];
 
+        let privateSaleMaxY = -1;
+        let preICOSaleMaxY = -1;
+        let ICOSaleMaxY = -1;
+
         for (let key in structure.private) {
             privateSaleData.push(structure.private[key]);
-            privateSaleDates.push(key);
+            if (structure.private[key] > privateSaleMaxY)
+                privateSaleMaxY = structure.private[key];
+            privateSaleDates.push(moment(key).format("DD-MM"));
         }
-
+        
         for (let key in structure.pre) {
             preICOSaleData.push(structure.private[key]);
-            preICOSaleDates.push(key);
+            if (structure.private[key] > preICOSaleMaxY)
+                preICOSaleMaxY = structure.private[key];
+            preICOSaleDates.push(moment(key).format("DD-MM"));
         }
 
         for (let key in structure.ico) {
             ICOSaleData.push(structure.private[key]);
-            ICOSaleDates.push(key);
+            if (structure.private[key] > ICOSaleMaxY)
+            ICOSaleMaxY = structure.private[key];
+            ICOSaleDates.push(moment(key).format("DD-MM"));
         }
+
+        privateSaleMaxY++;
+        preICOSaleMaxY++;
+        ICOSaleMaxY++;
 
         return {
             privateSaleData,
             privateSaleDates,
+            privateSaleMaxY,
             preICOSaleData,
             preICOSaleDates,
+            preICOSaleMaxY,
             ICOSaleData,
-            ICOSaleDates
+            ICOSaleDates,
+            ICOSaleMaxY
         };
     }
 
     /**
      * Creates the sales' chart diagram.
      */
-    public createSalesChart(): void {
-        let {
-            privateSaleData,
-            privateSaleDates,
-            preICOSaleData,
-            preICOSaleDates,
-            ICOSaleData,
-            ICOSaleDates
-        } = this.prepareSalesData();
-
-        var ctx = (document.getElementById("saleChart") as HTMLCanvasElement).getContext("2d");
+    public createSalesChart(elementId: string, title: string, dates: string[], data: number[], yUpperBound: number): void {
+        var ctx = (document.getElementById(elementId) as HTMLCanvasElement).getContext("2d");
         this.salesChart = new Chart(ctx, {
-            type: 'bar',
+            type: "bar",
             data: {
-                labels: privateSaleDates,
+                labels: dates,
                 datasets: [
                     {
-                        label: "Private Sale",
-                        data: privateSaleData,
+                        data: data,
+                        backgroundColor: "rgba(2, 105, 40, 0.7)"
                     }
                 ]},
                 options: {
                     title: {
                         display: true,
-                        text: 'Private Sale'
+                        text: title
                     },
                     legend: {
                         display: false
                     },
-                    responsive: true,
                     maintainAspectRatio: false,
                     scales: {
                         xAxes: [{
                             scaleLabel: {
                                 display: true,
-                                labelString: 'Time'
+                                labelString: "Time"
                               }
                         }],
                         yAxes: [{ 
                             ticks: {
                                 beginAtZero: true,
-                                stepSize: 1
+                                max: yUpperBound
                             },
                             scaleLabel: {
                                 display: true,
-                                labelString: 'Tokens bought'
+                                labelString: "Tokens bought"
                               }
                         }]
                     }
@@ -227,9 +246,11 @@ export default class AnalyticsComponent implements ng.IComponentOptions {
         this.template = `
         <div class="analytics-component">
             <h4>Analytics</h4>
-            <canvas id="saleChart" class="chart-size" width="400" height="400"></canvas>
-            <canvas id="redeemChart" class="chart-size" width="400" height="400"></canvas>
-            <canvas id="refundChart" class="chart-size" width="400" height="400"></canvas>
+            <div>
+                <canvas id="saleChart" class="chart-size" height="400"></canvas>
+            </div>
+            <canvas id="redeemChart" class="chart-size" height="400"></canvas>
+            <canvas id="refundChart" class="chart-size" height="400"></canvas>
         </div>
     `;
     }
