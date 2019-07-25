@@ -1,11 +1,13 @@
 import IWeb3Service from "../../interfaces/services/web3.interface";
+import AnalyticsService from "./services/analytics.service";
+
 const { Chart } = require("chart.js");
 const moment = require("moment");
 
 class AnalyticsController implements ng.IComponentController {
 
     // Controller's injectables.
-    public static $inject = ["web3Service"];
+    public static $inject = ["web3Service", "analyticsService"];
 
     // Public variables.
     public selectedStage: string;
@@ -21,108 +23,14 @@ class AnalyticsController implements ng.IComponentController {
     private preICOSaleEnd: any;
     private ICOSaleStart: any;
     private ICOSaleEnd: any;
+    private data: any[];
 
-    data = [
-        {
-        "_id": "5d31d7af9d25d145ac7caa7e",
-        "from": "0xDa2f980981cF32ca3e04058c6e94bC50618f46E9",
-        "numberOfTokens": 5,
-        "price": 540000000000000000,
-        "duration": 3600,
-        "offerCreatedTimestamp": "2019-08-28T14:46:07.140Z",
-        "leasedTo": null,
-        "stage": "private",
-        "leasedTimestamp": null,
-        "__v": 0
-        },
-        {
-            "_id": "5d356c0485ba7a7ab66e417b",
-            "from": "0x3C0F19C72dE749F5fd9860de0C64D6051B9Be8b3",
-            "numberOfTokens": 8,
-            "price": 12000000000000000000,
-            "duration": 3600,
-            "stage": "private",
-            "offerCreatedTimestamp": "2019-09-11T07:55:48.641Z",
-            "leasedTo": "0x47549A5A617c5918b2816d7bf0b3e7b8A63552D2",
-            "leasedTimestamp": "2019-07-22T07:56:12.667Z",
-            "__v": 0
-        },
-        {
-        "_id": "5d356c0485ba7a7ab66e417b",
-        "from": "0x3C0F19C72dE749F5fd9860de0C64D6051B9Be8b3",
-        "numberOfTokens": 8,
-        "price": 12000000000000000000,
-        "duration": 3600,
-        "stage": "private",
-        "offerCreatedTimestamp": "2019-09-15T07:55:48.641Z",
-        "leasedTo": "0x47549A5A617c5918b2816d7bf0b3e7b8A63552D2",
-        "leasedTimestamp": "2019-07-22T07:56:12.667Z",
-        "__v": 0
-        },
-        {
-            "_id": "5d356c0485ba7a7ab66e417b",
-            "from": "0x3C0F19C72dE749F5fd9860de0C64D6051B9Be8b3",
-            "numberOfTokens": 2,
-            "price": 12000000000000000000,
-            "duration": 3600,
-            "stage": "pre",
-            "offerCreatedTimestamp": "2019-10-18T07:55:48.641Z",
-            "leasedTo": "0x47549A5A617c5918b2816d7bf0b3e7b8A63552D2",
-            "leasedTimestamp": "2019-07-22T07:56:12.667Z",
-            "__v": 0
-            },
-            {
-                "_id": "5d356c0485ba7a7ab66e417b",
-                "from": "0x3C0F19C72dE749F5fd9860de0C64D6051B9Be8b3",
-                "numberOfTokens": 28,
-                "price": 12000000000000000000,
-                "duration": 3600,
-                "stage": "pre",
-                "offerCreatedTimestamp": "2019-10-29T07:55:48.641Z",
-                "leasedTo": "0x47549A5A617c5918b2816d7bf0b3e7b8A63552D2",
-                "leasedTimestamp": "2019-07-22T07:56:12.667Z",
-                "__v": 0
-                },
-                {
-                    "_id": "5d356c0485ba7a7ab66e417b",
-                    "from": "0x3C0F19C72dE749F5fd9860de0C64D6051B9Be8b3",
-                    "numberOfTokens": 38,
-                    "price": 12000000000000000000,
-                    "duration": 3600,
-                    "stage": "pre",
-                    "offerCreatedTimestamp": "2019-11-14T07:55:48.641Z",
-                    "leasedTo": "0x47549A5A617c5918b2816d7bf0b3e7b8A63552D2",
-                    "leasedTimestamp": "2019-07-22T07:56:12.667Z",
-                    "__v": 0
-                    },
-                    {
-                        "_id": "5d356c0485ba7a7ab66e417b",
-                        "from": "0x3C0F19C72dE749F5fd9860de0C64D6051B9Be8b3",
-                        "numberOfTokens": 132,
-                        "price": 12000000000000000000,
-                        "duration": 3600,
-                        "stage": "ico",
-                        "offerCreatedTimestamp": "2019-12-25T07:55:48.641Z",
-                        "leasedTo": "0x47549A5A617c5918b2816d7bf0b3e7b8A63552D2",
-                        "leasedTimestamp": "2019-07-22T07:56:12.667Z",
-                        "__v": 0
-                        },
-                        {
-                            "_id": "5d356c0485ba7a7ab66e417b",
-                            "from": "0x3C0F19C72dE749F5fd9860de0C64D6051B9Be8b3",
-                            "numberOfTokens": 123,
-                            "price": 12000000000000000000,
-                            "duration": 3600,
-                            "stage": "ico",
-                            "offerCreatedTimestamp": "2020-01-09T07:55:48.641Z",
-                            "leasedTo": "0x47549A5A617c5918b2816d7bf0b3e7b8A63552D2",
-                            "leasedTimestamp": "2019-07-22T07:56:12.667Z",
-                            "__v": 0
-                            }
-        ];
-
-    constructor(public web3Service: IWeb3Service) {
+    constructor(
+        public web3Service: IWeb3Service,
+        private analyticsService: any
+    ) {
         this.selectedStage = "private";
+        this.data = [];
     }
 
     async $onInit() {
@@ -148,6 +56,12 @@ class AnalyticsController implements ng.IComponentController {
 
         let ICOSaleEnd = await this.ICOSaleContract.methods.getEndTimestamp.call().call();
         this.ICOSaleEnd = moment(new Date(ICOSaleEnd * 1000));
+
+        console.log(this.analyticsService);
+        let response = await this.analyticsService.getSales();
+        this.data = response.data;
+
+        console.log(this.data);
 
         // Creating the 3 sale charts.
         this.createSaleCharts();
@@ -205,8 +119,8 @@ class AnalyticsController implements ng.IComponentController {
         }
 
         this.data.forEach(sale => {
-            let date = moment(sale.offerCreatedTimestamp).format("YYYY-MM-DD");
-            structure[sale.stage][date] += sale.numberOfTokens;
+            let date = moment(sale.timestamp).format("YYYY-MM-DD");
+            structure[sale.stage][date] += sale.amount;
         });
 
         let privateSaleData = [];

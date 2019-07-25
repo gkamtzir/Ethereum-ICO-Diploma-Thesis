@@ -53,6 +53,7 @@ import AnalyticsComponent from "./components/analytics/analytics.component";
 
 // Services.
 import Web3Service from "./services/web3.service";
+import AnalyticsService from "./components/analytics/services/analytics.service";
 
 // Filters.
 import { DotSeparatorFilter } from "./filters/dot-separator.filter";
@@ -129,6 +130,7 @@ module.component("analyticsComponent", new AnalyticsComponent());
 
 // Wiring up the services.
 module.service("web3Service", Web3Service);
+module.service("analyticsService", AnalyticsService);
 
 // Wiring up the filters.
 module.filter("dotSeparatorFilter", DotSeparatorFilter);
