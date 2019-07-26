@@ -5,6 +5,8 @@ import IAnalyticsService from "../interfaces/analytics.interface";
 import ISale from "../interfaces/sale.interface";
 import IRedeem from "../interfaces/redeem.interface";
 import IRefund from "../interfaces/refund.interface";
+import IAllow from "../interfaces/allow.interface";
+import IRent from "../interfaces/rent.interface";
 
 export default class AnalyticsService implements IAnalyticsService{
     public static $inject = ["$http"];
@@ -29,6 +31,20 @@ export default class AnalyticsService implements IAnalyticsService{
         return this.$http({
             method: "GET",
             url: "http://83.212.115.201:8080/api/refund"
+        });
+    }
+
+    getAllow(): IPromise<IHttpResponse<IAllow[]>> {
+        return this.$http({
+            method: "GET",
+            url: "http://83.212.115.201:8080/api/allow"
+        });
+    }
+
+    getRent(): IPromise<IHttpResponse<IRent[]>> {
+        return this.$http({
+            method: "GET",
+            url: "http://83.212.115.201:8080/api/rent"
         });
     }
 }
