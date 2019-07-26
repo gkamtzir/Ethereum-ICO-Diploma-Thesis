@@ -39,7 +39,7 @@ class AnalyticsController implements ng.IComponentController {
     constructor(
         public web3Service: IWeb3Service,
         private analyticsService: IAnalyticsService,
-        public toastr: ng.toastr.IToastrService
+        private toastr: ng.toastr.IToastrService
     ) {
         this.selectedStage = "private";
         this.saleData = [];
@@ -79,8 +79,10 @@ class AnalyticsController implements ng.IComponentController {
         await this.getRentData();
         await this.getAllowData();
 
-        // Creating the 3 sale charts.
+        // Creating the charts.
         this.createSaleCharts();
+
+        this.createRedeemChart();
     }
 
     /**
@@ -148,24 +150,24 @@ class AnalyticsController implements ng.IComponentController {
      */
     private createSaleCharts(): void {
         let {
-            privateSaleData,
-            privateSaleDates,
-            privateSaleMaxY,
-            preICOSaleData,
-            preICOSaleDates,
-            preICOSaleMaxY,
-            ICOSaleData,
-            ICOSaleDates,
-            ICOSaleMaxY
+            privateData,
+            privateDates,
+            privateMaxY,
+            preICOData,
+            preICODates,
+            preICOMaxY,
+            ICOData,
+            ICODates,
+            ICOMaxY
         } = this.prepareSaleData();
 
         // Creating the sale's charts.
         this.createChart("privateSaleChart", "Private Sale", "rgba(65, 105, 225, 0.7)", "Tokens bought",
-            privateSaleDates, privateSaleData, privateSaleMaxY);
+            privateDates, privateData, privateMaxY);
         this.createChart("preICOSaleChart", "Pre-ICO Sale", "rgba(65, 105, 225, 0.7)", "Tokens bought",
-            preICOSaleDates, preICOSaleData, preICOSaleMaxY);
+            preICODates, preICOData, preICOMaxY);
         this.createChart("ICOSaleChart", "ICO Sale", "rgba(65, 105, 225, 0.7)", "Tokens bought",
-            ICOSaleDates, ICOSaleData, ICOSaleMaxY);
+            ICODates, ICOData, ICOMaxY);
     }
 
     /**
@@ -199,54 +201,108 @@ class AnalyticsController implements ng.IComponentController {
             structure[sale.stage][date] += sale.amount;
         });
 
-        let privateSaleData = [];
-        let privateSaleDates = [];
+        return this.convertStructureToData(structure);
+    }
 
-        let preICOSaleData = [];
-        let preICOSaleDates = [];
+    /**
+     * Creates the redeem chart.
+     */
+    private createRedeemChart(): void {
+        let {
+            privateData,
+            privateDates,
+            privateMaxY,
+            preICOData,
+            preICODates,
+            preICOMaxY,
+            ICOData,
+            ICODates,
+            ICOMaxY
+        } = this.prepareRedeemData();
 
-        let ICOSaleData = [];
-        let ICOSaleDates = [];
+        // Creating the redeem's charts.
+        this.createChart("privateRedeemChart", "Private Sale Redeems", "rgba(34, 139, 34, 0.7)", "Tokens redeemed",
+        privateDates, privateData, privateMaxY);
+        this.createChart("preICORedeemChart", "Pre-ICO Sale Redeems", "rgba(34, 139, 34, 0.7)", "Tokens redeemed",
+        preICODates, preICOData, preICOMaxY);
+        this.createChart("ICORedeemChart", "ICO Sale Redeems", "rgba(34, 139, 34, 0.7)", "Tokens redeemed",
+            ICODates, ICOData, ICOMaxY);
+    }
 
-        let privateSaleMaxY = -1;
-        let preICOSaleMaxY = -1;
-        let ICOSaleMaxY = -1;
+    /**
+     * Prepares the redeem data for charts.
+     */
+    private prepareRedeemData(): any {
+        let structure = {
+            "private": {},
+            "pre": {},
+            "ico": {}
+        };
+
+        this.redeemData.forEach(redeem => {
+            let date = moment(redeem.timestamp).format("YYYY-MM-DD");
+            if (structure[redeem.stage][date] != null)
+                structure[redeem.stage][date] += redeem.amount;
+            else
+                structure[redeem.stage][date] = redeem.amount;
+        });
+
+        return this.convertStructureToData(structure);
+    }
+
+    /**
+     * Converts the given structure to chart data.
+     * @param structure The structure to be converted.
+     */
+    private convertStructureToData(structure: any): any {
+        let privateData = [];
+        let privateDates = [];
+
+        let preICOData = [];
+        let preICODates = [];
+
+        let ICOData = [];
+        let ICODates = [];
+
+        let privateMaxY = -1;
+        let preICOMaxY = -1;
+        let ICOMaxY = -1;
 
         for (let key in structure.private) {
-            privateSaleData.push(structure.private[key]);
-            if (structure.private[key] > privateSaleMaxY)
-                privateSaleMaxY = structure.private[key];
-            privateSaleDates.push(moment(key).format("DD-MM"));
+            privateData.push(structure.private[key]);
+            if (structure.private[key] > privateMaxY)
+                privateMaxY = structure.private[key];
+            privateDates.push(moment(key).format("DD-MM"));
         }
         
         for (let key in structure.pre) {
-            preICOSaleData.push(structure.pre[key]);
-            if (structure.pre[key] > preICOSaleMaxY)
-                preICOSaleMaxY = structure.pre[key];
-            preICOSaleDates.push(moment(key).format("DD-MM"));
+            preICOData.push(structure.pre[key]);
+            if (structure.pre[key] > preICOMaxY)
+                preICOMaxY = structure.pre[key];
+            preICODates.push(moment(key).format("DD-MM"));
         }
 
         for (let key in structure.ico) {
-            ICOSaleData.push(structure.ico[key]);
-            if (structure.ico[key] > ICOSaleMaxY)
-                ICOSaleMaxY = structure.ico[key];
-            ICOSaleDates.push(moment(key).format("DD-MM"));
+            ICOData.push(structure.ico[key]);
+            if (structure.ico[key] > ICOMaxY)
+                ICOMaxY = structure.ico[key];
+            ICODates.push(moment(key).format("DD-MM"));
         }
 
-        privateSaleMaxY += 10**(privateSaleMaxY.toString().length - 1);
-        preICOSaleMaxY += 10**(preICOSaleMaxY.toString().length - 1);
-        ICOSaleMaxY += 10**(ICOSaleMaxY.toString().length - 1);
+        privateMaxY += 10**(privateMaxY.toString().length - 1);
+        preICOMaxY += 10**(preICOMaxY.toString().length - 1);
+        ICOMaxY += 10**(ICOMaxY.toString().length - 1);
 
         return {
-            privateSaleData,
-            privateSaleDates,
-            privateSaleMaxY,
-            preICOSaleData,
-            preICOSaleDates,
-            preICOSaleMaxY,
-            ICOSaleData,
-            ICOSaleDates,
-            ICOSaleMaxY
+            privateData,
+            privateDates,
+            privateMaxY,
+            preICOData,
+            preICODates,
+            preICOMaxY,
+            ICOData,
+            ICODates,
+            ICOMaxY
         };
     }
 
@@ -341,10 +397,12 @@ export default class AnalyticsComponent implements ng.IComponentOptions {
                 <canvas id="preICOSaleChart" class="chart-size" height="400" ng-show="$ctrl.selectedStage === 'pre'"></canvas>
                 <canvas id="ICOSaleChart" class="chart-size" height="400" ng-show="$ctrl.selectedStage === 'ico'"></canvas>
             </div>
-            <div>
-                <canvas id="redeemChart" class="chart-size" height="400"></canvas>
+            <div class="details-card sale-chart">
+                <canvas id="privateRedeemChart" class="chart-size" height="400" ng-show="$ctrl.selectedStage === 'private'"></canvas>
+                <canvas id="preICORedeemChart" class="chart-size" height="400" ng-show="$ctrl.selectedStage === 'pre'"></canvas>
+                <canvas id="ICORedeemChart" class="chart-size" height="400" ng-show="$ctrl.selectedStage === 'ico'"></canvas>
             </div>
-            <div>
+            <div class="details-card sale-chart">
                 <canvas id="refundChart" class="chart-size" height="400"></canvas>
             </div>
         </div>
