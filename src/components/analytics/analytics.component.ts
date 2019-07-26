@@ -157,9 +157,9 @@ class AnalyticsController implements ng.IComponentController {
             ICOSaleDates.push(moment(key).format("DD-MM"));
         }
 
-        privateSaleMaxY++;
-        preICOSaleMaxY++;
-        ICOSaleMaxY++;
+        privateSaleMaxY += 10**(privateSaleMaxY.toString().length - 1);
+        preICOSaleMaxY += 10**(preICOSaleMaxY.toString().length - 1);
+        ICOSaleMaxY += 10**(ICOSaleMaxY.toString().length - 1);
 
         return {
             privateSaleData,
@@ -209,10 +209,12 @@ class AnalyticsController implements ng.IComponentController {
                         yAxes: [{ 
                             ticks: {
                                 beginAtZero: true,
+                                padding: 10,
                                 max: yUpperBound
                             },
                             scaleLabel: {
                                 display: true,
+                                padding: 30,
                                 labelString: yAxisText
                               }
                         }]
