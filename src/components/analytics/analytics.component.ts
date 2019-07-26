@@ -4,6 +4,9 @@ import AnalyticsService from "./services/analytics.service";
 const { Chart } = require("chart.js");
 const moment = require("moment");
 
+// Interfaces.
+import ISale from "./interfaces/sale.interface";
+
 class AnalyticsController implements ng.IComponentController {
 
     // Controller's injectables.
@@ -23,7 +26,7 @@ class AnalyticsController implements ng.IComponentController {
     private preICOSaleEnd: any;
     private ICOSaleStart: any;
     private ICOSaleEnd: any;
-    private data: any[];
+    private data: ISale[];
 
     constructor(
         public web3Service: IWeb3Service,
