@@ -10,7 +10,7 @@ import IRent from "../interfaces/rent.interface";
 export default interface IAnalyticsService {
     getSales(): IPromise<IHttpResponse<ISale[]>>;
     getRedeems(): IPromise<IHttpResponse<IRedeem[]>>;
-    getRefund(): IPromise<IHttpResponse<IRefund[]>>;
-    getAllow(): IPromise<IHttpResponse<IAllow[]>>;
-    getRent(): IPromise<IHttpResponse<IRent[]>>;
+    getRefunds(): IPromise<IHttpResponse<IRefund[]>>;
+    getAllows(): IPromise<IHttpResponse<IAllow[]>>;
+    getRents(): IPromise<IHttpResponse<IRent[]>>;
 }

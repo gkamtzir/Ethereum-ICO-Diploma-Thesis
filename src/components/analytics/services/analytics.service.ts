@@ -27,21 +27,21 @@ export default class AnalyticsService implements IAnalyticsService{
         });
     }
 
-    getRefund(): IPromise<IHttpResponse<IRefund[]>> {
+    getRefunds(): IPromise<IHttpResponse<IRefund[]>> {
         return this.$http({
             method: "GET",
             url: "http://83.212.115.201:8080/api/refund"
         });
     }
 
-    getAllow(): IPromise<IHttpResponse<IAllow[]>> {
+    getAllows(): IPromise<IHttpResponse<IAllow[]>> {
         return this.$http({
             method: "GET",
             url: "http://83.212.115.201:8080/api/allow"
         });
     }
 
-    getRent(): IPromise<IHttpResponse<IRent[]>> {
+    getRents(): IPromise<IHttpResponse<IRent[]>> {
         return this.$http({
             method: "GET",
             url: "http://83.212.115.201:8080/api/rent"

@@ -6,6 +6,10 @@ const moment = require("moment");
 // Interfaces.
 import IAnalyticsService from "./interfaces/analytics.interface";
 import ISale from "./interfaces/sale.interface";
+import IRefund from "./interfaces/refund.interface";
+import IRedeem from "./interfaces/redeem.interface";
+import IRent from "./interfaces/rent.interface";
+import IAllow from "./interfaces/allow.interface";
 
 class AnalyticsController implements ng.IComponentController {
 
@@ -26,7 +30,11 @@ class AnalyticsController implements ng.IComponentController {
     private preICOSaleEnd: any;
     private ICOSaleStart: any;
     private ICOSaleEnd: any;
-    private data: ISale[];
+    private saleData: ISale[];
+    private refundData: IRefund[];
+    private redeemData: IRedeem[];
+    private rentData: IRent[];
+    private allowData: IAllow[];
 
     constructor(
         public web3Service: IWeb3Service,
@@ -34,7 +42,11 @@ class AnalyticsController implements ng.IComponentController {
         public toastr: ng.toastr.IToastrService
     ) {
         this.selectedStage = "private";
-        this.data = [];
+        this.saleData = [];
+        this.refundData = [];
+        this.redeemData = [];
+        this.rentData = [];
+        this.allowData = [];
     }
 
     async $onInit() {
@@ -61,15 +73,74 @@ class AnalyticsController implements ng.IComponentController {
         let ICOSaleEnd = await this.ICOSaleContract.methods.getEndTimestamp.call().call();
         this.ICOSaleEnd = moment(new Date(ICOSaleEnd * 1000));
 
-        try {
-            let response = await this.analyticsService.getSales();
-            this.data = response.data;
-        } catch (exception) {
-            this.toastr.error(`Could not retrieve sales data. Please try again later.`, "Error");
-        }
+        await this.getSaleData();
+        await this.getRefundData();
+        await this.getRedeemData();
+        await this.getRentData();
+        await this.getAllowData();
 
         // Creating the 3 sale charts.
         this.createSaleCharts();
+    }
+
+    /**
+     * Fetches the sale data.
+     */
+    private async getSaleData() {
+        try {
+            let response = await this.analyticsService.getSales();
+            this.saleData = response.data;
+        } catch (exception) {
+            this.toastr.error(`Could not retrieve sales data. Please try again later.`, "Error");
+        }
+    }
+
+    /**
+     * Fetches the refund data.
+     */
+    private async getRefundData() {
+        try {
+            let response = await this.analyticsService.getRefunds();
+            this.refundData = response.data;
+        } catch (exception) {
+            this.toastr.error(`Could not retrieve refund data. Please try again later.`, "Error");
+        }
+    }
+
+    /**
+     * Fetches the redeem data.
+     */
+    private async getRedeemData() {
+        try {
+            let response = await this.analyticsService.getRedeems();
+            this.redeemData = response.data;
+        } catch (exception) {
+            this.toastr.error(`Could not retrieve redeem data. Please try again later.`, "Error");
+        }
+    }
+
+    /**
+     * Fetches the rent data.
+     */
+    private async getRentData() {
+        try {
+            let response = await this.analyticsService.getRents();
+            this.rentData = response.data;
+        } catch (exception) {
+            this.toastr.error(`Could not retrieve rent data. Please try again later.`, "Error");
+        }
+    }
+
+    /**
+     * Fetches the allow data.
+     */
+    private async getAllowData() {
+        try {
+            let response = await this.analyticsService.getAllows();
+            this.allowData = response.data;
+        } catch (exception) {
+            this.toastr.error(`Could not retrieve allow data. Please try again later.`, "Error");
+        }
     }
 
     /**
@@ -123,7 +194,7 @@ class AnalyticsController implements ng.IComponentController {
             structure.ico[this.ICOSaleStart.add(1, "days").format("YYYY-MM-DD")] = 0;
         }
 
-        this.data.forEach(sale => {
+        this.saleData.forEach(sale => {
             let date = moment(sale.timestamp).format("YYYY-MM-DD");
             structure[sale.stage][date] += sale.amount;
         });
