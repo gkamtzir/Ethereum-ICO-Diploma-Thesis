@@ -35,10 +35,10 @@ db.once("open", function() {
 });
 
 // Instantiating contracts.
-tokenContract = new web3.eth.Contract(OpenHouseToken.abi, "0xdE89C8da05A4D02604Bec483C86A282C74406842");
-privateSaleContract = new web3.eth.Contract(PrivateSale.abi, "0xeFf0CE0e1a0D3626ddA294011507D4dC0c06c15C");
-preICOSaleContract = new web3.eth.Contract(PreICOSale.abi, "0x4DDACb426C32D92745066D9b5857788C7739667d");
-ICOSaleContract = new web3.eth.Contract(ICOSale.abi, "0xe925Ae3E8F32870664Ad674D38eb60941432dB52");
+tokenContract = new web3.eth.Contract(OpenHouseToken.abi, "0x0Ce1e36847eba6c89192DAa41e0BEa93c4c1dE3E");
+privateSaleContract = new web3.eth.Contract(PrivateSale.abi, "0x1dc45eD8aE68342CeEB5DA7643417016AA5bb45d");
+preICOSaleContract = new web3.eth.Contract(PreICOSale.abi, "0x388Bed8F9be9b97f89d77Bf36963741D1d1E4cb6");
+ICOSaleContract = new web3.eth.Contract(ICOSale.abi, "0x0062e5736843BD16Fb2afb8Ae6D67944484f01D3");
 
 // Token events.
 

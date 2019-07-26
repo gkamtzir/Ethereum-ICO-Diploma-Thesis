@@ -9,7 +9,7 @@ import ISale from "./interfaces/sale.interface";
 import IRefund from "./interfaces/refund.interface";
 import IRedeem from "./interfaces/redeem.interface";
 import IRent from "./interfaces/rent.interface";
-import IAllow from "./interfaces/allow.interface";
+import IEnrolment from "./interfaces/enrolment.interface";
 
 class AnalyticsController implements ng.IComponentController {
 
@@ -34,7 +34,7 @@ class AnalyticsController implements ng.IComponentController {
     private refundData: IRefund[];
     private redeemData: IRedeem[];
     private rentData: IRent[];
-    private allowData: IAllow[];
+    private enrolmentData: IEnrolment;
 
     constructor(
         public web3Service: IWeb3Service,
@@ -46,7 +46,7 @@ class AnalyticsController implements ng.IComponentController {
         this.refundData = [];
         this.redeemData = [];
         this.rentData = [];
-        this.allowData = [];
+        this.enrolmentData = {};
     }
 
     async $onInit() {
@@ -77,7 +77,7 @@ class AnalyticsController implements ng.IComponentController {
         await this.getRefundData();
         await this.getRedeemData();
         await this.getRentData();
-        await this.getAllowData();
+        await this.getEnrolmentData("private");
 
         // Creating the charts.
         this.createSaleCharts();
@@ -136,12 +136,12 @@ class AnalyticsController implements ng.IComponentController {
     /**
      * Fetches the allow data.
      */
-    private async getAllowData() {
+    private async getEnrolmentData(stage: string) {
         try {
-            let response = await this.analyticsService.getAllows();
-            this.allowData = response.data;
+            let response = await this.analyticsService.getEnrolments(stage);
+            this.enrolmentData = response.data;
         } catch (exception) {
-            this.toastr.error(`Could not retrieve allow data. Please try again later.`, "Error");
+            this.toastr.error(`Could not retrieve enrolment data. Please try again later.`, "Error");
         }
     }
 

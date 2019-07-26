@@ -141,10 +141,10 @@ module.constant("PrivateSale", PrivateSale);
 module.constant("PreICOSale", PreICOSale);
 module.constant("ICOSale", ICOSale);
 
-module.constant("OpenHouseTokenContractAddress", "0xd054CF8a0066fA9Fe2D04611EE825999B6C2Ec49");
-module.constant("PrivateSaleContractAddress", "0xd2463be06358FfAE45F4DD7101d7E8feEc19020c");
-module.constant("PreICOSaleContractAddress", "0x4882dA930Ac3fED5A1e6c37e29038ab0Ada1BdE5");
-module.constant("ICOSaleContractAddress", "0xFa958508CbB42E9a688AB2823BBbdaFc0Ae1458A");
+module.constant("OpenHouseTokenContractAddress", "0x0Ce1e36847eba6c89192DAa41e0BEa93c4c1dE3E");
+module.constant("PrivateSaleContractAddress", "0x1dc45eD8aE68342CeEB5DA7643417016AA5bb45d");
+module.constant("PreICOSaleContractAddress", "0x388Bed8F9be9b97f89d77Bf36963741D1d1E4cb6");
+module.constant("ICOSaleContractAddress", "0x0062e5736843BD16Fb2afb8Ae6D67944484f01D3");
 
 angular.element(document).ready(() => {
     angular.bootstrap(document, ["OpenHouseAdminPanel"]);

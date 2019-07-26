@@ -5,7 +5,7 @@ import IAnalyticsService from "../interfaces/analytics.interface";
 import ISale from "../interfaces/sale.interface";
 import IRedeem from "../interfaces/redeem.interface";
 import IRefund from "../interfaces/refund.interface";
-import IAllow from "../interfaces/allow.interface";
+import IEnrolment from "../interfaces/enrolment.interface";
 import IRent from "../interfaces/rent.interface";
 
 export default class AnalyticsService implements IAnalyticsService{
@@ -34,10 +34,10 @@ export default class AnalyticsService implements IAnalyticsService{
         });
     }
 
-    getAllows(): IPromise<IHttpResponse<IAllow[]>> {
+    getEnrolments(stage: string): IPromise<IHttpResponse<IEnrolment>> {
         return this.$http({
             method: "GET",
-            url: "http://83.212.115.201:8080/api/allow"
+            url: "http://83.212.115.201:8080/api/enrolment/" + stage 
         });
     }
 

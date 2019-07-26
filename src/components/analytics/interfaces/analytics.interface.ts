@@ -4,13 +4,13 @@ import { IPromise, IHttpResponse } from "angular";
 import ISale from "./sale.interface";
 import IRedeem from "./redeem.interface";
 import IRefund from "../interfaces/refund.interface";
-import IAllow from "../interfaces/allow.interface";
+import IEnrolment from "../interfaces/enrolment.interface";
 import IRent from "../interfaces/rent.interface";
 
 export default interface IAnalyticsService {
     getSales(): IPromise<IHttpResponse<ISale[]>>;
     getRedeems(): IPromise<IHttpResponse<IRedeem[]>>;
     getRefunds(): IPromise<IHttpResponse<IRefund[]>>;
-    getAllows(): IPromise<IHttpResponse<IAllow[]>>;
+    getEnrolments(stage: string): IPromise<IHttpResponse<IEnrolment>>;
     getRents(): IPromise<IHttpResponse<IRent[]>>;
 }

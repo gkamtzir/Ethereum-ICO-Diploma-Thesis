@@ -113,13 +113,23 @@ apiRouter.route("/rent")
         });
     });
 
-apiRouter.route("/allow")
+apiRouter.route("/enrolment/:stage")
     .get((req, res, next) => {
-        Allow.find({}, (error, allows) => {
+        Sale.find({stage: req.params.stage}, (error, sales) => {
             if (error)
                 throw error;
 
-            res.json(allows);
+            let aggregate = {};
+
+            // Aggregating the results per address.
+            sales.forEach(sale => {
+                if (aggregate[sale.from] != null)
+                    aggregate[sale.from] += sale.amount;
+                else
+                    aggregate[sale.from] = sale.amount;
+            });
+
+            res.json(aggregate);
         });
     });
 
