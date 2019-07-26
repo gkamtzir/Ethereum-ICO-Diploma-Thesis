@@ -7,15 +7,15 @@ const rent = mongoose.Schema({
         unique: true
     },
     numberOfTokens: {
-        type: Number,
+        type: String,
         required: true
     },
     price: {
-        type: Number,
+        type: String,
         required: true
     },
     duration: {
-        type: Number,
+        type: String,
         required: true
     },
     offerCreatedTimestamp: {
