@@ -83,6 +83,7 @@ class AnalyticsController implements ng.IComponentController {
         this.createSaleCharts();
         this.createRedeemChart();
         this.createRefundChart();
+        this.createEnrolmentChart();
     }
 
     /**
@@ -202,6 +203,34 @@ class AnalyticsController implements ng.IComponentController {
         });
 
         return this.convertStructureToData(structure);
+    }
+
+    /**
+     * Creates the enrolment chart.
+     */
+    private createEnrolmentChart(): any {
+        let labels = [];
+        let data = [];
+        let colors = [];
+
+        for (let prop in this.enrolmentData) {
+            labels.push(prop);
+            data.push(this.enrolmentData[prop]);
+            colors.push(this.generateColor());
+        }
+
+        this.createPieChart(labels, data, colors);
+    }
+
+    /**
+     * Generates random colors for charts.
+     */
+    private generateColor(): string {
+        let red = Math.floor((Math.random() * 1000) % 255);
+        let green = Math.floor((Math.random() * 1000) % 255);
+        let blue = Math.floor((Math.random() * 1000) % 255);
+
+        return `rgba(${red}, ${green}, ${blue}, 0.7)`;
     }
 
     /**
@@ -353,11 +382,18 @@ class AnalyticsController implements ng.IComponentController {
     }
 
     /**
-     * Creates the chart diagram.
+     * Creates the bar chart.
+     * @param elementId The DOM canvas element to create the chart.
+     * @param title Chart's title.
+     * @param color Chart's color.
+     * @param yAxisText Y axis text.
+     * @param dates The date labels.
+     * @param data The actual data.
+     * @param yUpperBound Y axis upper bound.
      */
-    public createChart(elementId: string, title: string, color: string, yAxisText: string, dates: string[], 
+    private createChart(elementId: string, title: string, color: string, yAxisText: string, dates: string[], 
         data: number[], yUpperBound: number): void {
-        var ctx = (document.getElementById(elementId) as HTMLCanvasElement).getContext("2d");
+        let ctx = (document.getElementById(elementId) as HTMLCanvasElement).getContext("2d");
         this.salesChart = new Chart(ctx, {
             type: "bar",
             data: {
@@ -397,6 +433,34 @@ class AnalyticsController implements ng.IComponentController {
                               }
                         }]
                     }
+                }
+        });
+    }
+
+    /**
+     * Creates the pie chart.
+     * @param labels Chart's labels.
+     * @param data Chart's actual data.
+     * @param colors Charts colors.
+     */
+    private createPieChart(labels: string[], data: number[], colors: string[]): void {
+        let ctx = (document.getElementById("enrolmentChart") as HTMLCanvasElement).getContext("2d");
+        this.salesChart = new Chart(ctx, {
+            type: "pie",
+            data: {
+                labels,
+                datasets: [
+                    {
+                        data,
+                        backgroundColor: colors
+                    }
+                ]},
+                options: {
+                    title: {
+                        display: true,
+                        text: "Enrolment"
+                    },
+                    maintainAspectRatio: false
                 }
         });
     }
@@ -449,9 +513,12 @@ export default class AnalyticsComponent implements ng.IComponentOptions {
                 <canvas id="ICORedeemChart" class="chart-size" height="400" ng-show="$ctrl.selectedStage === 'ico'"></canvas>
             </div>
             <div class="details-card sale-chart">
-            <canvas id="privateRefundChart" class="chart-size" height="400" ng-show="$ctrl.selectedStage === 'private'"></canvas>
-            <canvas id="preICORefundChart" class="chart-size" height="400" ng-show="$ctrl.selectedStage === 'pre'"></canvas>
-            <canvas id="ICORefundChart" class="chart-size" height="400" ng-show="$ctrl.selectedStage === 'ico'"></canvas>
+                <canvas id="privateRefundChart" class="chart-size" height="400" ng-show="$ctrl.selectedStage === 'private'"></canvas>
+                <canvas id="preICORefundChart" class="chart-size" height="400" ng-show="$ctrl.selectedStage === 'pre'"></canvas>
+                <canvas id="ICORefundChart" class="chart-size" height="400" ng-show="$ctrl.selectedStage === 'ico'"></canvas>
+            </div>
+            <div class="details-card sale-chart" ng-show="$ctrl.selectedStage === 'private'">
+                <canvas id="enrolmentChart" class="chart-size" height="400"></canvas>
             </div>
         </div>
     `;
