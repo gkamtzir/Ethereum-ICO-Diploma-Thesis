@@ -214,7 +214,7 @@ class AnalyticsController implements ng.IComponentController {
                             },
                             scaleLabel: {
                                 display: true,
-                                padding: 30,
+                                padding: 10,
                                 labelString: yAxisText
                               }
                         }]
