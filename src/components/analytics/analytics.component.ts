@@ -81,8 +81,8 @@ class AnalyticsController implements ng.IComponentController {
 
         // Creating the charts.
         this.createSaleCharts();
-
         this.createRedeemChart();
+        this.createRefundChart();
     }
 
     /**
@@ -251,6 +251,52 @@ class AnalyticsController implements ng.IComponentController {
     }
 
     /**
+     * Creates the refund chart.
+     */
+    private createRefundChart(): void {
+        let {
+            privateData,
+            privateDates,
+            privateMaxY,
+            preICOData,
+            preICODates,
+            preICOMaxY,
+            ICOData,
+            ICODates,
+            ICOMaxY
+        } = this.prepareRefundData();
+
+        // Creating the refunds's charts.
+        this.createChart("privateRefundChart", "Private Sale Refunds", "rgba(178, 34, 34, 0.7)", "Tokens refunded",
+            privateDates, privateData, privateMaxY);
+        this.createChart("preICORefundChart", "Pre-ICO Sale Refunds", "rgba(178, 34, 34, 0.7)", "Tokens refunded",
+            preICODates, preICOData, preICOMaxY);
+        this.createChart("ICORefundChart", "ICO Sale Refunds", "rgba(178, 34, 34, 0.7)", "Tokens refunded",
+            ICODates, ICOData, ICOMaxY);
+    }
+
+    /**
+     * Prepares the refund data for charts.
+     */
+    private prepareRefundData(): any {
+        let structure = {
+            "private": {},
+            "pre": {},
+            "ico": {}
+        };
+
+        this.refundData.forEach(refund => {
+            let date = moment(refund.timestamp).format("YYYY-MM-DD");
+            if (structure[refund.stage][date] != null)
+                structure[refund.stage][date] += refund.amount;
+            else
+                structure[refund.stage][date] = refund.amount;
+        });
+
+        return this.convertStructureToData(structure);
+    }
+
+    /**
      * Converts the given structure to chart data.
      * @param structure The structure to be converted.
      */
@@ -403,7 +449,9 @@ export default class AnalyticsComponent implements ng.IComponentOptions {
                 <canvas id="ICORedeemChart" class="chart-size" height="400" ng-show="$ctrl.selectedStage === 'ico'"></canvas>
             </div>
             <div class="details-card sale-chart">
-                <canvas id="refundChart" class="chart-size" height="400"></canvas>
+            <canvas id="privateRefundChart" class="chart-size" height="400" ng-show="$ctrl.selectedStage === 'private'"></canvas>
+            <canvas id="preICORefundChart" class="chart-size" height="400" ng-show="$ctrl.selectedStage === 'pre'"></canvas>
+            <canvas id="ICORefundChart" class="chart-size" height="400" ng-show="$ctrl.selectedStage === 'ico'"></canvas>
             </div>
         </div>
     `;
