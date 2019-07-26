@@ -1,9 +1,10 @@
 import { IPromise, IHttpResponse } from "angular";
 
 // Interfaces.
+import IAnalyticsService from "../interfaces/analytics.interface";
 import ISale from "../interfaces/sale.interface";
 
-export default class AnalyticsService {
+export default class AnalyticsService implements IAnalyticsService{
     public static $inject = ["$http"];
 
     constructor(private $http: ng.IHttpService){}

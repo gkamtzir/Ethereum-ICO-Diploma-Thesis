@@ -1,16 +1,16 @@
 import IWeb3Service from "../../interfaces/services/web3.interface";
-import AnalyticsService from "./services/analytics.service";
 
 const { Chart } = require("chart.js");
 const moment = require("moment");
 
 // Interfaces.
+import IAnalyticsService from "./interfaces/analytics.interface";
 import ISale from "./interfaces/sale.interface";
 
 class AnalyticsController implements ng.IComponentController {
 
     // Controller's injectables.
-    public static $inject = ["web3Service", "analyticsService"];
+    public static $inject = ["web3Service", "analyticsService", "toastr"];
 
     // Public variables.
     public selectedStage: string;
@@ -30,7 +30,8 @@ class AnalyticsController implements ng.IComponentController {
 
     constructor(
         public web3Service: IWeb3Service,
-        private analyticsService: any
+        private analyticsService: IAnalyticsService,
+        public toastr: ng.toastr.IToastrService
     ) {
         this.selectedStage = "private";
         this.data = [];
@@ -60,11 +61,12 @@ class AnalyticsController implements ng.IComponentController {
         let ICOSaleEnd = await this.ICOSaleContract.methods.getEndTimestamp.call().call();
         this.ICOSaleEnd = moment(new Date(ICOSaleEnd * 1000));
 
-        console.log(this.analyticsService);
-        let response = await this.analyticsService.getSales();
-        this.data = response.data;
-
-        console.log(this.data);
+        try {
+            let response = await this.analyticsService.getSales();
+            this.data = response.data;
+        } catch (exception) {
+            this.toastr.error(`Could not retrieve sales data. Please try again later.`, "Error");
+        }
 
         // Creating the 3 sale charts.
         this.createSaleCharts();
