@@ -1,8 +1,8 @@
 import IWeb3Service from "../../interfaces/services/web3.interface";
-
+import "chartjs-plugin-annotation";
 const { Chart } = require("chart.js");
 const moment = require("moment");
-import "chartjs-plugin-annotation";
+const { BigNumber } = require("bignumber.js");
 
 // Interfaces.
 import IAnalyticsService from "./interfaces/analytics.interface";
@@ -21,7 +21,6 @@ class AnalyticsController implements ng.IComponentController {
     public selectedStage: string;
 
     // Private variables.
-    private salesChart: any;
     private privateSaleContract: any;
     private preICOSaleContract: any;
     private ICOSaleContract: any;
@@ -36,6 +35,7 @@ class AnalyticsController implements ng.IComponentController {
     private redeemData: IRedeem[];
     private rentData: IRent[];
     private enrolmentData: IEnrolment;
+    private power: any;
 
     private softCaps = {
         "private": 0,
@@ -90,6 +90,10 @@ class AnalyticsController implements ng.IComponentController {
         let icoSoftCap = await this.ICOSaleContract.methods.getTokensMinCap.call().call();
         this.softCaps.ico = parseInt(icoSoftCap);
 
+        let decimals = await this.web3Service.tokenContract.methods.getDecimals.call().call();
+        this.power = new BigNumber(10);
+        this.power = this.power.pow(decimals);
+
         await this.getSaleData();
         await this.getRefundData();
         await this.getRedeemData();
@@ -101,6 +105,7 @@ class AnalyticsController implements ng.IComponentController {
         this.createRedeemChart();
         this.createRefundChart();
         this.createEnrolmentChart();
+        this.createRentChart();
     }
 
     /**
@@ -277,7 +282,7 @@ class AnalyticsController implements ng.IComponentController {
     /**
      * Creates the enrolment chart.
      */
-    private createEnrolmentChart(): any {
+    private createEnrolmentChart(): void {
         let labels = [];
         let data = [];
         let colors = [];
@@ -289,6 +294,55 @@ class AnalyticsController implements ng.IComponentController {
         }
 
         this.createPieChart(labels, data, colors);
+    }
+
+    /**
+     * Creates the rental chart.
+     */
+    private createRentChart(): any {
+        let labels = ["Tokens", "Duration (in days)", "Price (in ether)", "Time (in days)"];
+        let datasets = [];
+
+        this.rentData.forEach((rent, index) => {
+            if (!(rent.leasedTo != null))
+                return;
+
+            let dateCreated = moment(rent.offerCreatedTimestamp);
+            let dateLeased = moment(rent.leasedTimestamp);
+            let days: number = dateLeased.diff(dateCreated, "days");
+
+            let tokens = new BigNumber(rent.numberOfTokens);
+
+            datasets.push({
+                label: `Rental #${index}`,
+                backgroundColor: this.generateColor(),
+                data: [parseFloat(tokens.div(this.power)), parseInt(rent.duration) / (3600 * 24), this.web3Service.toEther(rent.price), days]
+            });
+        });
+
+        let ctx = (document.getElementById("rentChart") as HTMLCanvasElement).getContext("2d");
+        let chart = new Chart(ctx, {
+            type: "radar",
+            data: {
+                labels,
+                datasets
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: "Rental Radar"
+                },
+                tooltips: {
+                    enabled: true,
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            return data.datasets[tooltipItem.datasetIndex].label + ' : ' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                        }
+                    }
+                },
+                maintainAspectRatio: false
+            }
+        });
     }
 
     /**
@@ -539,7 +593,7 @@ class AnalyticsController implements ng.IComponentController {
     private createChart(elementId: string, title: string, color: string, yAxisText: string, dates: string[], 
         data: number[], yUpperBound: number, type: string = "bar", annotation?: any): void {
         let ctx = (document.getElementById(elementId) as HTMLCanvasElement).getContext("2d");
-        this.salesChart = new Chart(ctx, {
+        let chart = new Chart(ctx, {
             type,
             data: {
                 labels: dates,
@@ -593,7 +647,7 @@ class AnalyticsController implements ng.IComponentController {
      */
     private createPieChart(labels: string[], data: number[], colors: string[]): void {
         let ctx = (document.getElementById("enrolmentChart") as HTMLCanvasElement).getContext("2d");
-        this.salesChart = new Chart(ctx, {
+        let chart = new Chart(ctx, {
             type: "pie",
             data: {
                 labels,
@@ -672,6 +726,9 @@ export default class AnalyticsComponent implements ng.IComponentOptions {
             </div>
             <div class="details-card sale-chart" ng-show="$ctrl.selectedStage === 'private'">
                 <canvas id="enrolmentChart" class="chart-size" height="400"></canvas>
+            </div>
+            <div class="details-card sale-chart">
+                <canvas id="rentChart" class="chart-size" height="400"></canvas>
             </div>
         </div>
     `;

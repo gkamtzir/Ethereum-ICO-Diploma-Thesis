@@ -7,5 +7,5 @@ export default interface IWeb3Service {
     increaseTime(duration: number);
     latestTime();
     toWei(amount: number);
-    toEther(amount: number);
+    toEther(amount: number | string);
 }
