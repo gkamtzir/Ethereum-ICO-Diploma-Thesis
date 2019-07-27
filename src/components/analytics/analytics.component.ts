@@ -324,35 +324,20 @@ class AnalyticsController implements ng.IComponentController {
         preICOStageData.sort((a, b) => (a.timestamp > b.timestamp) ? 1 : -1);
         ICOStageData.sort((a, b) => (a.timestamp > b.timestamp) ? 1 : -1);
         
-        let sum = 0;
-        let privateCumulativeData = [];
-        let privateCumulativeDates = [];
+        let {
+            cumulativeDates: privateCumulativeDates,
+            cumulativeData: privateCumulativeData
+        } = this.createCumulativeData(privateStageData);
 
-        for (let i = 0; i < privateStageData.length; i++) {
-            privateCumulativeDates.push(moment(privateStageData[i].timestamp).format("DD-MM-YYYY"));
-            sum += privateStageData[i].amount;
-            privateCumulativeData.push(sum);
-        }
+        let {
+            cumulativeDates: preCumulativeDates,
+            cumulativeData: preCumulativeData
+        } = this.createCumulativeData(preICOStageData);
 
-        sum = 0;
-        let preCumulativeData = [];
-        let preCumulativeDates = [];
-
-        for (let i = 0; i < preICOStageData.length; i++) {
-            preCumulativeDates.push(moment(preICOStageData[i].timestamp).format("DD-MM-YYYY"));
-            sum += preICOStageData[i].amount;
-            preCumulativeData.push(sum);
-        }
-
-        sum = 0;
-        let icoCumulativeData = [];
-        let icoCumulativeDates = [];
-
-        for (let i = 0; i < ICOStageData.length; i++) {
-            icoCumulativeDates.push(moment(ICOStageData[i].timestamp).format("DD-MM-YYYY"));
-            sum += ICOStageData[i].amount;
-            icoCumulativeData.push(sum);
-        }
+        let {
+            cumulativeDates: icoCumulativeDates,
+            cumulativeData: icoCumulativeData
+        } = this.createCumulativeData(ICOStageData);
 
         return {
             privateCumulativeDates,
@@ -361,6 +346,33 @@ class AnalyticsController implements ng.IComponentController {
             preCumulativeData,
             icoCumulativeDates,
             icoCumulativeData
+        }
+    }
+
+    /**
+     * Creates the actual cumulative data.
+     * @param data The unprocessed data.
+     */
+    private createCumulativeData(data: ISale[]): any {
+        let sum = 0;
+        let cumulativeData = [];
+        let cumulativeDates = [];
+
+        for (let i = 0; i < data.length; i++) {
+            let date = moment(data[i].timestamp).format("DD-MM-YYYY");
+            if (i > 0 && cumulativeDates[cumulativeDates.length - 1] === date) {
+                sum += data[i].amount;
+                cumulativeData[cumulativeData.length - 1] += data[i].amount;
+            } else {
+                cumulativeDates.push(date);
+                sum += data[i].amount;
+                cumulativeData.push(sum);
+            }
+        }
+
+        return {
+            cumulativeDates,
+            cumulativeData
         }
     }
 

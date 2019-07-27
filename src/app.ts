@@ -4,7 +4,6 @@ import "angular-route/angular-route.min.js";
 import "angular-toastr/dist/angular-toastr.tpls.min.js";
 
 import "bignumber.js/bignumber.min.js";
-//import "chart.js/dist/Chart.bundle.min.js";
 
 // Styling dependencies.
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -141,10 +140,10 @@ module.constant("PrivateSale", PrivateSale);
 module.constant("PreICOSale", PreICOSale);
 module.constant("ICOSale", ICOSale);
 
-module.constant("OpenHouseTokenContractAddress", "0x0Ce1e36847eba6c89192DAa41e0BEa93c4c1dE3E");
-module.constant("PrivateSaleContractAddress", "0x1dc45eD8aE68342CeEB5DA7643417016AA5bb45d");
-module.constant("PreICOSaleContractAddress", "0x388Bed8F9be9b97f89d77Bf36963741D1d1E4cb6");
-module.constant("ICOSaleContractAddress", "0x0062e5736843BD16Fb2afb8Ae6D67944484f01D3");
+module.constant("OpenHouseTokenContractAddress", "0x03935EF155484A5d4C9B2bBeEE51400dFD3Af38c");
+module.constant("PrivateSaleContractAddress", "0x86dc65a9490fDCF435fAd8dE98780522d8ba396c");
+module.constant("PreICOSaleContractAddress", "0xcb6455E4552899a1c6922b94281795c88684c427");
+module.constant("ICOSaleContractAddress", "0x893249D19Fb4328985213bA08447E59CAA200eE9");
 
 angular.element(document).ready(() => {
     angular.bootstrap(document, ["OpenHouseAdminPanel"]);
