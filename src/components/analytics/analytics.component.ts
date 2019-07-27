@@ -36,6 +36,12 @@ class AnalyticsController implements ng.IComponentController {
     private rentData: IRent[];
     private enrolmentData: IEnrolment;
 
+    private softCaps = {
+        "private": 0,
+        "pre": 0,
+        "ico": 0
+    };
+
     constructor(
         public web3Service: IWeb3Service,
         private analyticsService: IAnalyticsService,
@@ -72,6 +78,16 @@ class AnalyticsController implements ng.IComponentController {
 
         let ICOSaleEnd = await this.ICOSaleContract.methods.getEndTimestamp.call().call();
         this.ICOSaleEnd = moment(new Date(ICOSaleEnd * 1000));
+
+        // Fetching sales' soft caps.
+        let privateSoftCap = await this.privateSaleContract.methods.getTokensMinCap.call().call();
+        this.softCaps.private = parseInt(privateSoftCap);
+
+        let preSoftCap = await this.preICOSaleContract.methods.getTokensMinCap.call().call();
+        this.softCaps.pre = parseInt(preSoftCap);
+
+        let icoSoftCap = await this.ICOSaleContract.methods.getTokensMinCap.call().call();
+        this.softCaps.ico = parseInt(icoSoftCap);
 
         await this.getSaleData();
         await this.getRefundData();
@@ -162,6 +178,19 @@ class AnalyticsController implements ng.IComponentController {
             ICOMaxY
         } = this.prepareSaleData();
 
+        let {
+            privateCumulativeDates,
+            privateCumulativeData,
+            preCumulativeDates,
+            preCumulativeData,
+            icoCumulativeDates,
+            icoCumulativeData
+        } = this.getCumulativeSaleData();
+
+        let privateMax = Math.max(...privateCumulativeData);
+        let preMax = Math.max(...preCumulativeData);
+        let icoMax = Math.max(...icoCumulativeData);
+
         // Creating the sale's charts.
         this.createChart("privateSaleChart", "Private Sale", "rgba(65, 105, 225, 0.7)", "Tokens bought",
             privateDates, privateData, privateMaxY);
@@ -169,6 +198,14 @@ class AnalyticsController implements ng.IComponentController {
             preICODates, preICOData, preICOMaxY);
         this.createChart("ICOSaleChart", "ICO Sale", "rgba(65, 105, 225, 0.7)", "Tokens bought",
             ICODates, ICOData, ICOMaxY);
+
+        // Creating the cumulative sale charts.
+        this.createChart("privateSaleCumulativeChart", "Road to soft cap", "rgba(152, 251, 152, 0.7)", "Tokens bought (Cumulative)",
+            privateCumulativeDates, privateCumulativeData, privateMax < this.softCaps.private ? this.softCaps.private : privateMax, "line");
+        this.createChart("preICOSaleCumulativeChart", "Road to soft cap", "rgba(152, 251, 152, 0.7)", "Tokens bought (Cumulative)",
+            preCumulativeDates, preCumulativeData, preMax < this.softCaps.pre ? this.softCaps.pre : preMax, "line");
+        this.createChart("ICOSaleCumulativeChart", "Road to soft cap", "rgba(152, 251, 152, 0.7)", "Tokens bought (Cumulative)",
+            icoCumulativeDates, icoCumulativeData, icoMax < this.softCaps.ico ? this.softCaps.ico : icoMax, "line");
     }
 
     /**
@@ -234,6 +271,74 @@ class AnalyticsController implements ng.IComponentController {
     }
 
     /**
+     * Prepares the cumulative sale data for the given stage.
+     */
+    private getCumulativeSaleData(): any {
+        let privateStageData = [];
+        let preICOStageData = [];
+        let ICOStageData = [];
+
+        this.saleData.forEach(sale => {
+            if (sale.stage === "private")
+                privateStageData.push(sale);
+            else if (sale.stage === "pre")
+                preICOStageData.push(sale);
+            else
+                ICOStageData.push(sale);
+        });
+
+        // Sort data by date.
+        privateStageData.sort((a, b) => (a.timestamp > b.timestamp) ? 1 : -1);
+        preICOStageData.sort((a, b) => (a.timestamp > b.timestamp) ? 1 : -1);
+        ICOStageData.sort((a, b) => (a.timestamp > b.timestamp) ? 1 : -1);
+        
+        let sum = 0;
+        let privateCumulativeData = [];
+        let privateCumulativeDates = [];
+
+        for (let i = 0; i < privateStageData.length; i++) {
+            privateCumulativeDates.push(moment(privateStageData[i].timestamp).format("DD-MM-YYYY"));
+            sum += privateStageData[i].amount;
+            privateCumulativeData.push(sum);
+            if (sum >= this.softCaps.private)
+                break;
+        }
+
+        sum = 0;
+        let preCumulativeData = [];
+        let preCumulativeDates = [];
+
+        for (let i = 0; i < preICOStageData.length; i++) {
+            preCumulativeDates.push(moment(preICOStageData[i].timestamp).format("DD-MM-YYYY"));
+            sum += preICOStageData[i].amount;
+            preCumulativeData.push(sum);
+            if (sum >= this.softCaps.pre)
+                break;
+        }
+
+        sum = 0;
+        let icoCumulativeData = [];
+        let icoCumulativeDates = [];
+
+        for (let i = 0; i < ICOStageData.length; i++) {
+            icoCumulativeDates.push(moment(ICOStageData[i].timestamp).format("DD-MM-YYYY"));
+            sum += ICOStageData[i].amount;
+            icoCumulativeData.push(sum);
+            if (sum >= this.softCaps.ico)
+                break;
+        }
+
+        return {
+            privateCumulativeDates,
+            privateCumulativeData,
+            preCumulativeDates,
+            preCumulativeData,
+            icoCumulativeDates,
+            icoCumulativeData
+        }
+    }
+
+    /**
      * Creates the redeem chart.
      */
     private createRedeemChart(): void {
@@ -251,9 +356,9 @@ class AnalyticsController implements ng.IComponentController {
 
         // Creating the redeem's charts.
         this.createChart("privateRedeemChart", "Private Sale Redeems", "rgba(34, 139, 34, 0.7)", "Tokens redeemed",
-        privateDates, privateData, privateMaxY);
+            privateDates, privateData, privateMaxY);
         this.createChart("preICORedeemChart", "Pre-ICO Sale Redeems", "rgba(34, 139, 34, 0.7)", "Tokens redeemed",
-        preICODates, preICOData, preICOMaxY);
+            preICODates, preICOData, preICOMaxY);
         this.createChart("ICORedeemChart", "ICO Sale Redeems", "rgba(34, 139, 34, 0.7)", "Tokens redeemed",
             ICODates, ICOData, ICOMaxY);
     }
@@ -392,16 +497,18 @@ class AnalyticsController implements ng.IComponentController {
      * @param yUpperBound Y axis upper bound.
      */
     private createChart(elementId: string, title: string, color: string, yAxisText: string, dates: string[], 
-        data: number[], yUpperBound: number): void {
+        data: number[], yUpperBound: number, type: string = "bar"): void {
         let ctx = (document.getElementById(elementId) as HTMLCanvasElement).getContext("2d");
         this.salesChart = new Chart(ctx, {
-            type: "bar",
+            type,
             data: {
                 labels: dates,
                 datasets: [
                     {
                         data: data,
-                        backgroundColor: color
+                        backgroundColor: color,
+                        lineTension: 0,
+                        fill: "start"
                     }
                 ]},
                 options: {
@@ -424,7 +531,7 @@ class AnalyticsController implements ng.IComponentController {
                             ticks: {
                                 beginAtZero: true,
                                 padding: 10,
-                                max: yUpperBound
+                                suggestedMax: yUpperBound
                             },
                             scaleLabel: {
                                 display: true,
@@ -506,6 +613,11 @@ export default class AnalyticsComponent implements ng.IComponentOptions {
                 <canvas id="privateSaleChart" class="chart-size" height="400" ng-show="$ctrl.selectedStage === 'private'"></canvas>
                 <canvas id="preICOSaleChart" class="chart-size" height="400" ng-show="$ctrl.selectedStage === 'pre'"></canvas>
                 <canvas id="ICOSaleChart" class="chart-size" height="400" ng-show="$ctrl.selectedStage === 'ico'"></canvas>
+            </div>
+            <div class="details-card sale-chart">
+                <canvas id="privateSaleCumulativeChart" class="chart-size" height="400" ng-show="$ctrl.selectedStage === 'private'"></canvas>
+                <canvas id="preICOSaleCumulativeChart" class="chart-size" height="400" ng-show="$ctrl.selectedStage === 'pre'"></canvas>
+                <canvas id="ICOSaleCumulativeChart" class="chart-size" height="400" ng-show="$ctrl.selectedStage === 'ico'"></canvas>
             </div>
             <div class="details-card sale-chart">
                 <canvas id="privateRedeemChart" class="chart-size" height="400" ng-show="$ctrl.selectedStage === 'private'"></canvas>
