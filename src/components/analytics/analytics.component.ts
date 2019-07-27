@@ -2,6 +2,7 @@ import IWeb3Service from "../../interfaces/services/web3.interface";
 
 const { Chart } = require("chart.js");
 const moment = require("moment");
+import "chartjs-plugin-annotation";
 
 // Interfaces.
 import IAnalyticsService from "./interfaces/analytics.interface";
@@ -199,13 +200,44 @@ class AnalyticsController implements ng.IComponentController {
         this.createChart("ICOSaleChart", "ICO Sale", "rgba(65, 105, 225, 0.7)", "Tokens bought",
             ICODates, ICOData, ICOMaxY);
 
+        // Prepare annotations.
+        let privateAnnotations = this.getAnnotations(this.softCaps.private);
+        let preAnnotations = this.getAnnotations(this.softCaps.pre);
+        let icoAnnotations = this.getAnnotations(this.softCaps.ico);
+
         // Creating the cumulative sale charts.
         this.createChart("privateSaleCumulativeChart", "Road to soft cap", "rgba(152, 251, 152, 0.7)", "Tokens bought (Cumulative)",
-            privateCumulativeDates, privateCumulativeData, privateMax < this.softCaps.private ? this.softCaps.private : privateMax, "line");
+            privateCumulativeDates, privateCumulativeData, privateMax < this.softCaps.private ? this.softCaps.private : privateMax, "line",
+            privateAnnotations);
         this.createChart("preICOSaleCumulativeChart", "Road to soft cap", "rgba(152, 251, 152, 0.7)", "Tokens bought (Cumulative)",
-            preCumulativeDates, preCumulativeData, preMax < this.softCaps.pre ? this.softCaps.pre : preMax, "line");
+            preCumulativeDates, preCumulativeData, preMax < this.softCaps.pre ? this.softCaps.pre : preMax, "line", preAnnotations);
         this.createChart("ICOSaleCumulativeChart", "Road to soft cap", "rgba(152, 251, 152, 0.7)", "Tokens bought (Cumulative)",
-            icoCumulativeDates, icoCumulativeData, icoMax < this.softCaps.ico ? this.softCaps.ico : icoMax, "line");
+            icoCumulativeDates, icoCumulativeData, icoMax < this.softCaps.ico ? this.softCaps.ico : icoMax, "line", icoAnnotations);
+    }
+
+    /**
+     * Fetches chart line-annotations.
+     * @param value The line value.
+     */
+    private getAnnotations(value: number): any {
+        return {
+            annotations: [
+                {
+                    id: "hline",
+                    type: "line",
+                    mode: "horizontal",
+                    scaleID: "y-axis-0",
+                    value,
+                    borderColor: "rgba(0,100,0)",
+                    borderWidth: 2,
+                    label: {
+                      backgroundColor: "rgba(0,100,0)",
+                      content: "Soft Cap",
+                      enabled: true
+                    }
+                }
+            ]
+        }
     }
 
     /**
@@ -300,8 +332,6 @@ class AnalyticsController implements ng.IComponentController {
             privateCumulativeDates.push(moment(privateStageData[i].timestamp).format("DD-MM-YYYY"));
             sum += privateStageData[i].amount;
             privateCumulativeData.push(sum);
-            if (sum >= this.softCaps.private)
-                break;
         }
 
         sum = 0;
@@ -312,8 +342,6 @@ class AnalyticsController implements ng.IComponentController {
             preCumulativeDates.push(moment(preICOStageData[i].timestamp).format("DD-MM-YYYY"));
             sum += preICOStageData[i].amount;
             preCumulativeData.push(sum);
-            if (sum >= this.softCaps.pre)
-                break;
         }
 
         sum = 0;
@@ -324,8 +352,6 @@ class AnalyticsController implements ng.IComponentController {
             icoCumulativeDates.push(moment(ICOStageData[i].timestamp).format("DD-MM-YYYY"));
             sum += ICOStageData[i].amount;
             icoCumulativeData.push(sum);
-            if (sum >= this.softCaps.ico)
-                break;
         }
 
         return {
@@ -489,15 +515,17 @@ class AnalyticsController implements ng.IComponentController {
     /**
      * Creates the bar chart.
      * @param elementId The DOM canvas element to create the chart.
-     * @param title Chart's title.
-     * @param color Chart's color.
+     * @param title Chart title.
+     * @param color Chart color.
      * @param yAxisText Y axis text.
      * @param dates The date labels.
      * @param data The actual data.
      * @param yUpperBound Y axis upper bound.
+     * @param type Chart type.
+     * @param annotations Extra annotations for the chart.
      */
     private createChart(elementId: string, title: string, color: string, yAxisText: string, dates: string[], 
-        data: number[], yUpperBound: number, type: string = "bar"): void {
+        data: number[], yUpperBound: number, type: string = "bar", annotation?: any): void {
         let ctx = (document.getElementById(elementId) as HTMLCanvasElement).getContext("2d");
         this.salesChart = new Chart(ctx, {
             type,
@@ -539,7 +567,8 @@ class AnalyticsController implements ng.IComponentController {
                                 labelString: yAxisText
                               }
                         }]
-                    }
+                    },
+                    annotation
                 }
         });
     }
