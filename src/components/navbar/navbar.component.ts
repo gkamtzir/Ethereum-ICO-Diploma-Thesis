@@ -7,7 +7,7 @@ class NavbarController implements ng.IComponentController {
     public activeTab: string;
 
     constructor(
-        public $location: ng.ILocationService
+        private $location: ng.ILocationService
     ) {
         this.updateActiveTab();
     }

@@ -13,9 +13,9 @@ class PrivateSaleController implements ng.IComponentController {
     private accountChangedListener: any;
 
     constructor(
-        public web3Service: IWeb3Service,
-        public $scope: ng.IScope,
-        public $rootScope: ng.IRootScopeService
+        private web3Service: IWeb3Service,
+        private $scope: ng.IScope,
+        private $rootScope: ng.IRootScopeService
     ) {
         // Listening for 'accountChanged' events.
         this.accountChangedListener = this.$rootScope.$on("web3.service.accountChanged", async () => {

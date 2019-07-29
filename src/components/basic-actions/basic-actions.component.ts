@@ -17,9 +17,9 @@ class BasicActionsController implements ng.IComponentController, IBasicActions {
     private tokenPrice: any;
 
     constructor(
-        public web3Service: IWeb3Service,
-        public $rootScope: ng.IRootScopeService,
-        public toastr: ng.toastr.IToastrService
+        private web3Service: IWeb3Service,
+        private $rootScope: ng.IRootScopeService,
+        private toastr: ng.toastr.IToastrService
     ) {
         this.numberOfTokens = 0;
     }

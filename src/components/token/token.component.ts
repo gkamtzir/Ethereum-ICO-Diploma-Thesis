@@ -26,9 +26,9 @@ class TokenController implements ng.IComponentController {
     private statusChangedListener: any;
 
     constructor(
-        public $scope: ng.IScope,
-        public $rootScope: ng.IRootScopeService,
-        public web3Service: IWeb3Service
+        private $scope: ng.IScope,
+        private $rootScope: ng.IRootScopeService,
+        private web3Service: IWeb3Service
     ) {
         // Listening for 'accountChanged' events.
         this.accountChangedListener = this.$rootScope.$on("web3.service.accountChanged", async () => {

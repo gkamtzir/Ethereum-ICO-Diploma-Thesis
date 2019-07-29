@@ -44,7 +44,7 @@ class AnalyticsController implements ng.IComponentController {
     };
 
     constructor(
-        public web3Service: IWeb3Service,
+        private web3Service: IWeb3Service,
         private analyticsService: IAnalyticsService,
         private toastr: ng.toastr.IToastrService
     ) {

@@ -34,9 +34,9 @@ class DetailsController implements ng.IComponentController {
     };
 
     constructor(
-        public $scope: ng.IScope,
-        public $rootScope: ng.IRootScopeService,
-        public web3Service: IWeb3Service
+        private $scope: ng.IScope,
+        private $rootScope: ng.IRootScopeService,
+        private web3Service: IWeb3Service
     ) 
     {
         this.hideLoader = false;

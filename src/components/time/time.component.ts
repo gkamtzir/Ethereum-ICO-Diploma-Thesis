@@ -16,8 +16,8 @@ class TimeController implements ng.IComponentController {
     private durations: any;
 
     constructor(
-        public web3Service: IWeb3Service,
-        public $scope: ng.IScope
+        private web3Service: IWeb3Service,
+        private $scope: ng.IScope
     ) {
         // Initializing the durations.
         this.durations = {

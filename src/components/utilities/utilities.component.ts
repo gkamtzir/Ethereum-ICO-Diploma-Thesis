@@ -27,10 +27,10 @@ class UtilitiesController implements ng.IComponentController {
     private power: any;
 
     constructor(
-        public web3Service: IWeb3Service,
-        public $rootScope: ng.IRootScopeService,
-        public $scope: ng.IScope,
-        public toastr: ng.toastr.IToastrService
+        private web3Service: IWeb3Service,
+        private $rootScope: ng.IRootScopeService,
+        private $scope: ng.IScope,
+        private toastr: ng.toastr.IToastrService
     ) {
     }
 

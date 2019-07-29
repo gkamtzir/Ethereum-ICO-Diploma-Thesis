@@ -15,8 +15,8 @@ class AdminActionsController implements ng.IComponentController, IOwnerActions {
     public addressToBeOwner: string;
 
     constructor(
-        public toastr: ng.toastr.IToastrService,
-        public $rootScope: ng.IRootScopeService
+        private toastr: ng.toastr.IToastrService,
+        private $rootScope: ng.IRootScopeService
     ) {
         this.restricted = false;
         this.basic = false;
