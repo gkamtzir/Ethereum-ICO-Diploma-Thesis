@@ -308,7 +308,9 @@ export default class UtilitiesComponent implements ng.IComponentOptions {
                     <input type="text" class="form-control" id="leaseFromAddress" ng-model="$ctrl.leaseFromAddress" placeholder="Enter Address">
                 </div>
 
-                <button type="submit" class="btn btn-primary sm-4 action-button" ng-click="$ctrl.leaseFrom()">Lease</button>
+                <button type="submit" class="btn btn-primary sm-4 action-button inline-button" ng-click="$ctrl.leaseFrom()">Lease</button>
+
+                <rent-modal-component class="inline-button"></rent-modal-component>
 
             </div>
 
