@@ -16,7 +16,7 @@ class RentModalController implements ng.IComponentController {
 
     async $onInit() {
         try {
-            let response = await this.analyticsService.getRents();
+            let response = await this.analyticsService.getOpenRents();
             this.rentData = response.data;
         } catch (exception) {
             this.toastr.error(`Could not retrieve rent data. Please try again later.`, "Error");

@@ -13,4 +13,5 @@ export default interface IAnalyticsService {
     getRefunds(): IPromise<IHttpResponse<IRefund[]>>;
     getEnrolments(stage: string): IPromise<IHttpResponse<IEnrolment>>;
     getRents(): IPromise<IHttpResponse<IRent[]>>;
+    getOpenRents(): IPromise<IHttpResponse<IRent[]>>;
 }

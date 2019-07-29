@@ -113,6 +113,21 @@ apiRouter.route("/rent")
         });
     });
 
+apiRouter.route("/rent/open")
+    .get((req, res, next) => {
+        let options = {
+            leasedTo: null,
+            leasedTimestamp: null
+        };
+
+        Rent.find(options, "-_id -__v", (error, rents) => {
+            if (error)
+                throw error;
+
+            res.json(rents);
+        });
+    });
+
 apiRouter.route("/enrolment/:stage")
     .get((req, res, next) => {
         Sale.find({stage: req.params.stage}, "-_id -__v", (error, sales) => {

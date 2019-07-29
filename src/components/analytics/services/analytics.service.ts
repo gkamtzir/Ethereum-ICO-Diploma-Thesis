@@ -47,4 +47,11 @@ export default class AnalyticsService implements IAnalyticsService{
             url: "http://83.212.115.201:8080/api/rent"
         });
     }
+
+    getOpenRents(): IPromise<IHttpResponse<IRent[]>> {
+        return this.$http({
+            method: "GET",
+            url: "http://83.212.115.201:8080/api/rent/open"
+        });
+    }
 }
