@@ -12,7 +12,7 @@ const apiRouter = express.Router();
 
 apiRouter.route("/sale")
     .get((req, res, next) => {
-        Sale.find({}, (error, sales) => {
+        Sale.find({}, "-_id -__v", (error, sales) => {
             if (error)
                 throw error;
 
@@ -30,7 +30,7 @@ apiRouter.route("/sale/:address")
         if (req.query.stage != null)
             options.stage = req.query.stage;
 
-        Sale.find(options, (error, sales) => {
+        Sale.find(options, "-_id -__v", (error, sales) => {
             if (error)
                 throw error;
 
@@ -40,7 +40,7 @@ apiRouter.route("/sale/:address")
 
 apiRouter.route("/refund")
     .get((req, res, next) => {
-        Refund.find({}, (error, refunds) => {
+        Refund.find({}, "-_id -__v", (error, refunds) => {
             if (error)
                 throw error;
 
@@ -58,7 +58,7 @@ apiRouter.route("/refund/:address")
         if (req.query.stage != null)
             options.stage = req.query.stage;
 
-        Refund.find(options, (error, refunds) => {
+        Refund.find(options, "-_id -__v", (error, refunds) => {
             if (error)
                 throw error;
 
@@ -68,7 +68,7 @@ apiRouter.route("/refund/:address")
 
 apiRouter.route("/redeem")
     .get((req, res, next) => {
-        Redeem.find({}, (error, redeems) => {
+        Redeem.find({}, "-_id -__v", (error, redeems) => {
             if (error)
                 throw error;
 
@@ -86,7 +86,7 @@ apiRouter.route("/redeem/:address")
         if (req.query.stage != null)
             options.stage = req.query.stage;
 
-        Redeem.find(options, (error, redeems) => {
+        Redeem.find(options, "-_id -__v", (error, redeems) => {
             if (error)
                 throw error;
 
@@ -105,7 +105,7 @@ apiRouter.route("/rent")
         if (req.query.to != null)
             options.leasedTo = req.query.to;
 
-        Rent.find(options, (error, rents) => {
+        Rent.find(options, "-_id -__v", (error, rents) => {
             if (error)
                 throw error;
 
@@ -115,7 +115,7 @@ apiRouter.route("/rent")
 
 apiRouter.route("/enrolment/:stage")
     .get((req, res, next) => {
-        Sale.find({stage: req.params.stage}, (error, sales) => {
+        Sale.find({stage: req.params.stage}, "-_id -__v", (error, sales) => {
             if (error)
                 throw error;
 
