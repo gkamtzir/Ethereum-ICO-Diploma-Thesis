@@ -1,23 +1,44 @@
+import IWeb3Service from "../../services/web3.service";
+
+const { BigNumber } = require("bignumber.js");
+
+// Interfaces.
 import IAnalyticsService from "../analytics/interfaces/analytics.interface";
 import IRent from "../analytics/interfaces/rent.interface";
 
 class RentModalController implements ng.IComponentController {
 
     // Controller's injectables.
-    public static $inject = ["toastr", "analyticsService"];
+    public static $inject = ["toastr", "analyticsService", "web3Service"];
 
     public rentData: IRent[];
 
     constructor(
         private toastr: ng.toastr.IToastrService,
-        private analyticsService: IAnalyticsService
+        private analyticsService: IAnalyticsService,
+        private web3Service: IWeb3Service
     ) {
     }
 
     async $onInit() {
         try {
             let response = await this.analyticsService.getOpenRents();
-            this.rentData = response.data;
+            this.rentData = [];
+
+            let decimals = await this.web3Service.tokenContract.methods.getDecimals.call().call();
+
+            let power = new BigNumber(10);
+            power = power.pow(decimals);
+
+            response.data.forEach((rent: IRent) => {
+                rent.price = this.web3Service.toEther(rent.price).toString();
+                rent.duration = (parseInt(rent.duration) / 3600).toString();
+                
+                let tokens = new BigNumber(rent.numberOfTokens);
+                rent.numberOfTokens = tokens.div(power).toString();
+
+                this.rentData.push(rent);
+            });
         } catch (exception) {
             this.toastr.error(`Could not retrieve rent data. Please try again later.`, "Error");
         }
@@ -60,10 +81,10 @@ export default class RentModalComponent implements ng.IComponentOptions {
                                     <b>Number of Tokens</b>: {{ rent.numberOfTokens }}
                                 </div>
                                 <div class="rent-prop">
-                                    <b>Price</b>: {{ rent.price }}
+                                    <b>Price</b>: {{ rent.price }} ether
                                 </div>
                                 <div class="rent-prop">
-                                    <b>Duration</b>: {{ rent.duration }}
+                                    <b>Duration</b>: {{ rent.duration }} hour(s)
                                 </div>
                             </div>
                         </div>
