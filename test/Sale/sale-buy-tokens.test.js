@@ -61,7 +61,7 @@ contract("Sale -> buy tokens", accounts => {
         await this.privateSale.allowAddress(this.spender);
 
         // Start the sale.
-        await increaseTime(duration.hours(1));
+        await increaseTime(duration.hours(1) + 1);
     });
 
     describe("Buy tokens", () => {

@@ -61,7 +61,7 @@ contract("Sale -> refund tokens", accounts => {
         await this.privateSale.allowAddress(this.spender);
 
         // Start the sale.
-        await increaseTime(duration.hours(1));
+        await increaseTime(duration.hours(1) + 1);
     }
 
     describe("Refund (unsuccessful sale)", () => {
@@ -80,7 +80,7 @@ contract("Sale -> refund tokens", accounts => {
                 .should.be.rejectedWith("revert");
 
             // End the sale.
-            await increaseTime(privateSale.duration);
+            await increaseTime(privateSale.duration + 1);
         });
 
         it("Should be impossible to refund tokens if sender has no tokens", async () => {
@@ -116,7 +116,7 @@ contract("Sale -> refund tokens", accounts => {
                 { from: this.spender, value: cost.toString()})
 
             // End the sale.
-            await increaseTime(privateSale.duration);
+            await increaseTime(privateSale.duration + 1);
         });
 
         it("Should be impossible to refund tokens when the sale has completed successfully", async () => {

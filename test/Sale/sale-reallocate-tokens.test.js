@@ -64,7 +64,7 @@ contract("Sale -> reallocate tokens", accounts => {
         await this.privateSale.allowAddress(this.spender);
 
         // Start the sale.
-        await increaseTime(duration.hours(1));
+        await increaseTime(duration.hours(1) + 1);
     };
 
     describe("Reallocate (successful sale)", () => {
@@ -83,7 +83,7 @@ contract("Sale -> reallocate tokens", accounts => {
                 .should.be.rejectedWith("revert");
 
             // End the sale.
-            await increaseTime(privateSale.duration);
+            await increaseTime(privateSale.duration + 1);
         });
 
         it("Should be impossible to reallocate tokens a non-admin address", async () => {

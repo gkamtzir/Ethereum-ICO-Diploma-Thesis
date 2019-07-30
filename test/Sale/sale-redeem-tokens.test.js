@@ -80,7 +80,7 @@ contract("Sale -> redeem tokens", accounts => {
                 .should.be.rejectedWith("revert");
 
             // End the sale.
-            await increaseTime(privateSale.duration);
+            await increaseTime(privateSale.duration + 1);
         });
 
         it("Should be impossible to redeem tokens when sender hasn't bought any during the sale", async () => {
@@ -93,7 +93,7 @@ contract("Sale -> redeem tokens", accounts => {
                 .should.be.rejectedWith("revert");
 
             // Make tokens redeemable.
-            await increaseTime(this.redeemableAfter);
+            await increaseTime(this.redeemableAfter + 1);
         });
 
         it("Should be able to redeem the tokens", async () => {
@@ -133,7 +133,7 @@ contract("Sale -> redeem tokens", accounts => {
                 { from: this.spender, value: cost.toString()});
 
             // End the sale.
-            await increaseTime(privateSale.duration);
+            await increaseTime(privateSale.duration + 1);
         });
 
         it("Should be impossible to redeem tokens when the sale has failed", async () => {       

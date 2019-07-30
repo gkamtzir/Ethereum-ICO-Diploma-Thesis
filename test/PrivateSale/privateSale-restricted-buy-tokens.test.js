@@ -56,7 +56,7 @@ contract("PrivateSale -> buy tokens (restricted)", accounts => {
         await this.token.transfer(this.privateSale.address, this.tokensMaxCap.mul(this.power).toString(), { from: this.admin });
 
         // Start the sale.
-        await increaseTime(duration.hours(1));
+        await increaseTime(duration.hours(1) + 1);
     });
 
     describe("Buy tokens (restricted)", () => {
